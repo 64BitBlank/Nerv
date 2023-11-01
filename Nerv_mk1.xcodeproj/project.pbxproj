@@ -11,6 +11,7 @@
 		02CD095A2AF16E9300866B06 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CD09592AF16E9300866B06 /* ContentView.swift */; };
 		02CD095C2AF16E9500866B06 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02CD095B2AF16E9500866B06 /* Assets.xcassets */; };
 		02CD095F2AF16E9500866B06 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02CD095E2AF16E9500866B06 /* Preview Assets.xcassets */; };
+		02ED582D2AF29BE600F215CA /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED582C2AF29BE600F215CA /* LoginView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +20,7 @@
 		02CD09592AF16E9300866B06 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		02CD095B2AF16E9500866B06 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		02CD095E2AF16E9500866B06 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		02ED582C2AF29BE600F215CA /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,8 +53,10 @@
 		02CD09562AF16E9300866B06 /* Nerv_mk1 */ = {
 			isa = PBXGroup;
 			children = (
-				02CD09572AF16E9300866B06 /* Nerv_mk1App.swift */,
-				02CD09592AF16E9300866B06 /* ContentView.swift */,
+				02CD09652AF16EB800866B06 /* App */,
+				02CD09662AF16ED600866B06 /* Components */,
+				02CD09672AF16EEB00866B06 /* Core */,
+				02CD09682AF16F0700866B06 /* Model */,
 				02CD095B2AF16E9500866B06 /* Assets.xcassets */,
 				02CD095D2AF16E9500866B06 /* Preview Content */,
 			);
@@ -65,6 +69,61 @@
 				02CD095E2AF16E9500866B06 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		02CD09652AF16EB800866B06 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				02CD09572AF16E9300866B06 /* Nerv_mk1App.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		02CD09662AF16ED600866B06 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		02CD09672AF16EEB00866B06 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				02CD096A2AF16F9900866B06 /* Authentication */,
+				02CD096B2AF16FA800866B06 /* Profile */,
+				02CD09692AF16F6300866B06 /* Root */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		02CD09682AF16F0700866B06 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		02CD09692AF16F6300866B06 /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				02CD09592AF16E9300866B06 /* ContentView.swift */,
+			);
+			path = Root;
+			sourceTree = "<group>";
+		};
+		02CD096A2AF16F9900866B06 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				02ED582C2AF29BE600F215CA /* LoginView.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		02CD096B2AF16FA800866B06 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,6 +196,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02ED582D2AF29BE600F215CA /* LoginView.swift in Sources */,
 				02CD095A2AF16E9300866B06 /* ContentView.swift in Sources */,
 				02CD09582AF16E9300866B06 /* Nerv_mk1App.swift in Sources */,
 			);
