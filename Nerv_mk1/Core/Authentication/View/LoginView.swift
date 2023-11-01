@@ -10,6 +10,8 @@ import SwiftUI
 struct LoginView: View {
     @State private var email = ""
     @State private var password = ""
+    // Connect LoginView with AuthViewModel functions
+    @EnvironmentObject var viewModel: AuthViewModel
     
     var body: some View {
         NavigationStack {
@@ -39,7 +41,10 @@ struct LoginView: View {
                 
                 //sign in button
                 Button{
-                    print("Log user in")
+                    Task {
+                        // Call signIn function from AuthViewModel
+                        try await viewModel.signIn(withEmail: email, password: password)
+                    }
                 }label: {
                     HStack{
                         Text("Sign In")

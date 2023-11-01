@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct Nerv_mk1App: App {
+    // make viewmodel accessable for every file instead of making stateObjects in every file
+    @StateObject var viewModel = AuthViewModel()
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(viewModel)
         }
     }
 }
