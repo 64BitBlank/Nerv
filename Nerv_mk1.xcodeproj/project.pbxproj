@@ -14,6 +14,8 @@
 		02ED582D2AF29BE600F215CA /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED582C2AF29BE600F215CA /* LoginView.swift */; };
 		02ED582F2AF2ABF700F215CA /* InputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED582E2AF2ABF700F215CA /* InputView.swift */; };
 		02ED58312AF2B87600F215CA /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED58302AF2B87600F215CA /* RegistrationView.swift */; };
+		02ED58332AF2D02F00F215CA /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED58322AF2D02F00F215CA /* ProfileView.swift */; };
+		02ED58362AF2D68700F215CA /* SettingsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED58352AF2D68700F215CA /* SettingsRowView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +27,8 @@
 		02ED582C2AF29BE600F215CA /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		02ED582E2AF2ABF700F215CA /* InputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputView.swift; sourceTree = "<group>"; };
 		02ED58302AF2B87600F215CA /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
+		02ED58322AF2D02F00F215CA /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		02ED58352AF2D68700F215CA /* SettingsRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRowView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +91,7 @@
 			isa = PBXGroup;
 			children = (
 				02ED582E2AF2ABF700F215CA /* InputView.swift */,
+				02ED58352AF2D68700F215CA /* SettingsRowView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -128,6 +133,7 @@
 		02CD096B2AF16FA800866B06 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				02ED58322AF2D02F00F215CA /* ProfileView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -206,7 +212,9 @@
 				02ED582F2AF2ABF700F215CA /* InputView.swift in Sources */,
 				02CD095A2AF16E9300866B06 /* ContentView.swift in Sources */,
 				02CD09582AF16E9300866B06 /* Nerv_mk1App.swift in Sources */,
+				02ED58332AF2D02F00F215CA /* ProfileView.swift in Sources */,
 				02ED58312AF2B87600F215CA /* RegistrationView.swift in Sources */,
+				02ED58362AF2D68700F215CA /* SettingsRowView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
