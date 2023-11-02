@@ -8,6 +8,7 @@
 import Foundation
 
 // User Object
+// Adding Codable allows for mapping of json data into swift object - Decoding from the DB
 struct User: Identifiable, Codable {
     let id: String
     let fullname: String
