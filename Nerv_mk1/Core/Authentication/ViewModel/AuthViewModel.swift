@@ -45,13 +45,16 @@ class AuthViewModel: ObservableObject {
         }
     }
     
+    // Sign user on backend
+    // Wipes user session & takes back to login page
+    // Wipes current user model so user data isnt retained inside app after signout
     func signOut() {
         do {
             try Auth.auth().signOut()
             self.userSession = nil
             self.currentUser = nil
         }catch {
-            print("DEBUG: Failed to sign user out \(error.localizedDescription)")
+            print("ERROR: Failed to sign user out \(error.localizedDescription)")
         }
     }
     
@@ -59,6 +62,8 @@ class AuthViewModel: ObservableObject {
         
     }
     
+    // Decode json data from backend to user object
+    // Assign data to currentUser
     func fetchUser() async {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         guard let snapshot = try? await Firestore.firestore().collection("user").document(uid).getDocument() else { return }
