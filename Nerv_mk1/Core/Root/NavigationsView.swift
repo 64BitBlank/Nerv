@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct NavigationsView: View {
-    @State private var showMenu: Bool = true
+    @State private var showMenu: Bool = false
     
     var body: some View {
         NavigationView {
