@@ -46,6 +46,8 @@
 		02ED586F2AF2E7D000F215CA /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 02ED586E2AF2E7D000F215CA /* FirebaseStorage */; };
 		02ED58712AF2E7D000F215CA /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 02ED58702AF2E7D000F215CA /* FirebaseStorageCombine-Community */; };
 		02ED58752AF2E87300F215CA /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED58742AF2E87300F215CA /* AuthViewModel.swift */; };
+		02ED587A2AFAC30C00F215CA /* NavigationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED58792AFAC30C00F215CA /* NavigationsView.swift */; };
+		02ED587C2AFAD3B500F215CA /* SideMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED587B2AFAD3B500F215CA /* SideMenuView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +64,8 @@
 		02ED58372AF2DB8800F215CA /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		02ED58392AF2E6D600F215CA /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		02ED58742AF2E87300F215CA /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		02ED58792AFAC30C00F215CA /* NavigationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationsView.swift; sourceTree = "<group>"; };
+		02ED587B2AFAD3B500F215CA /* SideMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,7 +182,9 @@
 		02CD09692AF16F6300866B06 /* Root */ = {
 			isa = PBXGroup;
 			children = (
+				02ED58792AFAC30C00F215CA /* NavigationsView.swift */,
 				02CD09592AF16E9300866B06 /* ContentView.swift */,
+				02ED587B2AFAD3B500F215CA /* SideMenuView.swift */,
 			);
 			path = Root;
 			sourceTree = "<group>";
@@ -322,7 +328,9 @@
 			files = (
 				02ED582D2AF29BE600F215CA /* LoginView.swift in Sources */,
 				02ED582F2AF2ABF700F215CA /* InputView.swift in Sources */,
+				02ED587A2AFAC30C00F215CA /* NavigationsView.swift in Sources */,
 				02CD095A2AF16E9300866B06 /* ContentView.swift in Sources */,
+				02ED587C2AFAD3B500F215CA /* SideMenuView.swift in Sources */,
 				02CD09582AF16E9300866B06 /* Nerv_mk1App.swift in Sources */,
 				02ED58382AF2DB8800F215CA /* User.swift in Sources */,
 				02ED58332AF2D02F00F215CA /* ProfileView.swift in Sources */,
