@@ -9,6 +9,10 @@ import Foundation
 import Firebase
 import FirebaseFirestoreSwift
 
+protocol AuthenticationFromProtocol {
+    var formIsValid: Bool { get }
+}
+
  @MainActor
 class AuthViewModel: ObservableObject {
     // User logged in already?
@@ -24,7 +28,13 @@ class AuthViewModel: ObservableObject {
     }
     
     func signIn(withEmail email: String, password: String) async throws {
-            print("Sign In...")
+        do {
+            let result = try await Auth.auth().signIn(withEmail: email, password: password)
+            self.userSession = result.user
+            await fetchUser()
+        } catch {
+            print("ERROR: Failed to login \(error.localizedDescription)")
+        }
     }
     
     // Try create user with the firebase

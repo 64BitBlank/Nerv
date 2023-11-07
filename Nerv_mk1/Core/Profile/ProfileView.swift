@@ -11,6 +11,8 @@ struct ProfileView: View {
     @EnvironmentObject var viewModel: AuthViewModel
     
     var body: some View {
+        
+        // User has to be present in order for anything to be rendered onscreen
         if let user = viewModel.currentUser {
             List {
                 Section {

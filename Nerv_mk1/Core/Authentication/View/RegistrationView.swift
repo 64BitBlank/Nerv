@@ -65,6 +65,10 @@ struct RegistrationView: View {
                 .frame(width: UIScreen.main.bounds.width - 32, height: 48)
             }
             .background(Color(.systemBlue))
+            // For the button
+            // if doesnt comply to form then button is disabled & opacity lowered
+            .disabled(!formIsValid)
+            .opacity(formIsValid ? 1.0 : 0.5)
             .cornerRadius(10.0)
             .padding(.top, 24)
             
@@ -81,6 +85,17 @@ struct RegistrationView: View {
                 .font(.system(size: 14))
             }
         }
+    }
+}
+// Adding validation for both password and email so they conform to firebase backend
+extension RegistrationView: AuthenticationFromProtocol {
+    var formIsValid: Bool {
+        return !email.isEmpty
+        && email.contains("@")
+        && !password.isEmpty
+        && password.count > 5
+        && confirmPassword == password
+        && !fullname.isEmpty
     }
 }
 
