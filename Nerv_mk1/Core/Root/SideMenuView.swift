@@ -10,12 +10,13 @@ import SwiftUI
 struct SideMenuView: View {
     var body: some View {
         VStack {
-            Text("Settings")
-                .font(.subheadline)
+            Text("Menu")
+                .font(.title2)
                 .foregroundColor(.black)
+
             Spacer()
         }
-        .padding(60)
+        .padding(80)
         .background(Color(.white))
         .edgesIgnoringSafeArea(.bottom)
     }
