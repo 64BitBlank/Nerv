@@ -48,6 +48,7 @@
 		02ED58752AF2E87300F215CA /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED58742AF2E87300F215CA /* AuthViewModel.swift */; };
 		02ED587A2AFAC30C00F215CA /* NavigationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED58792AFAC30C00F215CA /* NavigationsView.swift */; };
 		02ED587C2AFAD3B500F215CA /* SideMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED587B2AFAD3B500F215CA /* SideMenuView.swift */; };
+		02ED587E2AFAFC7600F215CA /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED587D2AFAFC7600F215CA /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +67,7 @@
 		02ED58742AF2E87300F215CA /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		02ED58792AFAC30C00F215CA /* NavigationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationsView.swift; sourceTree = "<group>"; };
 		02ED587B2AFAD3B500F215CA /* SideMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuView.swift; sourceTree = "<group>"; };
+		02ED587D2AFAFC7600F215CA /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -185,6 +187,7 @@
 				02ED58792AFAC30C00F215CA /* NavigationsView.swift */,
 				02CD09592AF16E9300866B06 /* ContentView.swift */,
 				02ED587B2AFAD3B500F215CA /* SideMenuView.swift */,
+				02ED587D2AFAFC7600F215CA /* SettingsView.swift */,
 			);
 			path = Root;
 			sourceTree = "<group>";
@@ -335,6 +338,7 @@
 				02ED58382AF2DB8800F215CA /* User.swift in Sources */,
 				02ED58332AF2D02F00F215CA /* ProfileView.swift in Sources */,
 				02ED58312AF2B87600F215CA /* RegistrationView.swift in Sources */,
+				02ED587E2AFAFC7600F215CA /* SettingsView.swift in Sources */,
 				02ED58362AF2D68700F215CA /* SettingsRowView.swift in Sources */,
 				02ED58752AF2E87300F215CA /* AuthViewModel.swift in Sources */,
 			);
