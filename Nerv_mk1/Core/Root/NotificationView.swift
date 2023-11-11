@@ -16,7 +16,7 @@ struct NotificationItem: Identifiable {
 struct NotificationView: View {
     @State private var notifications: 
     
-    // Tester notificatons 
+    // Tester notificatons
     [NotificationItem] = [
         NotificationItem(title: "New Message", message: "You have a new message."),
         NotificationItem(title: "Reminder", message: "Don't forget to complete your tasks."),
@@ -49,6 +49,7 @@ struct NotificationView: View {
         }
     }
 }
+
 
 #Preview {
     NotificationView()

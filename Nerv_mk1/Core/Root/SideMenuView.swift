@@ -88,7 +88,7 @@ struct SideMenuView: View {
         
         
         
-        .padding(80)
+        .padding(45)
         .background(Color(.white))
         .edgesIgnoringSafeArea(.bottom)
     }

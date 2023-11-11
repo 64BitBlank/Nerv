@@ -12,6 +12,8 @@ struct RequestView: View {
     @State private var field1: String = ""
     @State private var field2: String = ""
     @State private var field3: String = ""
+    @State private var field4: String = ""
+    
     
     var isButtonEnabled: Bool {
         return !field1.isEmpty && !field2.isEmpty && !field3.isEmpty
@@ -19,24 +21,28 @@ struct RequestView: View {
 
     var body: some View {
         VStack {
+            
             SearchBar(text: $searchText)
-            List {
+            Form {
                 Section(header: Text("Patient Details")) {
-                    TextField("Field 1", text: $field1)
-                    TextField("Field 2", text: $field2)
+                    TextField("Fore Name*", text: $field1)
+                    TextField("Family Name*", text: $field2)
+                    TextField("Alternate Name", text: $field3)
                     // Add more TextField for additional fields as needed
                 }
                 Section(header: Text("Staff Details")){
-                    TextField("Field 1", text: $field3)
+                    TextField("Staff Number*", text: $field3)
+                }
+                Section(header: Text("Description")){
+                    TextField("Brief summary of condition*", text: $field3)
                 }
             }
             .listStyle(GroupedListStyle())
             
-            //sign in button
             Button{
-                    // Send off request to firebase
-                    // Navigate user back to landing page (navigationView)
-                    
+                // Send off request to firebase
+                // Navigate user back to landing page (navigationView)
+                NavigationsView()
             }label: {
                 HStack{
                     Text("Send Request")
@@ -65,9 +71,14 @@ struct SearchBar: View {
                 .padding(8)
                 .background(Color(.systemGray6))
                 .cornerRadius(8)
-                .padding(.horizontal, 10)
+                .padding(.horizontal, 20)
+            Image(systemName: "magnifyingglass")
+                .padding(.horizontal, 30)
+                .padding(.vertical, 10)
+            
         }
         .padding(.top, 10)
+        
     }
 }
 

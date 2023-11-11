@@ -49,9 +49,10 @@
 		02ED587A2AFAC30C00F215CA /* NavigationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED58792AFAC30C00F215CA /* NavigationsView.swift */; };
 		02ED587C2AFAD3B500F215CA /* SideMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED587B2AFAD3B500F215CA /* SideMenuView.swift */; };
 		02ED587E2AFAFC7600F215CA /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED587D2AFAFC7600F215CA /* SettingsView.swift */; };
-		02ED58802AFFC9C100F215CA /* RequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED587F2AFFC9C000F215CA /* RequestView.swift */; };
 		02ED58822AFFCAC800F215CA /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED58812AFFCAC800F215CA /* NotificationView.swift */; };
 		02ED58842AFFD9DB00F215CA /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED58832AFFD9DB00F215CA /* Notifications.swift */; };
+		02ED588C2AFFEA4E00F215CA /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED588B2AFFEA4E00F215CA /* Requests.swift */; };
+		02ED588E2B00047800F215CA /* RequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED588D2B00047800F215CA /* RequestView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,9 +72,10 @@
 		02ED58792AFAC30C00F215CA /* NavigationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationsView.swift; sourceTree = "<group>"; };
 		02ED587B2AFAD3B500F215CA /* SideMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuView.swift; sourceTree = "<group>"; };
 		02ED587D2AFAFC7600F215CA /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		02ED587F2AFFC9C000F215CA /* RequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestView.swift; sourceTree = "<group>"; };
 		02ED58812AFFCAC800F215CA /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		02ED58832AFFD9DB00F215CA /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
+		02ED588B2AFFEA4E00F215CA /* Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requests.swift; sourceTree = "<group>"; };
+		02ED588D2B00047800F215CA /* RequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,6 +186,7 @@
 			children = (
 				02ED58372AF2DB8800F215CA /* User.swift */,
 				02ED58832AFFD9DB00F215CA /* Notifications.swift */,
+				02ED588B2AFFEA4E00F215CA /* Requests.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -195,8 +198,8 @@
 				02CD09592AF16E9300866B06 /* ContentView.swift */,
 				02ED587B2AFAD3B500F215CA /* SideMenuView.swift */,
 				02ED587D2AFAFC7600F215CA /* SettingsView.swift */,
-				02ED587F2AFFC9C000F215CA /* RequestView.swift */,
 				02ED58812AFFCAC800F215CA /* NotificationView.swift */,
+				02ED588D2B00047800F215CA /* RequestView.swift */,
 			);
 			path = Root;
 			sourceTree = "<group>";
@@ -339,10 +342,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				02ED58842AFFD9DB00F215CA /* Notifications.swift in Sources */,
-				02ED58802AFFC9C100F215CA /* RequestView.swift in Sources */,
 				02ED582D2AF29BE600F215CA /* LoginView.swift in Sources */,
 				02ED582F2AF2ABF700F215CA /* InputView.swift in Sources */,
 				02ED587A2AFAC30C00F215CA /* NavigationsView.swift in Sources */,
+				02ED588E2B00047800F215CA /* RequestView.swift in Sources */,
+				02ED588C2AFFEA4E00F215CA /* Requests.swift in Sources */,
 				02CD095A2AF16E9300866B06 /* ContentView.swift in Sources */,
 				02ED587C2AFAD3B500F215CA /* SideMenuView.swift in Sources */,
 				02CD09582AF16E9300866B06 /* Nerv_mk1App.swift in Sources */,
