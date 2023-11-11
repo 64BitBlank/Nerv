@@ -13,7 +13,7 @@ struct RequestView: View {
     @State private var field2: String = ""
     @State private var field3: String = ""
     @State private var field4: String = ""
-    
+
     
     var isButtonEnabled: Bool {
         return !field1.isEmpty && !field2.isEmpty && !field3.isEmpty
@@ -33,8 +33,21 @@ struct RequestView: View {
                 Section(header: Text("Staff Details")){
                     TextField("Staff Number*", text: $field3)
                 }
-                Section(header: Text("Description")){
-                    TextField("Brief summary of condition*", text: $field3)
+                Section(header: Text("Description")) {
+                    HStack {
+                        Text("Brief summary of condition*")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                        // Character count
+                        Text("[\(field4.count)]")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                            .padding(.leading, 30)
+                    }
+                    // Use TextEditor for multi-line input
+                    TextEditor(text: $field4)
+                        .frame(height: CGFloat(30 * 5)) // Set the initial height based on the number of lines
+                        .lineSpacing(5) // Optional: Add line spacing
                 }
             }
             .listStyle(GroupedListStyle())
@@ -42,7 +55,7 @@ struct RequestView: View {
             Button{
                 // Send off request to firebase
                 // Navigate user back to landing page (navigationView)
-                NavigationsView()
+               
             }label: {
                 HStack{
                     Text("Send Request")
@@ -59,7 +72,8 @@ struct RequestView: View {
             .opacity(isButtonEnabled ? 1.0 : 0.5)
             .cornerRadius(10.0)
         }
-        .navigationTitle("Request Page")
+
+//        .navigationTitle("Request Page")
     }
 }
 
