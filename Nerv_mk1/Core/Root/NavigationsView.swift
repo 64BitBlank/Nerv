@@ -22,38 +22,52 @@ struct NavigationsView: View {
                     // Top of page
                     HStack {
                         Text("Landing Page")
-                            .font(.system(size: 24))
+                            .font(.title)
+                            .fontWeight(.bold)
                             .padding(.top, 20)
                     }
+                    .padding()
+                    
                     Divider()
-                        .padding()
+                        .padding(.horizontal, 50)
+                    
                     Text("[Filler data here]")
+                        .foregroundColor(.gray)
+                        .padding()
+                    
                     Spacer()
-                    //Middle of page
+                    
+                    // Middle of page
                     HStack {
                         Text("Middle")
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                            .padding()
                     }
                     .background(
-                        RoundedRectangle(cornerRadius: 4)
+                        RoundedRectangle(cornerRadius: 10)
                             .fill(Color(.systemGray3))
-                            .padding(.horizontal, -170) // Subtract horizontal padding
+                            .padding(.horizontal, -50) // Adjust horizontal padding
                     )
                     .padding()
                     
                     Spacer()
                     Spacer()
+                    
                     // Bottom of page
                     Divider()
-                        .padding()
-                     HStack {
-                         Spacer()
-                         Text("Bottom")
-                         Spacer()
-                     }
-                 
+                        .padding(.horizontal, 50)
                     
-                    
+                    HStack {
+                        Spacer()
+                        Text("Bottom")
+                            .font(.title3)
+                            .fontWeight(.medium)
+                        Spacer()
+                    }
+                    .padding()
                 }
+                
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .blur(radius: showMenu ? 2 : 0) // Apply blur effect when showMenu is true
                 .frame(maxWidth: .infinity)

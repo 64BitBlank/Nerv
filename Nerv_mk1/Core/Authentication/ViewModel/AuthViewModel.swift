@@ -68,10 +68,6 @@ class AuthViewModel: ObservableObject {
         }
     }
     
-    func deleteAccount() {
-        
-    }
-    
     // Decode json data from backend to user object
     // Assign data to currentUser
     func fetchUser() async {

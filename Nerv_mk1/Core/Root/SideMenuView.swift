@@ -15,29 +15,64 @@ struct SideMenuView: View {
                 .font(.title)
                 .foregroundColor(.black)
                 .padding(.bottom, 20) // Add a small spacing
-//            Divider()
 
-            
+
             // Navigation link 1
-            NavigationLink{
-                ProfileView()
-            }label: {
-                Text("Profile")
-                    .font(.title2)
-                    .foregroundColor(.black)
-                    .padding(.bottom, 10) // Add a small spacing
+            HStack{
+                Image(systemName: "person.fill")
+                NavigationLink{
+                    ProfileView()
+                }label: {
+                    Text("Profile")
+                        .font(.title2)
+                        .foregroundColor(.black)
+                }
+                Text("")
+                    .padding(.bottom, 20)
             }
-            
+
             // Navigation link 2
-            NavigationLink{
-                SettingsView()
-            }label: {
-                Text("Settings")
-                    .font(.title2)
-                    .foregroundColor(.black)
-                    .padding(.bottom, 10) // Add a small spacing
+            HStack{
+                Image(systemName: "pencil.line")
+                NavigationLink{
+                    RequestView()
+                }label: {
+                    Text("Create Request")
+                        .font(.title2)
+                        .foregroundColor(.black)
+                }
+                Text("")
+                    .padding(.bottom, 20)
+            }
+
+            // Navigation link 3
+            HStack {
+                Image(systemName: "bell")
+                NavigationLink{
+                            NotificationView()
+                }label: {
+                    Text("Notifications")
+                        .font(.title2)
+                        .foregroundColor(.black)
+                }
+                Text("")
+                    .padding(.bottom, 20)
             }
             
+            
+            // Navigation link 4
+            HStack {
+                Image(systemName: "gear")
+                NavigationLink{
+                               SettingsView()
+                }label: {
+                    Text("Settings")
+                        .font(.title2)
+                        .foregroundColor(.black)
+                }
+                Text("")
+                    .padding(.bottom, 20)
+            }
 
             Spacer()
             // image
