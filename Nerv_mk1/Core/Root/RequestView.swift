@@ -7,17 +7,23 @@
 
 import SwiftUI
 
+import Firebase
+import FirebaseFirestore
+
+
 struct RequestView: View {
     @State private var searchText: String = ""
     @State private var field1: String = ""
     @State private var field2: String = ""
     @State private var field3: String = ""
     @State private var field4: String = ""
-
+    @State private var field5: String = ""
+    
     
     var isButtonEnabled: Bool {
         return !field1.isEmpty && !field2.isEmpty && !field3.isEmpty
     }
+   
 
     var body: some View {
         VStack {
@@ -31,7 +37,7 @@ struct RequestView: View {
                     // Add more TextField for additional fields as needed
                 }
                 Section(header: Text("Staff Details")){
-                    TextField("Staff Number*", text: $field3)
+                    TextField("Staff Number*", text: $field4)
                 }
                 Section(header: Text("Description")) {
                     HStack {
@@ -39,13 +45,13 @@ struct RequestView: View {
                             .font(.caption)
                             .foregroundColor(.gray)
                         // Character count
-                        Text("[\(field4.count)]")
+                        Text("[\(field5.count)]")
                             .font(.caption)
                             .foregroundColor(.gray)
                             .padding(.leading, 30)
                     }
                     // Use TextEditor for multi-line input
-                    TextEditor(text: $field4)
+                    TextEditor(text: $field5)
                         .frame(height: CGFloat(30 * 5)) // Set the initial height based on the number of lines
                         .lineSpacing(5) // Optional: Add line spacing
                 }
@@ -53,8 +59,13 @@ struct RequestView: View {
             .listStyle(GroupedListStyle())
             
             Button{
-                // Send off request to firebase
-                // Navigate user back to landing page (navigationView)
+                Task {
+                    // add bool to show request hasnt been accepted (default)
+                    let requestModel = RequestModel(field1: field1, field2: field2, field3: field3, field4: field4, field5: field5)
+                    RequestModelUploader.uploadToFirebase(requestModel: requestModel)
+                    
+                }
+                // Move user out of requests page
                
             }label: {
                 HStack{

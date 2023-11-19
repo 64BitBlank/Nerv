@@ -25,6 +25,7 @@ struct NavigationsView: View {
                             .font(.title)
                             .fontWeight(.bold)
                             .padding(.top, 20)
+                            .foregroundColor(.gray)
                     }
                     .padding()
                     

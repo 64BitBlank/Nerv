@@ -8,9 +8,19 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @AppStorage("isDarkMode") private var isDarkMode = false
+
     var body: some View {
-        Text("Hello, World!")
-        Text ("This is a settings page!")
+        Form {
+            Section(header: Text("Appearance")) {
+                Toggle("Dark Mode", isOn: $isDarkMode)
+                    .onChange(of: isDarkMode) { _ in
+                        // Toggle between light and dark mode when the switch changes
+                        UIApplication.shared.windows.first?.rootViewController?.overrideUserInterfaceStyle = isDarkMode ? .dark : .light
+                    }
+            }
+        }
+        .navigationTitle("Settings")
     }
 }
 

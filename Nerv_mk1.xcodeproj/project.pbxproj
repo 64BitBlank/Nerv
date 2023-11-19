@@ -53,6 +53,7 @@
 		02ED58842AFFD9DB00F215CA /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED58832AFFD9DB00F215CA /* Notifications.swift */; };
 		02ED588C2AFFEA4E00F215CA /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED588B2AFFEA4E00F215CA /* Requests.swift */; };
 		02ED588E2B00047800F215CA /* RequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED588D2B00047800F215CA /* RequestView.swift */; };
+		02ED58902B038D1B00F215CA /* RequestAuthModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED588F2B038D1B00F215CA /* RequestAuthModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,6 +77,7 @@
 		02ED58832AFFD9DB00F215CA /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		02ED588B2AFFEA4E00F215CA /* Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requests.swift; sourceTree = "<group>"; };
 		02ED588D2B00047800F215CA /* RequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestView.swift; sourceTree = "<group>"; };
+		02ED588F2B038D1B00F215CA /* RequestAuthModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAuthModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -234,6 +236,7 @@
 			isa = PBXGroup;
 			children = (
 				02ED58742AF2E87300F215CA /* AuthViewModel.swift */,
+				02ED588F2B038D1B00F215CA /* RequestAuthModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -350,6 +353,7 @@
 				02CD095A2AF16E9300866B06 /* ContentView.swift in Sources */,
 				02ED587C2AFAD3B500F215CA /* SideMenuView.swift in Sources */,
 				02CD09582AF16E9300866B06 /* Nerv_mk1App.swift in Sources */,
+				02ED58902B038D1B00F215CA /* RequestAuthModel.swift in Sources */,
 				02ED58382AF2DB8800F215CA /* User.swift in Sources */,
 				02ED58332AF2D02F00F215CA /* ProfileView.swift in Sources */,
 				02ED58822AFFCAC800F215CA /* NotificationView.swift in Sources */,
