@@ -12,6 +12,7 @@ import Firebase
 struct Nerv_mk1App: App {
     // make viewmodel accessable for every file instead of making stateObjects in every file
     @StateObject var viewModel = AuthViewModel()
+    @StateObject var requestAuthModel = RequestAuthModel()
     init() {
         FirebaseApp.configure()
     }
@@ -19,6 +20,7 @@ struct Nerv_mk1App: App {
         WindowGroup {
             ContentView()
                 .environmentObject(viewModel)
+                .environmentObject(requestAuthModel)
             
         }
     }

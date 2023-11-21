@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct NotificationItem: Identifiable {
     let id = UUID()
@@ -14,15 +15,13 @@ struct NotificationItem: Identifiable {
 }
 
 struct NotificationView: View {
-    @State private var notifications: 
-    
+    @State private var notifications:
     // Tester notificatons
     [NotificationItem] = [
         NotificationItem(title: "New Message", message: "You have a new message."),
         NotificationItem(title: "Reminder", message: "Don't forget to complete your tasks."),
         // Add more notifications as needed
     ]
-
     var body: some View {
         NavigationView {
             List(notifications) { notification in

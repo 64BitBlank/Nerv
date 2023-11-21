@@ -7,42 +7,27 @@
 
 import Foundation
 import Firebase
+import FirebaseFirestoreSwift
 
-struct RequestModelUploader {
+@MainActor
+class RequestAuthModel: ObservableObject {
 
-    static func uploadToFirebase(requestModel: RequestModel) {
-        let db = Firestore.firestore()
-
+    func uploadToFirebase(field1: String, field2: String, field3: String, field4: String, field5: String, number: Int, field6: String) async throws {
         do {
-            let jsonData = try JSONEncoder().encode(requestModel)
-            let json = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] ?? [:]
-
+            let json: [String: Any] = [
+                "field1": field1,
+                "field2": field2,
+                "field3": field3,
+                "field4": field4,
+                "field5": field5,
+                "number": number,
+                "field6": field6
+            ]
             // Assuming you have a collection named "requests" in Firestore
-            db.collection("requests").addDocument(data: json) { error in
-                if let error = error {
-                    print("Error adding document to Firestore: \(error.localizedDescription)")
-                } else {
-                    print("Document added to Firestore successfully")
-                }
-            }
+            try await Firestore.firestore().collection("requests").addDocument(data: json)
         } catch {
             print("Error encoding data: \(error.localizedDescription)")
         }
     }
-    
-    static func getRequestsFirebase(completion: @escaping ([RequestModel]?) -> Void) {
-        
-    }
 }
 
-
-
-struct RequestModel: Codable {
-    var field1: String
-    var field2: String
-    var field3: String
-    var field4: String
-    var field5: String
-    var number: Int
-    var field6: String
-}

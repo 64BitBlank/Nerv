@@ -24,6 +24,7 @@ struct RequestView: View {
     @State private var staffNumber: String = ""
 
     @EnvironmentObject var viewModel2: AuthViewModel
+    @EnvironmentObject var requestAuthModel: RequestAuthModel
     
     var isButtonEnabled: Bool {
         return !field1.isEmpty && !field2.isEmpty && !field3.isEmpty
@@ -85,10 +86,19 @@ struct RequestView: View {
                 
                 Button{
                     Task {
-                        // add bool to show request hasnt been accepted (default)
-                        let requestModel = RequestModel(field1: field1, field2: field2, field3: field3, field4: field4, field5: field5, number: number, field6: field6)
-                        RequestModelUploader.uploadToFirebase(requestModel: requestModel)
-                        
+                        do {
+                            try await requestAuthModel.uploadToFirebase(
+                                field1: field1,
+                                field2: field2,
+                                field3: field3,
+                                field4: field4,
+                                field5: field5,
+                                number: number,
+                                field6: field6
+                            )
+                        } catch {
+                            print("Error uploading to Firebase: \(error.localizedDescription)")
+                        }
                     }
                     // Move user out of requests page
                     
