@@ -22,6 +22,7 @@ struct NotificationView: View {
         NotificationItem(title: "Reminder", message: "Don't forget to complete your tasks."),
         // Add more notifications as needed
     ]
+    
     var body: some View {
         NavigationView {
             List(notifications) { notification in

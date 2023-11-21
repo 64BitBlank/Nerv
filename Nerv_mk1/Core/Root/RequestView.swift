@@ -37,7 +37,7 @@ struct RequestView: View {
                 
                 SearchBar(text: $searchText)
                 Form {
-                    Section(header: Text("Staff Details")){
+                    Section(header: Text("Staff ID")){
                         // Replace with automation of user pulled information
                         TextField("Staff Number*", text: $staffNumber)
                     }
@@ -53,7 +53,7 @@ struct RequestView: View {
                     }
                     Section(header: Text("Urgency")){
                         HStack {
-                            Picker("Rating*", selection: $number) {
+                            Picker("Rating [1-9]*", selection: $number) {
                                 ForEach(1...9, id: \.self) { number in
                                     Text("\(number)")
                                 }
@@ -91,7 +91,7 @@ struct RequestView: View {
                                 field1: field1,
                                 field2: field2,
                                 field3: field3,
-                                field4: field4,
+                                field4: staffNumber,
                                 field5: field5,
                                 number: number,
                                 field6: field6
