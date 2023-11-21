@@ -18,7 +18,12 @@ struct RequestView: View {
     @State private var field3: String = ""
     @State private var field4: String = ""
     @State private var field5: String = ""
+    @State private var field6: String = ""
     
+    @State private var number: Int = 1
+    @State private var staffNumber: String = ""
+
+    @EnvironmentObject var viewModel2: AuthViewModel
     
     var isButtonEnabled: Bool {
         return !field1.isEmpty && !field2.isEmpty && !field3.isEmpty
@@ -26,64 +31,84 @@ struct RequestView: View {
    
 
     var body: some View {
-        VStack {
-            
-            SearchBar(text: $searchText)
-            Form {
-                Section(header: Text("Patient Details")) {
-                    TextField("Fore Name*", text: $field1)
-                    TextField("Family Name*", text: $field2)
-                    TextField("Alternate Name", text: $field3)
-                    // Add more TextField for additional fields as needed
-                }
-                Section(header: Text("Staff Details")){
-                    TextField("Staff Number*", text: $field4)
-                }
-                Section(header: Text("Description")) {
-                    HStack {
-                        Text("Brief summary of condition*")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                        // Character count
-                        Text("[\(field5.count)]")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                            .padding(.leading, 30)
+        if let user = viewModel2.currentUser {
+            VStack {
+                
+                SearchBar(text: $searchText)
+                Form {
+                    Section(header: Text("Staff Details")){
+                        // Replace with automation of user pulled information
+                        TextField("Staff Number*", text: $staffNumber)
                     }
-                    // Use TextEditor for multi-line input
-                    TextEditor(text: $field5)
-                        .frame(height: CGFloat(30 * 5)) // Set the initial height based on the number of lines
-                        .lineSpacing(5) // Optional: Add line spacing
+                    .onAppear {
+                        // Assign the value to staffNumber when the view appears
+                        staffNumber = user.id
+                    }
+                    Section(header: Text("Patient Details")) {
+                        TextField("Fore Name*", text: $field1)
+                        TextField("Family Name*", text: $field2)
+                        TextField("Alternate Name", text: $field3)
+                        // Add more TextField for additional fields as needed
+                    }
+                    Section(header: Text("Urgency")){
+                        HStack {
+                            Picker("Rating*", selection: $number) {
+                                ForEach(1...9, id: \.self) { number in
+                                    Text("\(number)")
+                                }
+                            }
+                        }
+                    }
+                    Section(header: Text("Description")) {
+                        HStack {
+                            Text("Brief summary of condition*")
+                                .font(.caption)
+                                .foregroundColor(.gray)
+                            // Character count
+                            Text("[\(field5.count)]")
+                                .font(.caption)
+                                .foregroundColor(.gray)
+                                .padding(.leading, 30)
+                        }
+                        // Use TextEditor for multi-line input
+                        TextEditor(text: $field5)
+                            .frame(height: CGFloat(30 * 4)) // Set the initial height based on the number of lines
+                            .lineSpacing(5) // Optional: Add line spacing
+                    }
+                    Section(header: Text("Additional Requests")){
+                        HStack{
+                            TextField("Additionals", text: $field6)
+                        }
+                    }
                 }
-            }
-            .listStyle(GroupedListStyle())
-            
-            Button{
-                Task {
-                    // add bool to show request hasnt been accepted (default)
-                    let requestModel = RequestModel(field1: field1, field2: field2, field3: field3, field4: field4, field5: field5)
-                    RequestModelUploader.uploadToFirebase(requestModel: requestModel)
+                .listStyle(GroupedListStyle())
+                
+                Button{
+                    Task {
+                        // add bool to show request hasnt been accepted (default)
+                        let requestModel = RequestModel(field1: field1, field2: field2, field3: field3, field4: field4, field5: field5, number: number, field6: field6)
+                        RequestModelUploader.uploadToFirebase(requestModel: requestModel)
+                        
+                    }
+                    // Move user out of requests page
                     
+                }label: {
+                    HStack{
+                        Text("Send Request")
+                            .fontWeight(.semibold)
+                        Image(systemName: "arrow.right")
+                    }
+                    .foregroundColor(.white)
+                    .frame(width: UIScreen.main.bounds.width - 62, height: 48)
                 }
-                // Move user out of requests page
-               
-            }label: {
-                HStack{
-                    Text("Send Request")
-                        .fontWeight(.semibold)
-                    Image(systemName: "arrow.right")
-                }
-                .foregroundColor(.white)
-                .frame(width: UIScreen.main.bounds.width - 62, height: 48)
+                .background(Color(.systemBlue))
+                .cornerRadius(10.0)
+                .padding()
+                .disabled(!isButtonEnabled) // Disable the button if any field is empty
+                .opacity(isButtonEnabled ? 1.0 : 0.5)
+                .cornerRadius(10.0)
             }
-            .background(Color(.systemBlue))
-            .cornerRadius(10.0)
-            .padding()
-            .disabled(!isButtonEnabled) // Disable the button if any field is empty
-            .opacity(isButtonEnabled ? 1.0 : 0.5)
-            .cornerRadius(10.0)
         }
-
 //        .navigationTitle("Request Page")
     }
 }

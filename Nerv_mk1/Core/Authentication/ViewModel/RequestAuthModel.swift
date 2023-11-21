@@ -29,7 +29,13 @@ struct RequestModelUploader {
             print("Error encoding data: \(error.localizedDescription)")
         }
     }
+    
+    static func getRequestsFirebase(completion: @escaping ([RequestModel]?) -> Void) {
+        
+    }
 }
+
+
 
 struct RequestModel: Codable {
     var field1: String
@@ -37,4 +43,6 @@ struct RequestModel: Codable {
     var field3: String
     var field4: String
     var field5: String
+    var number: Int
+    var field6: String
 }
