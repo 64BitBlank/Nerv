@@ -7,30 +7,50 @@
 
 import SwiftUI
 
-struct RequestView2: View {
-    @StateObject private var viewModel = RequestAuthModel()
+struct NotificationItem: Identifiable {
+    let id = UUID()
+    let title: String
+    let message: String
+}
 
+struct RequestView2: View {
+    @State private var notifications:
+
+    // Tester notificatons
+    [NotificationItem] = [
+        NotificationItem(title: "New Message", message: "You have a new message."),
+        NotificationItem(title: "Reminder", message: "Don't forget to complete your tasks."),
+        // Add more notifications as needed
+    ]
+    
     var body: some View {
-        VStack {
-            Button("Fetch Requests") {
-                Task {
-                    await viewModel.fetchRequests()
+        NavigationView {
+            List(notifications) { notification in
+                NavigationLink(destination: Text(notification.message)) {
+                    VStack(alignment: .leading) {
+                        Text(notification.title)
+                            .font(.headline)
+                        Text(notification.message)
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
                 }
             }
-            
-            // Display or process the fetched requests here
-            if !viewModel.requests.isEmpty {
-                // Display or process the fetched requests
-                List(viewModel.requests, id: \.documentID) { document in
-                    // Convert the data dictionary to a string representation
-                    let dataString = String(describing: document.data())
-                    Text("\(document.documentID): \(dataString)")
+            .navigationTitle("Notifications")
+            .navigationBarItems(trailing:
+                Button(action: {
+                    // Implement clear all notifications logic
+                    notifications.removeAll()
+                }) {
+                    Text("Clear All")
+                        .foregroundColor(.red)
                 }
-            }
+            )
         }
-        .padding()
     }
 }
+
+
 
 #Preview {
     RequestView2()

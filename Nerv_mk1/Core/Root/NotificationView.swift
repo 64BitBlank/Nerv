@@ -8,49 +8,43 @@
 import SwiftUI
 import Firebase
 
-struct NotificationItem: Identifiable {
-    let id = UUID()
-    let title: String
-    let message: String
-}
-
 struct NotificationView: View {
-    @State private var notifications:
-
-    // Tester notificatons
-    [NotificationItem] = [
-        NotificationItem(title: "New Message", message: "You have a new message."),
-        NotificationItem(title: "Reminder", message: "Don't forget to complete your tasks."),
-        // Add more notifications as needed
-    ]
     
+    @StateObject private var viewModel = RequestAuthModel()
+
     var body: some View {
         NavigationView {
-            List(notifications) { notification in
-                NavigationLink(destination: Text(notification.message)) {
-                    VStack(alignment: .leading) {
-                        Text(notification.title)
-                            .font(.headline)
-                        Text(notification.message)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
+            List(viewModel.requests, id: \.documentID) { document in
+                if let data = document.data(), let forename = data["Forename"] as? String {
+                    NavigationLink(destination: Text("Details for \(forename)")) {
+                        VStack(alignment: .leading) {
+                            Text("Request ID: \(document.documentID)")
+                                .font(.headline)
+                            Text("Forename: \(forename)")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                        }
                     }
+                } else {
+                    Text("Document \(document.documentID) does not have a forename.")
                 }
             }
-            .navigationTitle("Notifications")
+            .navigationTitle("Requests")
             .navigationBarItems(trailing:
                 Button(action: {
-                    // Implement clear all notifications logic
-                    notifications.removeAll()
+                    // Implement your action here, e.g., refresh the list
+                    Task {
+                        await viewModel.fetchRequests()
+                    }
                 }) {
-                    Text("Clear All")
-                        .foregroundColor(.red)
+                    Text("Refresh")
+                        .foregroundColor(.blue)
                 }
             )
         }
     }
 }
-
+   
 
 #Preview {
     NotificationView()

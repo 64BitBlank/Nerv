@@ -7,13 +7,14 @@
 
 import Foundation
 
-struct NotificationsModel: Identifiable, Hashable {
-    var id = UUID()
+struct NotificationsModel: Hashable {
+    
+    var additional: String
     var forename: String
     var lastname: String
-    var altName: String
     var staffNumber: String
     var summary: String
+    var altName: String
     var number: Int
-    var additional: String
+
 }
