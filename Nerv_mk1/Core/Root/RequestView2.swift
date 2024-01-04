@@ -7,50 +7,26 @@
 
 import SwiftUI
 
-struct NotificationItem: Identifiable {
-    let id = UUID()
-    let title: String
-    let message: String
-}
-
 struct RequestView2: View {
-    @State private var notifications:
-
-    // Tester notificatons
-    [NotificationItem] = [
-        NotificationItem(title: "New Message", message: "You have a new message."),
-        NotificationItem(title: "Reminder", message: "Don't forget to complete your tasks."),
-        // Add more notifications as needed
-    ]
-    
-    var body: some View {
-        NavigationView {
-            List(notifications) { notification in
-                NavigationLink(destination: Text(notification.message)) {
-                    VStack(alignment: .leading) {
-                        Text(notification.title)
-                            .font(.headline)
-                        Text(notification.message)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                    }
+    @ObservedObject private var viewModel = RequestAuthModel()
+        var body: some View {
+            NavigationView {
+              List(viewModel.notifications) { notification in // (2)
+                VStack(alignment: .leading) {
+                  Text(notification.Forename)
+                    .font(.headline)
+                  Text(notification.Lastname)
+                    .font(.subheadline)
                 }
+              }
+              .navigationBarTitle("Test")
+              .onAppear() { // (3)
+                self.viewModel.fetchNotifications()
+                  self.viewModel.printNotifications()
+              }
             }
-            .navigationTitle("Notifications")
-            .navigationBarItems(trailing:
-                Button(action: {
-                    // Implement clear all notifications logic
-                    notifications.removeAll()
-                }) {
-                    Text("Clear All")
-                        .foregroundColor(.red)
-                }
-            )
+          }
         }
-    }
-}
-
-
 
 #Preview {
     RequestView2()

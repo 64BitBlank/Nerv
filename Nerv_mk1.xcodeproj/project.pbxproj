@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		021895742B4589BA00A186C2 /* PatientDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021895732B4589BA00A186C2 /* PatientDetailsView.swift */; };
 		02CD09582AF16E9300866B06 /* Nerv_mk1App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CD09572AF16E9300866B06 /* Nerv_mk1App.swift */; };
 		02CD095A2AF16E9300866B06 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CD09592AF16E9300866B06 /* ContentView.swift */; };
 		02CD095C2AF16E9500866B06 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02CD095B2AF16E9500866B06 /* Assets.xcassets */; };
@@ -58,6 +59,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		021895732B4589BA00A186C2 /* PatientDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientDetailsView.swift; sourceTree = "<group>"; };
 		02CD09542AF16E9300866B06 /* Nerv_mk1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nerv_mk1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02CD09572AF16E9300866B06 /* Nerv_mk1App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nerv_mk1App.swift; sourceTree = "<group>"; };
 		02CD09592AF16E9300866B06 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -205,6 +207,7 @@
 				02ED58812AFFCAC800F215CA /* NotificationView.swift */,
 				02ED58992B0D477800F215CA /* RequestView2.swift */,
 				02ED588D2B00047800F215CA /* RequestView.swift */,
+				021895732B4589BA00A186C2 /* PatientDetailsView.swift */,
 			);
 			path = Root;
 			sourceTree = "<group>";
@@ -351,6 +354,7 @@
 				02ED582F2AF2ABF700F215CA /* InputView.swift in Sources */,
 				02ED587A2AFAC30C00F215CA /* NavigationsView.swift in Sources */,
 				02ED589A2B0D477800F215CA /* RequestView2.swift in Sources */,
+				021895742B4589BA00A186C2 /* PatientDetailsView.swift in Sources */,
 				02ED588E2B00047800F215CA /* RequestView.swift in Sources */,
 				02ED588C2AFFEA4E00F215CA /* Requests.swift in Sources */,
 				02CD095A2AF16E9300866B06 /* ContentView.swift in Sources */,

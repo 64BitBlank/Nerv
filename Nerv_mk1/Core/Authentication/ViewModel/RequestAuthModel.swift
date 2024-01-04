@@ -44,7 +44,24 @@ class RequestAuthModel: ObservableObject {
         }
     }
     
+    // Function to add a reference to the user
+    func addUserReference(documentID: String, userID: String) {
+        // Reference to Firebase where you want to add the user reference
+            let userRef = Firestore.firestore().collection("user").document(userID) // userID should be the ID of the current user
+
+            // Set the patient reference, replacing any existing reference
+            userRef.updateData(["patientRef": documentID]) { error in
+                if let error = error {
+                    // Handle any errors
+                    print("Error updating document: \(error)")
+                } else {
+                    // Successfully updated document
+                    print("Document successfully updated with new patient reference")
+                }
+            }
+    }
     
+    // Testing functions - WIP (Doesn't work)
     func fetchNotifications() {
         db.collection("requests").addSnapshotListener { (querySnapshot, error) in
           guard let documents = querySnapshot?.documents else {
