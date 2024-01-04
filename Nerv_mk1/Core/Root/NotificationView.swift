@@ -16,7 +16,7 @@ struct NotificationView: View {
         NavigationView {
             List(viewModel.requests, id: \.documentID) { document in
                 if let data = document.data(), let forename = data["Forename"] as? String {
-                    NavigationLink(destination: Text("Details for \(forename)")) {
+                    NavigationLink(destination: PatientDetailsView(patientData: data)) {
                         VStack(alignment: .leading) {
                             Text("Request ID: \(document.documentID)")
                                 .font(.headline)
@@ -32,7 +32,6 @@ struct NotificationView: View {
             .navigationTitle("Requests")
             .navigationBarItems(trailing:
                 Button(action: {
-                    // Implement your action here, e.g., refresh the list
                     Task {
                         await viewModel.fetchRequests()
                     }
