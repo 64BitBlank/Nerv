@@ -25,7 +25,8 @@ class RequestAuthModel: ObservableObject {
                 "StaffNumber": field4,
                 "Summary": field5,
                 "number": number,
-                "Additional": field6
+                "Additional": field6,
+                "isActive": false
             ]
             // Assuming you have a collection named "requests" in Firestore
             try await db.collection("requests").addDocument(data: json)
@@ -34,10 +35,15 @@ class RequestAuthModel: ObservableObject {
         }
     }
     
-    
+    // Function to fetch all notifications in requests collection
+    // Adapt to only seclect requests not assigned
     func fetchRequests() async {
         do {
-            let querySnapshot = try await db.collection("requests").getDocuments()
+            // Fetch requests where 'isActive' is not true (or is absent)
+            let querySnapshot = try await db.collection("requests")
+                .whereField("isActive", isNotEqualTo: true)
+                .getDocuments()
+            // Map the documents to your data model
             self.requests = querySnapshot.documents.map { $0 }
         } catch {
             print("Error fetching documents: \(error.localizedDescription)")
@@ -46,19 +52,29 @@ class RequestAuthModel: ObservableObject {
     
     // Function to add a reference to the user
     func addUserReference(documentID: String, userID: String) {
-        // Reference to Firebase where you want to add the user reference
-            let userRef = Firestore.firestore().collection("user").document(userID) // userID should be the ID of the current user
-
-            // Set the patient reference, replacing any existing reference
-            userRef.updateData(["patientRef": documentID]) { error in
-                if let error = error {
-                    // Handle any errors
-                    print("Error updating document: \(error)")
-                } else {
-                    // Successfully updated document
-                    print("Document successfully updated with new patient reference")
-                }
+        let db = Firestore.firestore()
+        
+        // Start a batch
+        let batch = db.batch()
+        // Reference to the user's document where you want to add the patient reference
+        let userRef = db.collection("user").document(userID)
+        // Reference to the patient's document that you want to mark as active
+        let patientRef = db.collection("requests").document(documentID)
+        // Update the user's document with the new patient reference
+        batch.updateData(["patientRef": documentID], forDocument: userRef)
+        // Mark the patient as active
+        batch.updateData(["isActive": true], forDocument: patientRef)
+        
+        // Commit the batch
+        batch.commit { error in
+            if let error = error {
+                // Handle any errors
+                print("Error writing batch: \(error)")
+            } else {
+                // Batch commit was successful
+                print("Batch write succeeded, user and patient updated")
             }
+        }
     }
     
     // Testing functions - WIP (Doesn't work)
@@ -83,7 +99,7 @@ class RequestAuthModel: ObservableObject {
           }
         }
       }
-
+    // Testing functions - WIP (Doesn't work)
     func printNotifications() {
         for notification in notifications {
             print("ID: \(notification.id), Forename: \(notification.Forename), Lastname: \(notification.Lastname), Additional: \(notification.Additional), StaffNumber: \(notification.StaffNumber), Summary: \(notification.Summary), Alt Name: \(notification.altName), Number: \(notification.number)")
