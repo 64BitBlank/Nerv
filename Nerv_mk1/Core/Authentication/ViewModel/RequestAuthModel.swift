@@ -77,6 +77,24 @@ class RequestAuthModel: ObservableObject {
         }
     }
     
+    // need to test
+    func fetchPatientDetails(patientID: String, completion: @escaping ([String: Any]?) -> Void) {
+        let db = Firestore.firestore()
+        let patientRef = db.collection("requests").document(patientID)
+
+        patientRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                let patientData = document.data()
+                completion(patientData)
+            } else {
+                print("Patient document does not exist")
+                completion(nil)
+            }
+        }
+    }
+
+    
+    
     // Testing functions - WIP (Doesn't work)
     func fetchNotifications() {
         db.collection("requests").addSnapshotListener { (querySnapshot, error) in

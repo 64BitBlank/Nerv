@@ -13,67 +13,77 @@ import SwiftUI
 
 struct NavigationsView: View {
     @State private var showMenu: Bool = false
+    @EnvironmentObject var viewModel: AuthViewModel
+    @StateObject private var viewModel_request = RequestAuthModel()
     
     var body: some View {
         NavigationView {
             ZStack {
                 // Main body for active tasks
-                VStack {
-                    // Top of page
-                    HStack {
-                        Text("Landing Page")
-                            .font(.title)
-                            .fontWeight(.bold)
-                            .padding(.top, 20)
-                            .foregroundColor(.gray)
-                    }
-                    .padding()
-                    
-                    Divider()
-                        .padding(.horizontal, 50)
-                    
-                    Text("[Filler data here]")
-                        .foregroundColor(.gray)
+                if let patientRef = viewModel.patientRef {
+                    VStack {
+                        // Top of page
+                        HStack {
+                            Text("Landing Page")
+                                .font(.title)
+                                .fontWeight(.bold)
+                                .padding(.top, 20)
+                                .foregroundColor(.gray)
+                        }
                         .padding()
-                    
-                    Spacer()
-                    
-                    // Middle of page
-                    HStack {
-                        Text("Middle")
-                            .font(.title2)
-                            .fontWeight(.semibold)
-                            .padding()
-                    }
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(Color(.systemGray3))
-                            .padding(.horizontal, -50) // Adjust horizontal padding
-                    )
-                    .padding()
-                    
-                    Spacer()
-                    Spacer()
-                    
-                    // Bottom of page
-                    Divider()
-                        .padding(.horizontal, 50)
-                    
-                    HStack {
+                        
+                        Divider()
+                            .padding(.horizontal, 50)
+                        if (patientRef.isEmpty){
+                            Text("No Active Cases")
+                        }else{
+                            Text(patientRef + " - Active")
+                                .foregroundColor(.gray)
+                                .padding()
+                        }
+                        
                         Spacer()
-                        Text("Bottom")
-                            .font(.title3)
-                            .fontWeight(.medium)
+                        
+                        // Middle of page
+                        HStack{
+                            
+                            Text("Test")
+                        }
+                        HStack {
+                            Text("Middle")
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                                .padding()
+                        }
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(Color(.systemGray3))
+                                .padding(.horizontal, -50) // Adjust horizontal padding
+                        )
+                        .padding()
+                        
                         Spacer()
+                        Spacer()
+                        
+                        // Bottom of page
+                        Divider()
+                            .padding(.horizontal, 50)
+                        
+                        HStack {
+                            Spacer()
+                            Text("Bottom")
+                                .font(.title3)
+                                .fontWeight(.medium)
+                            Spacer()
+                        }
+                        .padding()
                     }
-                    .padding()
+                    
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .blur(radius: showMenu ? 2 : 0) // Apply blur effect when showMenu is true
+                    .frame(maxWidth: .infinity)
+                    .background(Color(.white)) // Background color for the content
                 }
-                
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .blur(radius: showMenu ? 2 : 0) // Apply blur effect when showMenu is true
-                .frame(maxWidth: .infinity)
-                .background(Color(.white)) // Background color for the content
-                
                 GeometryReader { geometry in
                     HStack {
                         SideMenuView()
@@ -111,6 +121,9 @@ struct NavigationsView: View {
                         .padding()
                     }
                 }
+            }
+            .onAppear {
+                viewModel.fetchPatientRef()
             }
         }
     }

@@ -13,6 +13,7 @@ struct User: Identifiable, Codable {
     let id: String
     let fullname: String
     let email: String
+    let patientRef: String
     
     // Get initials
     var initials: String {
