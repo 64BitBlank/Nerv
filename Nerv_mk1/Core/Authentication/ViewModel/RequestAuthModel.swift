@@ -17,7 +17,7 @@ class RequestAuthModel: ObservableObject {
     
     private var db = Firestore.firestore()
     
-    func uploadToFirebase(field1: String, field2: String, field3: String, field4: String, field5: String, number: Int, field6: String) async throws {
+    func uploadToFirebase(field1: String, field2: String, field3: String, field4: String, field5: String, number: Int, field6: String, dateOfBirth: Date, sex: String, contactNumber: String, wardDesignation: String, medicalHistory: String, currentPrescriptions: String) async throws {
         do {
             let json: [String: Any] = [
                 "Forename": field1,
@@ -27,6 +27,12 @@ class RequestAuthModel: ObservableObject {
                 "Summary": field5,
                 "number": number,
                 "Additional": field6,
+                "dob": dateOfBirth,
+                "Sex": sex,
+                "PersonalContact": contactNumber,
+                "Ward": wardDesignation,
+                "MedicalHistory": medicalHistory,
+                "CurrentPerscription": currentPrescriptions,
                 "isActive": false
             ]
             // Assuming you have a collection named "requests" in Firestore
@@ -78,7 +84,7 @@ class RequestAuthModel: ObservableObject {
         }
     }
     
-    // need to test
+    // fetches patient info via patientId from user collection
     func fetchPatientDetails(patientID: String) {
         let db = Firestore.firestore()
         let patientRef = db.collection("requests").document(patientID)

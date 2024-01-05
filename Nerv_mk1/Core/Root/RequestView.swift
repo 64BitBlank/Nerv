@@ -20,6 +20,15 @@ struct RequestView: View {
     @State private var field5: String = ""
     @State private var field6: String = ""
     
+    @State private var dateOfBirth: Date = Date()
+    @State private var sex: String = ""
+    @State private var contactNumber: String = ""
+    @State private var wardDesignation: String = ""
+    @State private var medicalHistory: String = ""
+    @State private var currentPrescriptions: String = ""
+    @State private var selectedSex: Sex = .male
+    @State private var selectedWard: String = ""
+    
     @State private var number: Int = 1
     @State private var staffNumber: String = ""
 
@@ -29,7 +38,14 @@ struct RequestView: View {
     var isButtonEnabled: Bool {
         return !field1.isEmpty && !field2.isEmpty && !field3.isEmpty
     }
-   
+    
+    enum Sex: String, CaseIterable, Identifiable {
+        case male = "Male"
+        case female = "Female"
+        var id: String { self.rawValue }
+    }
+
+    let wardDesignations = ["Cardiology", "Oncology", "Pediatrics", "Neurology", "Emergency", "Orthopedics", "Maternity"]
 
     var body: some View {
         if let user = viewModel2.currentUser {
@@ -49,8 +65,15 @@ struct RequestView: View {
                         TextField("Fore Name*", text: $field1)
                         TextField("Family Name*", text: $field2)
                         TextField("Alternate Name", text: $field3)
-                        // Add more TextField for additional fields as needed
+                        DatePicker("Date of Birth", selection: $dateOfBirth, displayedComponents: .date)
+                        Picker("Sex", selection: $selectedSex) {
+                            ForEach(Sex.allCases) { sex in
+                                Text(sex.rawValue).tag(sex)
+                            }
+                        }
+                        TextField("Contact Number", text: $contactNumber)
                     }
+                    
                     Section(header: Text("Urgency")){
                         HStack {
                             Picker("Rating [1-9]*", selection: $number) {
@@ -60,6 +83,23 @@ struct RequestView: View {
                             }
                         }
                     }
+                    
+                    Section(header: Text("Ward")) {
+                        Picker("Ward Designation", selection: $selectedWard) {
+                            ForEach(wardDesignations, id: \.self) { ward in
+                                Text(ward).tag(ward)
+                            }
+                        }
+                    }
+                    Section(header: Text("Medical History Notes")){
+                        TextEditor(text: $medicalHistory)
+                            .frame(minHeight: 100) 
+                    }
+                    Section(header: Text("Current Perscription")){
+                        TextEditor(text: $currentPrescriptions)
+                            .frame(minHeight: 75)
+                    }
+                    
                     Section(header: Text("Description")) {
                         HStack {
                             Text("Brief summary of condition*")
@@ -82,6 +122,7 @@ struct RequestView: View {
                         }
                     }
                 }
+            }
                 .listStyle(GroupedListStyle())
                 
                 Button{
@@ -94,7 +135,13 @@ struct RequestView: View {
                                 field4: staffNumber,
                                 field5: field5,
                                 number: number,
-                                field6: field6
+                                field6: field6,
+                                dateOfBirth: dateOfBirth,
+                                sex: selectedSex.rawValue,
+                                contactNumber: contactNumber,
+                                wardDesignation: selectedWard,
+                                medicalHistory: medicalHistory,
+                                currentPrescriptions: currentPrescriptions
                             )
                         } catch {
                             print("Error uploading to Firebase: \(error.localizedDescription)")
@@ -121,7 +168,7 @@ struct RequestView: View {
         }
 //        .navigationTitle("Request Page")
     }
-}
+
 
 struct SearchBar: View {
     @Binding var text: String
