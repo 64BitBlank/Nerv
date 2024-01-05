@@ -13,6 +13,7 @@ import FirebaseFirestoreSwift
 class RequestAuthModel: ObservableObject {
     @Published var requests: [DocumentSnapshot] = []
     @Published var notifications = [NotificationsModel]()
+    @Published var patientData: [String: Any]?
     
     private var db = Firestore.firestore()
     
@@ -78,21 +79,20 @@ class RequestAuthModel: ObservableObject {
     }
     
     // need to test
-    func fetchPatientDetails(patientID: String, completion: @escaping ([String: Any]?) -> Void) {
+    func fetchPatientDetails(patientID: String) {
         let db = Firestore.firestore()
         let patientRef = db.collection("requests").document(patientID)
 
         patientRef.getDocument { (document, error) in
             if let document = document, document.exists {
-                let patientData = document.data()
-                completion(patientData)
+                DispatchQueue.main.async {
+                    self.patientData = document.data()
+                }
             } else {
                 print("Patient document does not exist")
-                completion(nil)
             }
         }
     }
-
     
     
     // Testing functions - WIP (Doesn't work)

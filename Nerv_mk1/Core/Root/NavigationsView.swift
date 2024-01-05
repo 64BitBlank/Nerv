@@ -24,7 +24,7 @@ struct NavigationsView: View {
                     VStack {
                         // Top of page
                         HStack {
-                            Text("Landing Page")
+                            Text("Home Page")
                                 .font(.title)
                                 .fontWeight(.bold)
                                 .padding(.top, 20)
@@ -45,25 +45,29 @@ struct NavigationsView: View {
                         Spacer()
                         
                         // Middle of page
-                        HStack{
-                            
-                            Text("Test")
+                        if let patientData = viewModel_request.patientData {
+                            HStack {
+                                Text("Patient Name: \(patientData["Forename"] as? String ?? "N/A")")
+                                // Add other patient details
+                            }
+
+                            HStack {
+                                Text("Patient Details: \(patientData["Lastname"] as? String ?? "N/A")")
+                                // Add more information
+                            }
+                        } else {
+                            Text("Loading patient data...")
                         }
+                        
                         HStack {
-                            Text("Middle")
-                                .font(.title2)
-                                .fontWeight(.semibold)
-                                .padding()
+                            Text("")
                         }
-                        .background(
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(Color(.systemGray3))
-                                .padding(.horizontal, -50) // Adjust horizontal padding
-                        )
+                        
                         .padding()
                         
                         Spacer()
                         Spacer()
+                        
                         
                         // Bottom of page
                         Divider()
@@ -78,11 +82,23 @@ struct NavigationsView: View {
                         }
                         .padding()
                     }
-                    
+                    .onAppear {
+                        // Fetch patient data when the patientRef is available
+                        if !patientRef.isEmpty {
+                            viewModel_request.fetchPatientDetails(patientID: patientRef)
+                        }
+                    }
+                    // updates the patient data inline with the new patientRef
+                    .onChange(of: patientRef) { newPatientRef in
+                        if !newPatientRef.isEmpty {
+                            viewModel_request.fetchPatientDetails(patientID: newPatientRef)
+                        }
+                    }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .blur(radius: showMenu ? 2 : 0) // Apply blur effect when showMenu is true
                     .frame(maxWidth: .infinity)
                     .background(Color(.white)) // Background color for the content
+                    
                 }
                 GeometryReader { geometry in
                     HStack {
@@ -124,6 +140,7 @@ struct NavigationsView: View {
             }
             .onAppear {
                 viewModel.fetchPatientRef()
+
             }
         }
     }
