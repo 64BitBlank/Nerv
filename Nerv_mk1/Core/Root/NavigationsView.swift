@@ -176,6 +176,11 @@ struct NavigationsView: View {
                         HStack {
                             Spacer()
                             
+                            NavigationLink(destination: CameraView()) {
+                                Text("Open Camera")
+                                    .foregroundColor(.blue)
+                            }
+                            
                             Text("Bottom")
                                 .font(.title3)
                                 .fontWeight(.medium)
