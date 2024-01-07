@@ -10,9 +10,13 @@
 //
 
 import SwiftUI
+// Getting timestamp for date-of-birth formatting
+import Firebase
 
 struct NavigationsView: View {
     @State private var showMenu: Bool = false
+    @State private var isEditing: Bool = false
+    @State private var notes: String = ""
     @EnvironmentObject var viewModel: AuthViewModel
     @StateObject private var viewModel_request = RequestAuthModel()
     
@@ -42,21 +46,87 @@ struct NavigationsView: View {
                                 .padding()
                         }
                         
-                        Spacer()
+                        Divider()
                         
                         // Middle of page
-                        if let patientData = viewModel_request.patientData {
-                            HStack {
-                                Text("Patient Name: \(patientData["Forename"] as? String ?? "N/A")")
-                                // Add other patient details
-                            }
+                        Group{
+                            if let patientData = viewModel_request.patientData {
+                                VStack(alignment: .leading, spacing: 10) {
+                                            Text("Patient Information")
+                                                .font(.headline)
+                                                .padding(.vertical, 5)
 
-                            HStack {
-                                Text("Patient Details: \(patientData["Lastname"] as? String ?? "N/A")")
-                                // Add more information
+                                            Divider()
+
+                                            HStack {
+                                                Text("Name:")
+                                                    .fontWeight(.bold)
+                                                Text("\(patientData["Forename"] as? String ?? "N/A") \(patientData["Lastname"] as? String ?? "N/A")")
+                                            }
+                                            HStack {
+                                                Text("Alternate Name:")
+                                                    .fontWeight(.bold)
+                                                Text("\(patientData["altName"] as? String ?? "N/A")")
+                                            }
+
+                                            HStack {
+                                                Text("Date of Birth:")
+                                                    .fontWeight(.bold)
+                                                // Extract dob as a Timestamp and convert to Date
+                                                if let dobTimestamp = patientData["dob"] as? Timestamp {
+                                                    let dobDate = dobTimestamp.dateValue()
+                                                    Text(DateFormatter.mediumStyle.string(from: dobDate))
+                                                } else {
+                                                    Text("N/A")
+                                                }
+                                            }
+
+                                            HStack {
+                                                Text("Sex:")
+                                                    .fontWeight(.bold)
+                                                Text("\(patientData["Sex"] as? String ?? "N/A")")
+                                            }
+
+                                            HStack {
+                                                Text("Contact Number:")
+                                                    .fontWeight(.bold)
+                                                Text("\(patientData["PersonalContact"] as? String ?? "N/A")")
+                                            }
+
+                                            HStack {
+                                                Text("Ward:")
+                                                    .fontWeight(.bold)
+                                                Text("\(patientData["Ward"] as? String ?? "N/A")")
+                                            }
+
+                                            HStack {
+                                                Text("Medical History:")
+                                                    .fontWeight(.bold)
+                                                Text("\(patientData["MedicalHistory"] as? String ?? "N/A")")
+                                            }
+
+                                            HStack {
+                                                Text("Current Prescription:")
+                                                    .fontWeight(.bold)
+                                                Text("\(patientData["CurrentPerscription"] as? String ?? "N/A")")
+                                            }
+
+                                            HStack {
+                                                Text("Summary:")
+                                                    .fontWeight(.bold)
+                                                Text("\(patientData["Summary"] as? String ?? "N/A")")
+                                            }
+
+                                            HStack {
+                                                Text("Additional Notes:")
+                                                    .fontWeight(.bold)
+                                                Text("\(patientData["Additional"] as? String ?? "N/A")")
+                                            }
+                                        }
+                                        .padding(.horizontal)
+                            } else {
+                                Text("Loading patient data...")
                             }
-                        } else {
-                            Text("Loading patient data...")
                         }
                         
                         HStack {
@@ -144,6 +214,15 @@ struct NavigationsView: View {
             }
         }
     }
+}
+
+extension DateFormatter {
+    static let mediumStyle: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        return formatter
+    }()
 }
 
 #Preview {
