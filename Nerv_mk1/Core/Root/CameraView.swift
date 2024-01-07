@@ -9,6 +9,31 @@ import SwiftUI
 import UIKit
 import PhotosUI
 
+struct CameraView: View {
+    @State private var showCamera = false
+    @State private var selectedImage: UIImage?
+    @State var image: UIImage?
+    var body: some View {
+        VStack {
+            if let selectedImage{
+                Image(uiImage: selectedImage)
+                    .resizable()
+                    .scaledToFit()
+                Button("Upload to database") {
+                    //
+                }
+            }
+            
+            Button("Open camera") {
+                self.showCamera.toggle()
+            }
+            .fullScreenCover(isPresented: self.$showCamera) {
+                accessCameraView(selectedImage: self.$selectedImage)
+            }
+        }
+    }
+}
+
 struct accessCameraView: UIViewControllerRepresentable {
     
     @Binding var selectedImage: UIImage?
