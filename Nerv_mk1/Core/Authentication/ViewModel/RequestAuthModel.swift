@@ -99,7 +99,22 @@ class RequestAuthModel: ObservableObject {
             }
         }
     }
-    
+    // submit notes to firebase to be stored
+    func addNotesToPatient(patientID: String, notes: String) {
+            let db = Firestore.firestore()
+            let patientRef = db.collection("requests").document(patientID)
+
+            patientRef.updateData(["notes": notes]) { error in
+                if let error = error {
+                    // Handle any errors here
+                    print("Error updating document: \(error)")
+                } else {
+                    // The document has been successfully updated
+                    print("Document successfully updated")
+                }
+            }
+        }
+
     
     // Testing functions - WIP (Doesn't work)
     func fetchNotifications() {

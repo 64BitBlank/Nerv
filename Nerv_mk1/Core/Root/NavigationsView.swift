@@ -16,6 +16,9 @@ import Firebase
 struct NavigationsView: View {
     @State private var showMenu: Bool = false
     @State private var isEditing: Bool = false
+    @State private var showingSaveAlert = false
+    @State private var attemptToSaveEdits = false
+    
     @State private var notes: String = ""
     @EnvironmentObject var viewModel: AuthViewModel
     @StateObject private var viewModel_request = RequestAuthModel()
@@ -32,7 +35,7 @@ struct NavigationsView: View {
                                 .font(.title)
                                 .fontWeight(.bold)
                                 .padding(.top, 20)
-                                .foregroundColor(.gray)
+                                
                         }
                         .padding()
                         
@@ -118,9 +121,36 @@ struct NavigationsView: View {
                                             }
 
                                             HStack {
-                                                Text("Additional Notes:")
+                                                Text("Additionals:")
                                                     .fontWeight(.bold)
                                                 Text("\(patientData["Additional"] as? String ?? "N/A")")
+                                            }
+                                    
+                                            Divider()
+                                    
+                                            if isEditing {
+                                                Section(header: Text("Editing Notes:")) {
+                                                    HStack {
+                                                        Text("Additional notes")
+                                                            .font(.caption)
+                                                            .foregroundColor(.gray)
+                                                        // Character count
+                                                        Text("[\(notes.count)]")
+                                                            .font(.caption)
+                                                            .foregroundColor(.gray)
+                                                            .padding(.leading, 30)
+                                                    }
+                                                    TextEditor(text: $notes)
+                                                        .frame(height: CGFloat(30 * 4))
+                                                        .lineSpacing(5)
+                                                }
+                                            } else {
+                                                HStack {
+                                                    Text("Notes: ")
+                                                        .fontWeight(.bold)
+                                                    Text(notes)
+                                                }
+                                                
                                             }
                                         }
                                         .padding(.horizontal)
@@ -145,9 +175,42 @@ struct NavigationsView: View {
                         
                         HStack {
                             Spacer()
+                            
                             Text("Bottom")
                                 .font(.title3)
                                 .fontWeight(.medium)
+                            
+                            Button(action: {
+                                if isEditing {
+                                    // User is trying to finish editing
+                                    attemptToSaveEdits = true
+                                    showingSaveAlert = true
+                                }
+                                isEditing.toggle()
+                            }) {
+                                Text(isEditing ? "Done" : "Edit Notes")
+                            }
+                            
+                            .alert(isPresented: $showingSaveAlert) {
+                                Alert(
+                                    title: Text("Confirm Changes"),
+                                    message: Text("Are you sure you want to save these changes?"),
+                                    primaryButton: .destructive(Text("Save")) {
+                                        if attemptToSaveEdits {
+                                            // submit notes to firebase here
+                                            viewModel_request.addNotesToPatient(patientID: patientRef, notes: notes)
+                                            isEditing = false
+                                            attemptToSaveEdits = false
+                                        }
+                                    },
+                                    secondaryButton: .cancel {
+                                        isEditing = false
+                                        attemptToSaveEdits = false
+                                    }
+                                )
+                            }
+
+                        
                             Spacer()
                         }
                         .padding()
@@ -224,6 +287,7 @@ extension DateFormatter {
         return formatter
     }()
 }
+
 
 #Preview {
     NavigationsView()
