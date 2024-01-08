@@ -8,6 +8,7 @@
 import Foundation
 import Firebase
 import FirebaseFirestoreSwift
+import FirebaseStorage
 
 @MainActor
 class RequestAuthModel: ObservableObject {
@@ -114,7 +115,27 @@ class RequestAuthModel: ObservableObject {
                 }
             }
         }
+    
+    // Storge image to firebase
+    func uploadImageToFirebase(_ imageData: Data, withName title: String, completion: @escaping (Result<URL, Error>) -> Void) {
+        let storageRef = Storage.storage().reference()
+        let formattedTitle = title.trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: " ", with: "_")
+        let imageRef = storageRef.child("images/\(formattedTitle).jpg")
 
+        imageRef.putData(imageData, metadata: nil) { metadata, error in
+            guard let metadata = metadata else {
+                completion(.failure(error ?? NSError(domain: "FirebaseStorageError", code: -1, userInfo: nil)))
+                return
+            }
+            imageRef.downloadURL { url, error in
+                if let url = url {
+                    completion(.success(url))
+                } else {
+                    completion(.failure(error ?? NSError(domain: "FirebaseStorageError", code: -1, userInfo: nil)))
+                }
+            }
+        }
+    }
     
     // Testing functions - WIP (Doesn't work)
     func fetchNotifications() {

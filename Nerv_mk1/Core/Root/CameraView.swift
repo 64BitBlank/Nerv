@@ -9,22 +9,45 @@ import SwiftUI
 import UIKit
 import PhotosUI
 
+
+
 struct CameraView: View {
+    @StateObject private var viewModel_request = RequestAuthModel()
+    @State private var title: String = ""
+    
     @State private var showCamera = false
     @State private var selectedImage: UIImage?
     @State var image: UIImage?
+    
     var body: some View {
         VStack {
-            if let selectedImage{
+            
+            if let selectedImage, let imageData = selectedImage.jpegData(compressionQuality: 0.8) {
                 Image(uiImage: selectedImage)
                     .resizable()
                     .scaledToFit()
+                
+                Section(header: Text("Enter a photo title: ")){
+                    TextEditor(text: $title)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding()
+                }
+                
                 Button("Upload to database") {
-                    //
+                    viewModel_request.uploadImageToFirebase(imageData, withName: title) { result in
+                        switch result {
+                        case .success(let url):
+                            print("Image uploaded successfully: \(url)")
+                        case .failure(let error):
+                            print("Error uploading image: \(error)")
+                        }
+                    }
                 }
             }
+                
+            Spacer()
             
-            Button("Open camera") {
+            Button("Open Camera") {
                 self.showCamera.toggle()
             }
             .fullScreenCover(isPresented: self.$showCamera) {

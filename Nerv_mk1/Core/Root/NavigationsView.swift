@@ -177,8 +177,8 @@ struct NavigationsView: View {
                             Spacer()
                             
                             NavigationLink(destination: CameraView()) {
-                                Text("Open Camera")
-                                    .foregroundColor(.blue)
+                                Image(systemName: "camera")
+                                        .foregroundColor(.blue)
                             }
                             
                             Text("Bottom")
