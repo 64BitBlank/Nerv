@@ -129,10 +129,28 @@ class RequestAuthModel: ObservableObject {
             }
             imageRef.downloadURL { url, error in
                 if let url = url {
-                    completion(.success(url))
+                    // Image uploaded successfully, now update Firestore
+                    self.addPhotoURLToPatientDocument(url, patientRef: patientRef) { result in
+                        completion(result)
+                    }
                 } else {
                     completion(.failure(error ?? NSError(domain: "FirebaseStorageError", code: -1, userInfo: nil)))
                 }
+            }
+        }
+    }
+    
+    private func addPhotoURLToPatientDocument(_ url: URL, patientRef: String, completion: @escaping (Result<URL, Error>) -> Void) {
+        let db = Firestore.firestore()
+        let patientDocument = db.collection("requests").document(patientRef)
+        
+        patientDocument.updateData([
+            "photoRefs": FieldValue.arrayUnion([url.absoluteString])
+        ]) { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(url))
             }
         }
     }
