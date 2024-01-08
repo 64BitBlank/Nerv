@@ -14,7 +14,7 @@ import PhotosUI
 struct CameraView: View {
     @StateObject private var viewModel_request = RequestAuthModel()
     @State private var title: String = ""
-    
+    let patientRef: String
     @State private var showCamera = false
     @State private var selectedImage: UIImage?
     @State var image: UIImage?
@@ -34,7 +34,7 @@ struct CameraView: View {
                 }
                 
                 Button("Upload to database") {
-                    viewModel_request.uploadImageToFirebase(imageData, withName: title) { result in
+                    viewModel_request.uploadImageToFirebase(imageData, withName: title, patientRef: patientRef) { result in
                         switch result {
                         case .success(let url):
                             print("Image uploaded successfully: \(url)")
@@ -94,6 +94,4 @@ class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerContro
     }
 }
 
-#Preview {
-    CameraView()
-}
+

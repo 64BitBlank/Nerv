@@ -117,10 +117,10 @@ class RequestAuthModel: ObservableObject {
         }
     
     // Storge image to firebase
-    func uploadImageToFirebase(_ imageData: Data, withName title: String, completion: @escaping (Result<URL, Error>) -> Void) {
+    func uploadImageToFirebase(_ imageData: Data, withName title: String, patientRef: String, completion: @escaping (Result<URL, Error>) -> Void) {
         let storageRef = Storage.storage().reference()
         let formattedTitle = title.trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: " ", with: "_")
-        let imageRef = storageRef.child("images/\(formattedTitle).jpg")
+        let imageRef = storageRef.child("patient/\(patientRef)/\(formattedTitle).jpg")
 
         imageRef.putData(imageData, metadata: nil) { metadata, error in
             guard let metadata = metadata else {

@@ -176,7 +176,7 @@ struct NavigationsView: View {
                         HStack {
                             Spacer()
                             
-                            NavigationLink(destination: CameraView()) {
+                            NavigationLink(destination: CameraView(patientRef: patientRef)) {
                                 Image(systemName: "camera")
                                         .foregroundColor(.blue)
                             }
