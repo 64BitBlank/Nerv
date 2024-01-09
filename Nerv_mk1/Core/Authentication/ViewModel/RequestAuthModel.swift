@@ -139,7 +139,7 @@ class RequestAuthModel: ObservableObject {
             }
         }
     }
-    
+    // when uploading images to firestore add the urls for each to the array in patient to access later
     private func addPhotoURLToPatientDocument(_ url: URL, patientRef: String, completion: @escaping (Result<URL, Error>) -> Void) {
         let db = Firestore.firestore()
         let patientDocument = db.collection("requests").document(patientRef)

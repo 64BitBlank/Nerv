@@ -9,8 +9,6 @@ import SwiftUI
 import UIKit
 import PhotosUI
 
-
-
 struct CameraView: View {
     @StateObject private var viewModel_request = RequestAuthModel()
     @State private var title: String = ""
