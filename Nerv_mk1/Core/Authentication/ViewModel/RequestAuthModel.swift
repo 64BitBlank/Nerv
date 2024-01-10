@@ -16,8 +16,35 @@ class RequestAuthModel: ObservableObject {
     @Published var notifications = [NotificationsModel]()
     @Published var patientData: [String: Any]?
     
+    
     private var db = Firestore.firestore()
     
+    // Centralized function for logging user actions
+    // Access the shared instance of AuthViewModel to get the current user's ID
+    // Builds log entry
+    private func logUserAction(action: String) {
+        if let currentUser = AuthViewModel.shared.currentUser {
+            logActionForUser(userID: currentUser.id, action: action)
+        } else {
+            print("No current user available in RequestAuthModel.")
+        }
+    }
+
+    private func logActionForUser(userID: String, action: String) {
+        let logEntry = "\(action) - \(DateFormatter.localizedString(from: Date(), dateStyle: .medium, timeStyle: .long))"
+        let userRef = db.collection("user").document(userID)
+        
+        userRef.updateData([
+            "logs": FieldValue.arrayUnion([logEntry])
+        ]) { error in
+            if let error = error {
+                print("Error logging user action: \(error.localizedDescription)")
+            } else {
+                print("User action logged successfully for userID: \(userID)")
+            }
+        }
+    }
+
     func uploadToFirebase(field1: String, field2: String, field3: String, field4: String, field5: String, number: Int, field6: String, dateOfBirth: Date, sex: String, contactNumber: String, wardDesignation: String, medicalHistory: String, currentPrescriptions: String) async throws {
         do {
             let json: [String: Any] = [
@@ -111,6 +138,7 @@ class RequestAuthModel: ObservableObject {
                     print("Error updating document: \(error)")
                 } else {
                     // The document has been successfully updated
+                    self.logUserAction(action: "Added/Updated notes to patient")
                     print("Document successfully updated")
                 }
             }
@@ -151,6 +179,7 @@ class RequestAuthModel: ObservableObject {
                 completion(.failure(error))
             } else {
                 completion(.success(url))
+                self.logUserAction(action: "Added image to patient")
             }
         }
     }

@@ -15,6 +15,7 @@ protocol AuthenticationFromProtocol {
 
  @MainActor
 class AuthViewModel: ObservableObject {
+    static let shared = AuthViewModel()
     // User logged in already?
     @Published var userSession: FirebaseAuth.User?
     @Published var currentUser: User?

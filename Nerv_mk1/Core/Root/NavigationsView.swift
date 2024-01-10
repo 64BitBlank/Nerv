@@ -152,7 +152,7 @@ struct NavigationsView: View {
                                         HStack {
                                             Text("Notes: ")
                                                 .fontWeight(.bold)
-                                            Text(notes)
+                                            Text("\(patientData["notes"] as? String ?? "N/A")")
                                         }
                                         
                                     }
