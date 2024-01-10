@@ -15,7 +15,7 @@ class RequestAuthModel: ObservableObject {
     @Published var requests: [DocumentSnapshot] = []
     @Published var notifications = [NotificationsModel]()
     @Published var patientData: [String: Any]?
-    
+    let currentUser = AuthViewModel.shared.currentUser
     
     private var db = Firestore.firestore()
     
