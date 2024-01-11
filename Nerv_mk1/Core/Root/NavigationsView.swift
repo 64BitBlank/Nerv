@@ -246,8 +246,8 @@ struct NavigationsView: View {
                                     message: Text("Are you sure you want to save these changes?"),
                                     primaryButton: .destructive(Text("Save")) {
                                         if attemptToSaveEdits {
-                                            // submit notes to firebase here
                                             viewModel_request.addNotesToPatient(patientID: patientRef, notes: notes)
+                                            viewModel_request.fetchPatientDetails(patientID: patientRef)
                                             isEditing = false
                                             attemptToSaveEdits = false
                                         }
@@ -343,7 +343,7 @@ extension DateFormatter {
         return formatter
     }()
 }
-
+// secondary structure for displaying the image overlay
 struct ImageOverlayView: View {
     let imageUrl: URL
     let title: String
