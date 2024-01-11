@@ -18,7 +18,11 @@ struct NavigationsView: View {
     @State private var isEditing: Bool = false
     @State private var showingSaveAlert = false
     @State private var attemptToSaveEdits = false
+    
     // handling expanded image overlay
+    @State private var showImageOverlay = false
+    @State private var selectedImageUrl: URL?
+    @State private var selectedImageTitle: String = ""
     
     @State private var notes: String = ""
     @EnvironmentObject var viewModel: AuthViewModel
@@ -160,11 +164,7 @@ struct NavigationsView: View {
                                         ScrollView {
                                             LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], spacing: 10) {
                                                 ForEach(photoRefs, id: \.self) { urlString in
-                                                    ImageView(urlString: urlString)
-                                                        .onTapGesture {
-                                                            // Handle the tap gesture
-                                                            print("Ahh ive been tapped")
-                                                        }
+                                                    ImageView(urlString: urlString, selectedImageUrl: $selectedImageUrl, showImageOverlay: $showImageOverlay)
                                                         .padding(10)
                                                 }
                                             }
@@ -256,6 +256,18 @@ struct NavigationsView: View {
                         }
                     }
                     
+                    .sheet(isPresented: $showImageOverlay) {
+                        if let url = selectedImageUrl {
+                            ImageOverlayView(imageUrl: url, title: selectedImageTitle)
+                        }else {
+                            Text("Error: No image selected")
+                        }
+                    }
+                    .onChange(of: selectedImageUrl) { newUrl in
+                        if let url = newUrl {
+                            print("New Selected Image URL: \(url)")
+                        }
+                    }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .blur(radius: showMenu ? 2 : 0) // Apply blur effect when showMenu is true
                     .frame(maxWidth: .infinity)
@@ -320,6 +332,8 @@ extension DateFormatter {
 struct ImageView: View {
     @StateObject private var loader = ImageLoader()
     let urlString: String
+    @Binding var selectedImageUrl: URL?
+    @Binding var showImageOverlay: Bool
     
     var body: some View {
         Group {
@@ -329,6 +343,10 @@ struct ImageView: View {
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 100, height: 100)
                     .clipped()
+                    .onTapGesture {
+                        self.selectedImageUrl = URL(string: urlString)
+                        self.showImageOverlay = true
+                    }
             } else {
                 ProgressView()
                     .onAppear {
@@ -339,6 +357,28 @@ struct ImageView: View {
     }
 }
 
+struct ImageOverlayView: View {
+    let imageUrl: URL
+    let title: String
+
+    var body: some View {
+        VStack {
+            Text(title)
+                .font(.title)
+                .padding()
+
+            AsyncImage(url: imageUrl) { image in
+                image.resizable()
+                     .aspectRatio(contentMode: .fit)
+                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } placeholder: {
+                ProgressView()
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.black.opacity(0.6))
+    }
+}
 
 #Preview {
     NavigationsView()
