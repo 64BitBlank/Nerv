@@ -19,9 +19,6 @@ struct NavigationsView: View {
     @State private var showingSaveAlert = false
     @State private var attemptToSaveEdits = false
     // handling expanded image overlay
-    @State private var showImageOverlay = false
-    @State private var selectedImageUrl: URL?
-    @State private var selectedImageTitle: String = ""
     
     @State private var notes: String = ""
     @EnvironmentObject var viewModel: AuthViewModel
@@ -161,40 +158,21 @@ struct NavigationsView: View {
                                     
                                     if let photoRefs = patientData["photoRefs"] as? [String] {
                                         ScrollView {
-                                            LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], spacing: 20) {
+                                            LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], spacing: 10) {
                                                 ForEach(photoRefs, id: \.self) { urlString in
-                                                    if let url = URL(string: urlString) {
-                                                        AsyncImage(url: url) { phase in
-                                                            switch phase {
-                                                            case .empty:
-                                                                ProgressView() // Image is loading
-                                                            case .success(let image):
-                                                                image.resizable() // Image is available
-                                                                     .aspectRatio(contentMode: .fill)
-                                                                     .frame(width: 100, height: 100)
-                                                                     .clipped()
-                                                            case .failure:
-                                                                Image(systemName: "photo") // Image loading failed
-                                                            @unknown default:
-                                                                EmptyView() // Future-proofing for additional cases
-                                                            }
-                                                        }
+                                                    ImageView(urlString: urlString)
                                                         .onTapGesture {
-                                                            self.selectedImageUrl = url
-                                                            self.selectedImageTitle = "title"
-                                                            self.showImageOverlay = true
+                                                            // Handle the tap gesture
+                                                            print("Ahh ive been tapped")
                                                         }
                                                         .padding(10)
-                                                    }
                                                 }
                                             }
                                             .padding(.horizontal)
                                         }
-                                    } else{
-                                        HStack {
-                                          Text("No photos avaliable")
-                                                .fontWeight(.bold)
-                                        }
+                                    } else {
+                                        Text("No photos available")
+                                            .fontWeight(.bold)
                                     }
                                 }
                                         .padding(.horizontal)
@@ -278,11 +256,6 @@ struct NavigationsView: View {
                         }
                     }
                     
-                    .sheet(isPresented: $showImageOverlay) {
-                        if let url = selectedImageUrl {
-                            ImageOverlayView(imageUrl: url, title: selectedImageTitle)
-                        }
-                    }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .blur(radius: showMenu ? 2 : 0) // Apply blur effect when showMenu is true
                     .frame(maxWidth: .infinity)
@@ -343,27 +316,26 @@ extension DateFormatter {
         return formatter
     }()
 }
-// secondary structure for displaying the image overlay
-struct ImageOverlayView: View {
-    let imageUrl: URL
-    let title: String
 
+struct ImageView: View {
+    @StateObject private var loader = ImageLoader()
+    let urlString: String
+    
     var body: some View {
-        VStack {
-            Text(title)
-                .font(.title)
-                .padding()
-
-            AsyncImage(url: imageUrl) { image in
-                image.resizable()
-                     .aspectRatio(contentMode: .fit)
-                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } placeholder: {
+        Group {
+            if let image = loader.image {
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 100, height: 100)
+                    .clipped()
+            } else {
                 ProgressView()
+                    .onAppear {
+                        loader.loadImage(fromURL: urlString)
+                    }
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.black.opacity(0.6))
     }
 }
 
