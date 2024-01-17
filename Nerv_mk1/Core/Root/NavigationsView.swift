@@ -211,6 +211,7 @@ struct NavigationsView: View {
                                 if isEditing {
                                     // User is trying to finish editing
                                     attemptToSaveEdits = true
+                                    // Alert user action has occured
                                     showingSaveAlert = true
                                 }
                                 isEditing.toggle()
@@ -268,6 +269,7 @@ struct NavigationsView: View {
                             print("New Selected Image URL: \(url)")
                         }
                     }
+
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .blur(radius: showMenu ? 2 : 0) // Apply blur effect when showMenu is true
                     .frame(maxWidth: .infinity)
@@ -356,7 +358,6 @@ struct ImageView: View {
         }
     }
 }
-
 struct ImageOverlayView: View {
     let imageUrl: URL
     let title: String

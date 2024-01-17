@@ -32,6 +32,8 @@ struct RequestView: View {
     @State private var number: Int = 1
     @State private var staffNumber: String = ""
 
+    @State private var showAlert = false
+    
     @EnvironmentObject var viewModel2: AuthViewModel
     @EnvironmentObject var requestAuthModel: RequestAuthModel
     
@@ -147,8 +149,8 @@ struct RequestView: View {
                             print("Error uploading to Firebase: \(error.localizedDescription)")
                         }
                     }
-                    // Move user out of requests page
-                    
+                    // Show user action has occured via alert triggering
+                    showAlert = true
                 }label: {
                     HStack{
                         Text("Send Request")
@@ -157,6 +159,13 @@ struct RequestView: View {
                     }
                     .foregroundColor(.white)
                     .frame(width: UIScreen.main.bounds.width - 62, height: 48)
+                }
+                .alert(isPresented: $showAlert) {
+                    Alert(
+                        title: Text("Upload successful"),
+                        message: Text("Dismiss alert " +
+                                        "and navigate back to home menu.")
+                    )
                 }
                 .background(Color(.systemBlue))
                 .cornerRadius(10.0)

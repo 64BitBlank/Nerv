@@ -16,6 +16,7 @@ struct CameraView: View {
     @State private var showCamera = false
     @State private var selectedImage: UIImage?
     @State var image: UIImage?
+    @State private var showAlert = false
     
     var body: some View {
         VStack {
@@ -36,10 +37,20 @@ struct CameraView: View {
                         switch result {
                         case .success(let url):
                             print("Image uploaded successfully: \(url)")
+                            // Show user action has occured via alert triggering
+                            showAlert = true
+                            
                         case .failure(let error):
                             print("Error uploading image: \(error)")
                         }
                     }
+                }
+                .alert(isPresented: $showAlert) {
+                    Alert(
+                        title: Text("Upload successful"),
+                        message: Text("Dismiss alert " +
+                                        "and navigate back to home menu.")
+                    )
                 }
             }
                 
