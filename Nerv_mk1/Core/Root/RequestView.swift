@@ -33,6 +33,7 @@ struct RequestView: View {
     @State private var staffNumber: String = ""
 
     @State private var showAlert = false
+    @State private var showConfirmation = false
     
     @EnvironmentObject var viewModel2: AuthViewModel
     @EnvironmentObject var requestAuthModel: RequestAuthModel
@@ -128,29 +129,7 @@ struct RequestView: View {
                 .listStyle(GroupedListStyle())
                 
                 Button{
-                    Task {
-                        do {
-                            try await requestAuthModel.uploadToFirebase(
-                                field1: field1,
-                                field2: field2,
-                                field3: field3,
-                                field4: staffNumber,
-                                field5: field5,
-                                number: number,
-                                field6: field6,
-                                dateOfBirth: dateOfBirth,
-                                sex: selectedSex.rawValue,
-                                contactNumber: contactNumber,
-                                wardDesignation: selectedWard,
-                                medicalHistory: medicalHistory,
-                                currentPrescriptions: currentPrescriptions
-                            )
-                        } catch {
-                            print("Error uploading to Firebase: \(error.localizedDescription)")
-                        }
-                    }
-                    // Show user action has occured via alert triggering
-                    showAlert = true
+                    showConfirmation = true
                 }label: {
                     HStack{
                         Text("Send Request")
@@ -159,6 +138,33 @@ struct RequestView: View {
                     }
                     .foregroundColor(.white)
                     .frame(width: UIScreen.main.bounds.width - 62, height: 48)
+                }
+                .confirmationDialog("Confirm Request?", isPresented: $showConfirmation) {
+                    Button("Confirm"){
+                        Task {
+                            do {
+                                try await requestAuthModel.uploadToFirebase(
+                                    field1: field1,
+                                    field2: field2,
+                                    field3: field3,
+                                    field4: staffNumber,
+                                    field5: field5,
+                                    number: number,
+                                    field6: field6,
+                                    dateOfBirth: dateOfBirth,
+                                    sex: selectedSex.rawValue,
+                                    contactNumber: contactNumber,
+                                    wardDesignation: selectedWard,
+                                    medicalHistory: medicalHistory,
+                                    currentPrescriptions: currentPrescriptions
+                                )
+                            } catch {
+                                print("Error uploading to Firebase: \(error.localizedDescription)")
+                            }
+                        }
+                        // Show user action has occured via alert triggering
+                        showAlert = true
+                    }
                 }
                 .alert(isPresented: $showAlert) {
                     Alert(

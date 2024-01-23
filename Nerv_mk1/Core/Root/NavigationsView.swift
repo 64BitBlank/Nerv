@@ -58,134 +58,136 @@ struct NavigationsView: View {
                         
                         // Middle of page
                         Group{
-                            if let patientData = viewModel_request.patientData {
-                                VStack(alignment: .leading, spacing: 10) {
-                                    Text("Patient Information")
-                                        .font(.headline)
-                                        .padding(.vertical, 5)
-                                    
-                                    Divider()
-                                    
-                                    HStack {
-                                        Text("Name:")
-                                            .fontWeight(.bold)
-                                        Text("\(patientData["Forename"] as? String ?? "N/A") \(patientData["Lastname"] as? String ?? "N/A")")
-                                    }
-                                    HStack {
-                                        Text("Alternate Name:")
-                                            .fontWeight(.bold)
-                                        Text("\(patientData["altName"] as? String ?? "N/A")")
-                                    }
-                                    
-                                    HStack {
-                                        Text("Date of Birth:")
-                                            .fontWeight(.bold)
-                                        // Extract dob as a Timestamp and convert to Date
-                                        if let dobTimestamp = patientData["dob"] as? Timestamp {
-                                            let dobDate = dobTimestamp.dateValue()
-                                            Text(DateFormatter.mediumStyle.string(from: dobDate))
-                                        } else {
-                                            Text("N/A")
-                                        }
-                                    }
-                                    
-                                    HStack {
-                                        Text("Sex:")
-                                            .fontWeight(.bold)
-                                        Text("\(patientData["Sex"] as? String ?? "N/A")")
-                                    }
-                                    
-                                    HStack {
-                                        Text("Contact Number:")
-                                            .fontWeight(.bold)
-                                        Text("\(patientData["PersonalContact"] as? String ?? "N/A")")
-                                    }
-                                    
-                                    HStack {
-                                        Text("Ward:")
-                                            .fontWeight(.bold)
-                                        Text("\(patientData["Ward"] as? String ?? "N/A")")
-                                    }
-                                    
-                                    HStack {
-                                        Text("Medical History:")
-                                            .fontWeight(.bold)
-                                        Text("\(patientData["MedicalHistory"] as? String ?? "N/A")")
-                                    }
-                                    
-                                    HStack {
-                                        Text("Current Prescription:")
-                                            .fontWeight(.bold)
-                                        Text("\(patientData["CurrentPerscription"] as? String ?? "N/A")")
-                                    }
-                                    
-                                    HStack {
-                                        Text("Summary:")
-                                            .fontWeight(.bold)
-                                        Text("\(patientData["Summary"] as? String ?? "N/A")")
-                                    }
-                                    
-                                    HStack {
-                                        Text("Additionals:")
-                                            .fontWeight(.bold)
-                                        Text("\(patientData["Additional"] as? String ?? "N/A")")
-                                    }
-                                    
-                                    Divider()
-                                    
-                                    if isEditing {
-                                        Section(header: Text("Editing Notes:")) {
-                                            HStack {
-                                                Text("Additional notes")
-                                                    .font(.caption)
-                                                    .foregroundColor(.gray)
-                                                // Character count
-                                                Text("[\(notes.count)]")
-                                                    .font(.caption)
-                                                    .foregroundColor(.gray)
-                                                    .padding(.leading, 30)
-                                            }
-                                            TextEditor(text: $notes)
-                                                .frame(height: CGFloat(30 * 4))
-                                                .lineSpacing(5)
-                                        }
-                                    } else {
+                            if (patientRef.isEmpty){
+                                Text("Loading patient data...")
+                            }else{
+                                if let patientData = viewModel_request.patientData {
+                                    VStack(alignment: .leading, spacing: 10) {
+                                        Text("Patient Information")
+                                            .font(.headline)
+                                            .padding(.vertical, 5)
+                                        
+                                        Divider()
+                                        
                                         HStack {
-                                            Text("Notes: ")
+                                            Text("Name:")
                                                 .fontWeight(.bold)
-                                            Text("\(patientData["notes"] as? String ?? "N/A")")
+                                            Text("\(patientData["Forename"] as? String ?? "N/A") \(patientData["Lastname"] as? String ?? "N/A")")
+                                        }
+                                        HStack {
+                                            Text("Alternate Name:")
+                                                .fontWeight(.bold)
+                                            Text("\(patientData["altName"] as? String ?? "N/A")")
                                         }
                                         
-                                    }
-                                    
-                                    Divider()
-                                    
-                                    if let photoRefs = patientData["photoRefs"] as? [String] {
-                                        ScrollView {
-                                            LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], spacing: 10) {
-                                                ForEach(photoRefs, id: \.self) { urlString in
-                                                    ImageView(urlString: urlString, selectedImageUrl: $selectedImageUrl, showImageOverlay: $showImageOverlay)
-                                                        .padding(10)
-                                                }
+                                        HStack {
+                                            Text("Date of Birth:")
+                                                .fontWeight(.bold)
+                                            // Extract dob as a Timestamp and convert to Date
+                                            if let dobTimestamp = patientData["dob"] as? Timestamp {
+                                                let dobDate = dobTimestamp.dateValue()
+                                                Text(DateFormatter.mediumStyle.string(from: dobDate))
+                                            } else {
+                                                Text("N/A")
                                             }
-                                            .padding(.horizontal)
                                         }
-                                    } else {
-                                        Text("No photos available")
-                                            .fontWeight(.bold)
+                                        
+                                        HStack {
+                                            Text("Sex:")
+                                                .fontWeight(.bold)
+                                            Text("\(patientData["Sex"] as? String ?? "N/A")")
+                                        }
+                                        
+                                        HStack {
+                                            Text("Contact Number:")
+                                                .fontWeight(.bold)
+                                            Text("\(patientData["PersonalContact"] as? String ?? "N/A")")
+                                        }
+                                        
+                                        HStack {
+                                            Text("Ward:")
+                                                .fontWeight(.bold)
+                                            Text("\(patientData["Ward"] as? String ?? "N/A")")
+                                        }
+                                        
+                                        HStack {
+                                            Text("Medical History:")
+                                                .fontWeight(.bold)
+                                            Text("\(patientData["MedicalHistory"] as? String ?? "N/A")")
+                                        }
+                                        
+                                        HStack {
+                                            Text("Current Prescription:")
+                                                .fontWeight(.bold)
+                                            Text("\(patientData["CurrentPerscription"] as? String ?? "N/A")")
+                                        }
+                                        
+                                        HStack {
+                                            Text("Summary:")
+                                                .fontWeight(.bold)
+                                            Text("\(patientData["Summary"] as? String ?? "N/A")")
+                                        }
+                                        
+                                        HStack {
+                                            Text("Additionals:")
+                                                .fontWeight(.bold)
+                                            Text("\(patientData["Additional"] as? String ?? "N/A")")
+                                        }
+                                        
+                                        Divider()
+                                        
+                                        if isEditing {
+                                            Section(header: Text("Editing Notes:")) {
+                                                HStack {
+                                                    Text("Additional notes")
+                                                        .font(.caption)
+                                                        .foregroundColor(.gray)
+                                                    // Character count
+                                                    Text("[\(notes.count)]")
+                                                        .font(.caption)
+                                                        .foregroundColor(.gray)
+                                                        .padding(.leading, 30)
+                                                }
+                                                TextEditor(text: $notes)
+                                                    .frame(height: CGFloat(30 * 4))
+                                                    .lineSpacing(5)
+                                                    
+                                            }
+                                        } else {
+                                            HStack {
+                                                Text("Notes: ")
+                                                    .fontWeight(.bold)
+                                                Text("\(patientData["notes"] as? String ?? "N/A")")
+                                            }
+                                            
+                                        }
+                                        
+                                        Divider()
+                                        
+                                        if let photoRefs = patientData["photoRefs"] as? [String] {
+                                            ScrollView {
+                                                LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], spacing: 10) {
+                                                    ForEach(photoRefs, id: \.self) { urlString in
+                                                        ImageView(urlString: urlString, selectedImageUrl: $selectedImageUrl, showImageOverlay: $showImageOverlay)
+                                                            .padding(10)
+                                                    }
+                                                }
+                                                .padding(.horizontal)
+                                                .padding(.vertical, 20)
+                                                .frame(maxHeight: .infinity)
+                                            }
+                                        } else {
+                                            Text("No photos available")
+                                                .fontWeight(.bold)
+                                        }
                                     }
+                                    .padding(.horizontal)
+                                } else {
+                                    Text("Loading patient data...")
                                 }
-                                        .padding(.horizontal)
-                            } else {
-                                Text("Loading patient data...")
                             }
                         }
                         
-                        HStack {
-                            Text("")
-                        }
-                        
-                        .padding()
                         
                         Spacer()
                         Spacer()
@@ -197,49 +199,51 @@ struct NavigationsView: View {
                         
                         HStack {
                             Spacer()
-                            
-                            NavigationLink(destination: CameraView(patientRef: patientRef)) {
-                                Image(systemName: "camera")
-                                        .foregroundColor(.blue)
-                            }
-                            
-                            Text("Bottom")
-                                .font(.title3)
-                                .fontWeight(.medium)
-                            
-                            Button(action: {
-                                if isEditing {
-                                    // User is trying to finish editing
-                                    attemptToSaveEdits = true
-                                    // Alert user action has occured
-                                    showingSaveAlert = true
+                            if (patientRef.isEmpty){
+                                Text(" ")
+                                    .font(.title3)
+                                    .fontWeight(.medium)
+                            }else{
+                                NavigationLink(destination: CameraView(patientRef: patientRef)) {
+                                    Image(systemName: "camera")
+                                            .foregroundColor(.blue)
                                 }
-                                isEditing.toggle()
-                            }) {
-                                Text(isEditing ? "Done" : "Edit Notes")
-                            }
-                            
-                            .alert(isPresented: $showingSaveAlert) {
-                                Alert(
-                                    title: Text("Confirm Changes"),
-                                    message: Text("Are you sure you want to save these changes?"),
-                                    primaryButton: .destructive(Text("Save")) {
-                                        if attemptToSaveEdits {
-                                            viewModel_request.addNotesToPatient(patientID: patientRef, notes: notes)
-                                            viewModel_request.fetchPatientDetails(patientID: patientRef)
+                                
+                                Button(action: {
+                                    if isEditing {
+                                        // User is trying to finish editing
+                                        attemptToSaveEdits = true
+                                        // Alert user action has occured
+                                        showingSaveAlert = true
+                                    }
+                                    isEditing.toggle()
+                                }) {
+                                    Text(isEditing ? "Done" : "Edit Notes")
+                                }
+                                
+                                .alert(isPresented: $showingSaveAlert) {
+                                    Alert(
+                                        title: Text("Confirm Changes"),
+                                        message: Text("Are you sure you want to save these changes?"),
+                                        primaryButton: .destructive(Text("Save")) {
+                                            if attemptToSaveEdits {
+                                                viewModel_request.addNotesToPatient(patientID: patientRef, notes: notes)
+                                                viewModel_request.fetchPatientDetails(patientID: patientRef)
+                                                isEditing = false
+                                                attemptToSaveEdits = false
+                                            }
+                                        },
+                                        secondaryButton: .cancel {
                                             isEditing = false
                                             attemptToSaveEdits = false
                                         }
-                                    },
-                                    secondaryButton: .cancel {
-                                        isEditing = false
-                                        attemptToSaveEdits = false
-                                    }
-                                )
-                            }
+                                    )
+                                }
 
-                        
-                            Spacer()
+                            
+                                Spacer()
+                            }
+                           
                         }
                         .padding()
                     }
@@ -273,7 +277,7 @@ struct NavigationsView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .blur(radius: showMenu ? 2 : 0) // Apply blur effect when showMenu is true
                     .frame(maxWidth: .infinity)
-                    .background(Color(.white)) // Background color for the content
+                   
                     
                 }
                 GeometryReader { geometry in
@@ -299,12 +303,12 @@ struct NavigationsView: View {
                                 if showMenu {
                                     Image(systemName: "xmark")
                                         .font(.title)
-                                        .foregroundColor(.black)
+                                        .foregroundColor(.gray)
                                         .offset(x: 10)
                                 } else {
                                     Image(systemName: "text.justify")
                                         .font(.title)
-                                        .foregroundColor(.black)
+                                        .foregroundColor(.gray)
                                         .offset(x: 10)
                                 }
                             }
@@ -345,6 +349,7 @@ struct ImageView: View {
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 100, height: 100)
                     .clipped()
+                    .blur(radius: 7)
                     .onTapGesture {
                         self.selectedImageUrl = URL(string: urlString)
                         self.showImageOverlay = true
