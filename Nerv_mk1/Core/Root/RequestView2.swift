@@ -8,25 +8,52 @@
 import SwiftUI
 
 struct RequestView2: View {
-    @ObservedObject private var viewModel = RequestAuthModel()
-        var body: some View {
-            NavigationView {
-              List(viewModel.notifications) { notification in // (2)
-                VStack(alignment: .leading) {
-                  Text(notification.Forename)
-                    .font(.headline)
-                  Text(notification.Lastname)
-                    .font(.subheadline)
+    @State var isEditing = false
+    @State var selection = Set<String>()
+    @State var finalSelections = [String]() // New array to hold final selections
+
+    let wards = ["Cardiology", "Oncology", "Pediatrics", "Neurology", "Emergency", "Orthopedics", "Maternity"]
+
+    var body: some View {
+        NavigationView {
+            VStack {
+                List(wards, id: \.self, selection: $selection) { name in
+                    Text(name)
                 }
-              }
-              .navigationBarTitle("Test")
-              .onAppear() { // (3)
-                self.viewModel.fetchNotifications()
-                  self.viewModel.printNotifications()
-              }
+                .navigationBarTitle("Wards")
+                .environment(\.editMode, .constant(self.isEditing ? EditMode.active : EditMode.inactive))
+                .animation(Animation.spring())
+
+                Button(action: {
+                    if self.isEditing {
+                        // "Done" button pressed, update the final selections array
+                        self.finalSelections = Array(self.selection)
+                    }
+                    self.isEditing.toggle()
+                }) {
+                    Text(isEditing ? "Done" : "Edit")
+                        .frame(width: 80, height: 40)
+                }
+
+                if isEditing {
+                    Section(header: Text("Selected Wards:")) {
+                        ForEach(Array(selection), id: \.self) { selectedWard in
+                            Text(selectedWard)
+                        }
+                    }
+                } else {
+                    Section() {
+                        ForEach(finalSelections, id: \.self) { finalSelection in
+                            Text(finalSelection)
+                        }
+                    }
+                }
             }
-          }
+            .padding(.bottom)
         }
+    }
+}
+
 
 #Preview {
     RequestView2()

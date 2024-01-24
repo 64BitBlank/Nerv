@@ -77,6 +77,7 @@ struct RequestView: View {
                             }
                         }
                         TextField("Contact Number", text: $contactNumber)
+                            .keyboardType(.numberPad)
                         TextField("NHS Number", text: $nhsNumber)
                             .keyboardType(.numberPad)
                     }

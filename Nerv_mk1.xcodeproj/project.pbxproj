@@ -10,6 +10,7 @@
 		021895742B4589BA00A186C2 /* PatientDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021895732B4589BA00A186C2 /* PatientDetailsView.swift */; };
 		021895782B4AE63E00A186C2 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021895772B4AE63E00A186C2 /* CameraView.swift */; };
 		0218957C2B5012B500A186C2 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0218957B2B5012B500A186C2 /* ImageLoader.swift */; };
+		027AB0442B6155AC00616F8D /* WardSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027AB0432B6155AC00616F8D /* WardSelectionView.swift */; };
 		02CD09582AF16E9300866B06 /* Nerv_mk1App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CD09572AF16E9300866B06 /* Nerv_mk1App.swift */; };
 		02CD095A2AF16E9300866B06 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CD09592AF16E9300866B06 /* ContentView.swift */; };
 		02CD095C2AF16E9500866B06 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02CD095B2AF16E9500866B06 /* Assets.xcassets */; };
@@ -64,6 +65,7 @@
 		021895732B4589BA00A186C2 /* PatientDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientDetailsView.swift; sourceTree = "<group>"; };
 		021895772B4AE63E00A186C2 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		0218957B2B5012B500A186C2 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		027AB0432B6155AC00616F8D /* WardSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WardSelectionView.swift; sourceTree = "<group>"; };
 		02CD09542AF16E9300866B06 /* Nerv_mk1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nerv_mk1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02CD09572AF16E9300866B06 /* Nerv_mk1App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nerv_mk1App.swift; sourceTree = "<group>"; };
 		02CD09592AF16E9300866B06 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -213,6 +215,7 @@
 				02ED58992B0D477800F215CA /* RequestView2.swift */,
 				02ED588D2B00047800F215CA /* RequestView.swift */,
 				021895732B4589BA00A186C2 /* PatientDetailsView.swift */,
+				027AB0432B6155AC00616F8D /* WardSelectionView.swift */,
 			);
 			path = Root;
 			sourceTree = "<group>";
@@ -375,6 +378,7 @@
 				02ED58822AFFCAC800F215CA /* NotificationView.swift in Sources */,
 				02ED58312AF2B87600F215CA /* RegistrationView.swift in Sources */,
 				02ED587E2AFAFC7600F215CA /* SettingsView.swift in Sources */,
+				027AB0442B6155AC00616F8D /* WardSelectionView.swift in Sources */,
 				02ED58362AF2D68700F215CA /* SettingsRowView.swift in Sources */,
 				02ED58752AF2E87300F215CA /* AuthViewModel.swift in Sources */,
 			);

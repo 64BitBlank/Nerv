@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ProfileView: View {
     @EnvironmentObject var viewModel: AuthViewModel
-    
     var body: some View {
         
         // User has to be present in order for anything to be rendered onscreen
@@ -56,6 +55,15 @@ struct ProfileView: View {
                         SettingsRowView(imageName: "arrow.left.circle.fill",
                                         title: "Sign Out",
                                         tintColor: .red)
+                    }
+                }
+                Section("Wards"){
+                    NavigationLink(destination: WardSelectionView()) {
+                        HStack {
+                            Text("Ward Options")
+                            Spacer()
+                            Image(systemName: "arrow.right.circle")
+                        }
                     }
                 }
             }
