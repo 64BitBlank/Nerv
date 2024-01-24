@@ -45,7 +45,7 @@ class RequestAuthModel: ObservableObject {
         }
     }
 
-    func uploadToFirebase(field1: String, field2: String, field3: String, field4: String, field5: String, number: Int, field6: String, dateOfBirth: Date, sex: String, contactNumber: String, wardDesignation: String, medicalHistory: String, currentPrescriptions: String) async throws {
+    func uploadToFirebase(field1: String, field2: String, field3: String, field4: String, field5: String, number: Int, field6: String, dateOfBirth: Date, sex: String, contactNumber: String, wardDesignation: String, medicalHistory: String, currentPrescriptions: String, newsScore: Int, nhsNumber: String) async throws {
         do {
             let json: [String: Any] = [
                 "Forename": field1,
@@ -61,7 +61,9 @@ class RequestAuthModel: ObservableObject {
                 "Ward": wardDesignation,
                 "MedicalHistory": medicalHistory,
                 "CurrentPerscription": currentPrescriptions,
-                "isActive": false
+                "isActive": false,
+                "newsScore": newsScore,
+                "nhsNumber": nhsNumber
             ]
             // Assuming you have a collection named "requests" in Firestore
             try await db.collection("requests").addDocument(data: json)

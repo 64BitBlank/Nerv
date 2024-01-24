@@ -30,6 +30,8 @@ struct RequestView: View {
     @State private var selectedWard: String = ""
     
     @State private var number: Int = 1
+    @State private var newsScore: Int = 1
+    @State private var nhsNumber: String = ""
     @State private var staffNumber: String = ""
 
     @State private var showAlert = false
@@ -75,6 +77,8 @@ struct RequestView: View {
                             }
                         }
                         TextField("Contact Number", text: $contactNumber)
+                        TextField("NHS Number", text: $nhsNumber)
+                            .keyboardType(.numberPad)
                     }
                     
                     Section(header: Text("Urgency")){
@@ -86,7 +90,15 @@ struct RequestView: View {
                             }
                         }
                     }
-                    
+                    Section(header: Text("N.E.W.S Score")){
+                        HStack {
+                            Picker("Rating [1-9]*", selection: $newsScore) {
+                                ForEach(1...9, id: \.self) { number in
+                                    Text("\(number)")
+                                }
+                            }
+                        }
+                    }
                     Section(header: Text("Ward")) {
                         Picker("Ward Designation", selection: $selectedWard) {
                             ForEach(wardDesignations, id: \.self) { ward in
@@ -156,7 +168,9 @@ struct RequestView: View {
                                     contactNumber: contactNumber,
                                     wardDesignation: selectedWard,
                                     medicalHistory: medicalHistory,
-                                    currentPrescriptions: currentPrescriptions
+                                    currentPrescriptions: currentPrescriptions,
+                                    newsScore: newsScore,
+                                    nhsNumber: nhsNumber
                                 )
                             } catch {
                                 print("Error uploading to Firebase: \(error.localizedDescription)")
