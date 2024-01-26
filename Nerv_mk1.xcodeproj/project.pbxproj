@@ -11,6 +11,7 @@
 		021895782B4AE63E00A186C2 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021895772B4AE63E00A186C2 /* CameraView.swift */; };
 		0218957C2B5012B500A186C2 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0218957B2B5012B500A186C2 /* ImageLoader.swift */; };
 		027AB0442B6155AC00616F8D /* WardSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027AB0432B6155AC00616F8D /* WardSelectionView.swift */; };
+		027AB0482B640DE600616F8D /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027AB0472B640DE600616F8D /* test.swift */; };
 		02CD09582AF16E9300866B06 /* Nerv_mk1App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CD09572AF16E9300866B06 /* Nerv_mk1App.swift */; };
 		02CD095A2AF16E9300866B06 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CD09592AF16E9300866B06 /* ContentView.swift */; };
 		02CD095C2AF16E9500866B06 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02CD095B2AF16E9500866B06 /* Assets.xcassets */; };
@@ -58,7 +59,7 @@
 		02ED588E2B00047800F215CA /* RequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED588D2B00047800F215CA /* RequestView.swift */; };
 		02ED58902B038D1B00F215CA /* RequestAuthModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED588F2B038D1B00F215CA /* RequestAuthModel.swift */; };
 		02ED58942B0D0E7700F215CA /* NotificationsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED58932B0D0E7700F215CA /* NotificationsModel.swift */; };
-		02ED589A2B0D477800F215CA /* RequestView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED58992B0D477800F215CA /* RequestView2.swift */; };
+		02ED589A2B0D477800F215CA /* CarouselSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED58992B0D477800F215CA /* CarouselSystem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +67,7 @@
 		021895772B4AE63E00A186C2 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		0218957B2B5012B500A186C2 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		027AB0432B6155AC00616F8D /* WardSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WardSelectionView.swift; sourceTree = "<group>"; };
+		027AB0472B640DE600616F8D /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 		02CD09542AF16E9300866B06 /* Nerv_mk1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nerv_mk1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02CD09572AF16E9300866B06 /* Nerv_mk1App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nerv_mk1App.swift; sourceTree = "<group>"; };
 		02CD09592AF16E9300866B06 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -87,7 +89,7 @@
 		02ED588D2B00047800F215CA /* RequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestView.swift; sourceTree = "<group>"; };
 		02ED588F2B038D1B00F215CA /* RequestAuthModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAuthModel.swift; sourceTree = "<group>"; };
 		02ED58932B0D0E7700F215CA /* NotificationsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsModel.swift; sourceTree = "<group>"; };
-		02ED58992B0D477800F215CA /* RequestView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestView2.swift; sourceTree = "<group>"; };
+		02ED58992B0D477800F215CA /* CarouselSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselSystem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,10 +214,11 @@
 				02ED587B2AFAD3B500F215CA /* SideMenuView.swift */,
 				02ED587D2AFAFC7600F215CA /* SettingsView.swift */,
 				02ED58812AFFCAC800F215CA /* NotificationView.swift */,
-				02ED58992B0D477800F215CA /* RequestView2.swift */,
+				02ED58992B0D477800F215CA /* CarouselSystem.swift */,
 				02ED588D2B00047800F215CA /* RequestView.swift */,
 				021895732B4589BA00A186C2 /* PatientDetailsView.swift */,
 				027AB0432B6155AC00616F8D /* WardSelectionView.swift */,
+				027AB0472B640DE600616F8D /* test.swift */,
 			);
 			path = Root;
 			sourceTree = "<group>";
@@ -363,9 +366,10 @@
 				02ED582F2AF2ABF700F215CA /* InputView.swift in Sources */,
 				02ED587A2AFAC30C00F215CA /* NavigationsView.swift in Sources */,
 				021895782B4AE63E00A186C2 /* CameraView.swift in Sources */,
-				02ED589A2B0D477800F215CA /* RequestView2.swift in Sources */,
+				02ED589A2B0D477800F215CA /* CarouselSystem.swift in Sources */,
 				021895742B4589BA00A186C2 /* PatientDetailsView.swift in Sources */,
 				02ED588E2B00047800F215CA /* RequestView.swift in Sources */,
+				027AB0482B640DE600616F8D /* test.swift in Sources */,
 				02ED588C2AFFEA4E00F215CA /* Requests.swift in Sources */,
 				02CD095A2AF16E9300866B06 /* ContentView.swift in Sources */,
 				02ED587C2AFAD3B500F215CA /* SideMenuView.swift in Sources */,
