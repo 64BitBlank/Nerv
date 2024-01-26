@@ -8,51 +8,59 @@
 import SwiftUI
 
 struct WardSelectionView: View {
-    @Environment(\.editMode) var mode
-    @State private var selection = Set<String>()
-    @State private var selectedWards = [String]()
-    @State private var isEditing: Bool = false
-
+    @StateObject private var viewModel = AuthViewModel()
+    
+    @State var isEditing = false
+    @State var selection = Set<String>()
+    @State var finalSelections = [String]() // Array to hold final selections
+    
     let wards = ["Cardiology", "Oncology", "Pediatrics", "Neurology", "Emergency", "Orthopedics", "Maternity"]
 
     var body: some View {
         NavigationView {
-            List(wards, id: \.self, selection: $selection) { name in
-                Text(name)
-            }
-            .navigationTitle("Ward Selection")
-            .toolbar {
+            VStack {
                 
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                    // remove what was previously inside the array
-                        .onAppear(){
-                            // ensure list it cleared
-                            selectedWards.removeAll()
+                List(wards, id: \.self, selection: $selection) { name in
+                    Text(name)
+                }
+                .navigationBarTitle("Ward Selection")
+                .environment(\.editMode, .constant(self.isEditing ? EditMode.active : EditMode.inactive))
+                .animation(Animation.spring())
+
+                Button(action: {
+                    if self.isEditing {
+                        // "Done" button pressed, update the final selections array
+                        self.finalSelections = Array(self.selection)
+                        self.viewModel.updateUserWards(wards: self.finalSelections)
+
+                    }
+                    self.isEditing.toggle()
+                }) {
+                    Text(isEditing ? "Done" : "Edit")
+                        .frame(width: 80, height: 50)
+                }
+
+                if isEditing {
+                    Section() {
+                        ForEach(Array(selection), id: \.self) { selectedWard in
+                            Text(selectedWard)
                         }
-                        .onChange(of: selection) { newSelection in
-                            
-                            // Add selected items to the separate array
-                            selectedWards = Array(newSelection)
-                            // Optionally, you can print or perform other actions with the selected items here
-                            print("Current Selected Wards: \(selectedWards)")
+                    }
+                } else {
+                    Section() {
+                        ForEach(finalSelections, id: \.self) { finalSelection in
+                            if isEditing == false && finalSelections.count > 1 {
+                                Text(finalSelection)
+                            }
                         }
-                    
+                    }
                 }
             }
-        }
-        Section(header: Text("Selected Wards:")) {
-            if selectedWards.isEmpty {
-                Text("None selected")
-                    .foregroundColor(.gray)
-            } else {
-                ForEach(selectedWards, id: \.self) { ward in
-                    Text(ward)
-                }
-            }
+            .padding(.bottom)
         }
     }
 }
+
 
 #Preview {
     WardSelectionView()

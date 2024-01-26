@@ -107,6 +107,17 @@ class AuthViewModel: ObservableObject {
             }
         }
     }
+    func updateUserWards(wards: [String]){
+        guard let userID = Auth.auth().currentUser?.uid else { return } // Get current user ID
+        let db = Firestore.firestore()
+        db.collection("user").document(userID).updateData(["wards": wards]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+    }
     
     
 }

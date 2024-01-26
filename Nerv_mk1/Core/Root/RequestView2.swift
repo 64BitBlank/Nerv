@@ -32,11 +32,11 @@ struct RequestView2: View {
                     self.isEditing.toggle()
                 }) {
                     Text(isEditing ? "Done" : "Edit")
-                        .frame(width: 80, height: 40)
+                        .frame(width: 80, height: 50)
                 }
 
                 if isEditing {
-                    Section(header: Text("Selected Wards:")) {
+                    Section() {
                         ForEach(Array(selection), id: \.self) { selectedWard in
                             Text(selectedWard)
                         }
