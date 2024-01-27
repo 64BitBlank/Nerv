@@ -23,10 +23,12 @@ struct NavigationsView: View {
     @State private var showImageOverlay = false
     @State private var selectedImageUrl: URL?
     @State private var selectedImageTitle: String = ""
+    @State private var selectedWard = ""
     
     @State private var notes: String = ""
     @EnvironmentObject var viewModel: AuthViewModel
     @StateObject private var viewModel_request = RequestAuthModel()
+    @StateObject var authViewModel = AuthViewModel()
     
     var body: some View {
         NavigationView {
@@ -36,11 +38,14 @@ struct NavigationsView: View {
                     VStack {
                         // Top of page
                         HStack {
-                            Text("Home Page")
+                            Picker(selection: $selectedWard, label: Text("Home Page")
                                 .font(.title)
                                 .fontWeight(.bold)
-                                .padding(.top, 20)
-                                
+                                .padding(.top, 20)) {
+                                ForEach(authViewModel.wards, id: \.self) { ward in
+                                    Text(ward).tag(ward)
+                                }
+                            }
                         }
                         .padding()
                         
@@ -246,6 +251,9 @@ struct NavigationsView: View {
                            
                         }
                         .padding()
+                    }
+                    .onAppear{
+                        authViewModel.fetchWards()
                     }
                     .onAppear {
                         // Fetch patient data when the patientRef is available

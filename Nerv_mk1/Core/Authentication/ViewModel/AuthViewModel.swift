@@ -20,6 +20,7 @@ class AuthViewModel: ObservableObject {
     @Published var userSession: FirebaseAuth.User?
     @Published var currentUser: User?
     @Published var patientRef: String? = nil
+    @Published var wards: [String] = []
     
     // When initilises, check if has a cached user and auto-login
     init() {
@@ -115,6 +116,20 @@ class AuthViewModel: ObservableObject {
                 print("Error updating document: \(err)")
             } else {
                 print("Document successfully updated")
+            }
+        }
+    }
+    
+    func fetchWards() {
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        
+        let db = Firestore.firestore()
+        db.collection("user").document(userId).addSnapshotListener { (document, error) in
+            if let document = document, document.exists {
+                self.wards = document.get("wards") as? [String] ?? []
+                print(self.wards)
+            } else {
+                print("Document does not exist")
             }
         }
     }

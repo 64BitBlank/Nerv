@@ -13,9 +13,9 @@ struct test: View {
         Text("Testing Carousel System")
         Carousel(items: 5) { item in
             RoundedRectangle(cornerRadius: 5)
-                 .fill(Color.gray)
-                 .overlay(Text(String(item)).font(.title).foregroundColor(.white))
-                 .carouselItem()
+                .fill(Color.gray)
+                .overlay(Text(String(item)).font(.title).foregroundColor(.white))
+                .carouselItem()
         }
         .padding(.top)
     }
