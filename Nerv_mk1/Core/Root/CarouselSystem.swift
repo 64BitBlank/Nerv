@@ -16,7 +16,7 @@ struct CarouselConfig {
     var leftPadding: CGFloat { overlapSpacing + spacing }
     var totalMovement: CGFloat { cardWidth + spacing }
 
-    static let `default`: Self = CarouselConfig(spacing: 16, cardHeight: 380, overlapSpacing: 16)
+    static let `default`: Self = CarouselConfig(spacing: 3, cardHeight: 830, overlapSpacing: 3)
 }
 
 public class CarouselModel: ObservableObject {
@@ -30,6 +30,7 @@ struct Carousel<ItemView : View> : View {
     let config: CarouselConfig
     @GestureState var isDetectingLongPress = false
     @ObservedObject var state: CarouselModel = CarouselModel()
+    @State var isSelected: Bool = false
 
     @inlinable public init(items: Int,
                            _ config: CarouselConfig = .default,
@@ -80,7 +81,7 @@ struct Carousel<ItemView : View> : View {
     }
     private func scale(for index: Int) -> CGFloat {
         let itemOffset = CGFloat(index - state.activeCard)
-        let scale = 1 - (0.1 * abs(itemOffset))
+        let scale = 1 - (1 * abs(itemOffset))
         return max(scale, 0.7)
     }
 }

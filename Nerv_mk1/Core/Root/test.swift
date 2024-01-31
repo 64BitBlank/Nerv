@@ -8,16 +8,19 @@
 import SwiftUI
 
 struct test: View {
-    @StateObject var carouselModel = CarouselModel()
     var body: some View {
-        Text("Testing Carousel System")
-        Carousel(items: 5) { item in
-            RoundedRectangle(cornerRadius: 5)
-                .fill(Color.gray)
-                .overlay(Text(String(item)).font(.title).foregroundColor(.white))
-                .carouselItem()
+        VStack{
+            Carousel(items: 5) { item in
+                RoundedRectangle(cornerRadius: 15)
+                    .fill(.gray)
+                    .opacity(0.5)
+                    .shadow(radius: 10.0)
+                    .padding()
+                    .overlay(Text(String(item)).font(.title).foregroundColor(.white))
+                    .carouselItem()
+            }
+            .padding(.top)
         }
-        .padding(.top)
     }
 }
 

@@ -38,6 +38,7 @@ struct NavigationsView: View {
                     VStack {
                         // Top of page
                         HStack {
+                            // User can select wards from database array updates in realtime
                             Picker(selection: $selectedWard, label: Text("Home Page")
                                 .font(.title)
                                 .fontWeight(.bold)

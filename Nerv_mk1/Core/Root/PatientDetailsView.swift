@@ -57,6 +57,11 @@ struct PatientDetailsView: View {
                             .bold()
                         Text("\(patientData["number"] as? Int ?? 0)")
                     }
+                    HStack {
+                        Text("Ward:")
+                            .bold()
+                        Text("\(patientData["Ward"] as? String ?? "N/A")")
+                    }
                 }
             }
             .padding()
@@ -74,7 +79,8 @@ struct PatientDetailsView_Previews: PreviewProvider {
             "Summary": "Severe abdominal pain",
             "Additional": "Immediate surgery required",
             "altName": "Jo",
-            "number": 8
+            "number": 8,
+            "Ward": "Emergency"
         ])
     }
 }
