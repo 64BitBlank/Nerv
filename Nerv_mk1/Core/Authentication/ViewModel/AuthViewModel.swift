@@ -127,7 +127,6 @@ class AuthViewModel: ObservableObject {
         db.collection("user").document(userId).addSnapshotListener { (document, error) in
             if let document = document, document.exists {
                 self.wards = document.get("wards") as? [String] ?? []
-                print(self.wards)
             } else {
                 print("Document does not exist")
             }

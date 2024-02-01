@@ -48,11 +48,18 @@ struct NotificationView: View {
                         Text("Document \(document.documentID) does not have a forename.")
                     }
                 }
+                .onAppear(){
+                    viewModel_user.fetchWards()
+                }
                 .navigationTitle("Requests")
                 .navigationBarItems(trailing:
                     Button(action: {
                         Task {
-                            await viewModel.fetchRequests()
+                            if let user = viewModel_user.currentUser{
+                                //debugging wards for user not appearing -- fixed
+                                print(viewModel_user.wards)
+                                await viewModel.fetchRequests(wards: viewModel_user.wards)
+                            }
                         }
                     }) {
                         Text("Refresh")

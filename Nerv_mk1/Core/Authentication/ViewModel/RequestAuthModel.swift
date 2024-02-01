@@ -74,18 +74,23 @@ class RequestAuthModel: ObservableObject {
     
     // Function to fetch all notifications in requests collection
     // Adapt to only seclect requests not assigned
-    func fetchRequests() async {
+    func fetchRequests(wards: [String]) async {
         do {
             // Fetch requests where 'isActive' is not true (or is absent)
             let querySnapshot = try await db.collection("requests")
                 .whereField("isActive", isNotEqualTo: true)
                 .getDocuments()
-            // Map the documents to your data model
-            self.requests = querySnapshot.documents.map { $0 }
+
+            // Filter the documents based on the wards array
+            self.requests = querySnapshot.documents.filter { document in
+                guard let requestWard = document.data()["Ward"] as? String else { return false }
+                return wards.contains(requestWard)
+            }
         } catch {
             print("Error fetching documents: \(error.localizedDescription)")
         }
     }
+
     
     // Function to add a reference to the user
     func addUserReference(documentID: String, userID: String) {
