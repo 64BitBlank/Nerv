@@ -16,7 +16,7 @@ struct CarouselConfig {
     var leftPadding: CGFloat { overlapSpacing + spacing }
     var totalMovement: CGFloat { cardWidth + spacing }
 
-    static let `default`: Self = CarouselConfig(spacing: 3, cardHeight: 830, overlapSpacing: 3)
+    static let `default`: Self = CarouselConfig(spacing: 3, cardHeight: 750, overlapSpacing: 3)
 }
 
 public class CarouselModel: ObservableObject {

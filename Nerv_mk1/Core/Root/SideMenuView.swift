@@ -73,6 +73,19 @@ struct SideMenuView: View {
                 Text("")
                     .padding(.bottom, 20)
             }
+            // Navigation link 4
+            HStack {
+                Image(systemName: "note")
+                NavigationLink{
+                               test()
+                }label: {
+                    Text("Development")
+                        .font(.title2)
+                        .foregroundColor(.black)
+                }
+                Text("")
+                    .padding(.bottom, 20)
+            }
 
             Spacer()
             // image

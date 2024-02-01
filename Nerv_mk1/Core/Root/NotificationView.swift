@@ -54,13 +54,11 @@ struct NotificationView: View {
                 .navigationTitle("Requests")
                 .navigationBarItems(trailing:
                     Button(action: {
-                        Task {
-                            if let user = viewModel_user.currentUser{
-                                //debugging wards for user not appearing -- fixed
-                                print(viewModel_user.wards)
-                                await viewModel.fetchRequests(wards: viewModel_user.wards)
-                            }
-                        }
+                    Task {
+                        //debugging wards for user not appearing -- fixed
+                        print(viewModel_user.wards)
+                        await viewModel.fetchRequests(wards: viewModel_user.wards)
+                    }
                     }) {
                         Text("Refresh")
                             .foregroundColor(.blue)
