@@ -20,6 +20,7 @@ class AuthViewModel: ObservableObject {
     @Published var userSession: FirebaseAuth.User?
     @Published var currentUser: User?
     @Published var patientRef: String? = nil
+    @Published var patientRefs: [String] = []
     @Published var wards: [String] = []
     
     // When initilises, check if has a cached user and auto-login
@@ -132,6 +133,22 @@ class AuthViewModel: ObservableObject {
             }
         }
     }
-    
+    func fetchPatientRefs() async {
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        
+        let db = Firestore.firestore()
+        do {
+            let documentSnapshot = try await db.collection("user").document(userId).getDocument()
+            // Directly check the existence without conditional binding
+            if documentSnapshot.exists {
+                // Use the documentSnapshot directly since it's not optional
+                self.patientRefs = documentSnapshot.get("patientRefs") as? [String] ?? []
+            } else {
+                print("Document does not exist")
+            }
+        } catch {
+            print("Error fetching patient references: \(error.localizedDescription)")
+        }
+    }
     
 }

@@ -15,6 +15,8 @@ class RequestAuthModel: ObservableObject {
     @Published var requests: [DocumentSnapshot] = []
     @Published var notifications = [NotificationsModel]()
     @Published var patientData: [String: Any]?
+    @Published var requestDetails: [Request] = []
+    
     let currentUser = AuthViewModel.shared.currentUser
     
     private var db = Firestore.firestore()
@@ -219,7 +221,32 @@ class RequestAuthModel: ObservableObject {
             print("ID: \(notification.id), Forename: \(notification.Forename), Lastname: \(notification.Lastname), Additional: \(notification.Additional), StaffNumber: \(notification.StaffNumber), Summary: \(notification.Summary), Alt Name: \(notification.altName), Number: \(notification.number)")
         }
     }
-    
-    
-}
+    func fetchPatientWard(ids: [String]) async {
+        var requests: [Request] = []
+        
+        do {
+            for id in ids {
+                let documentSnapshot = try await db.collection("requests").document(id).getDocument()
+                if documentSnapshot.exists, let ward = documentSnapshot.data()?["Ward"] as? String {
+                    let request = Request(id: documentSnapshot.documentID, ward: ward)
+                    requests.append(request)
+                }
+            }
+            // Update the @Published property on the main thread
+            DispatchQueue.main.async {
+                self.requestDetails = requests
+                print(self.requestDetails)
+            }
+        } catch {
+            print("Error fetching documents: \(error.localizedDescription)")
+        }
+    }
 
+
+}
+// expand structure  later to hold all patient information rather then just id and ward
+// for now this works to test data retieval & filtering
+struct Request: Identifiable, Codable {
+    let id: String
+    let ward: String
+}

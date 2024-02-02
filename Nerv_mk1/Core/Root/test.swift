@@ -10,24 +10,34 @@ import SwiftUI
 struct test: View {
     @State private var selectedWard = ""
     
-    @EnvironmentObject var viewModel: AuthViewModel // If you're using this, ensure it's provided as an environment object to your view.
-    @StateObject private var viewModel_request = RequestAuthModel()
+    @StateObject var viewModel_request = RequestAuthModel()
     @StateObject var authViewModel = AuthViewModel() // This seems to be the object fetching and storing wards.
     
     var body: some View {
         VStack{
-            HStack {
-                // User can select wards from database array updates in realtime
-                Picker(selection: $selectedWard, label: Text("Home Page")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .padding(.top, 10)) {
-                        ForEach(authViewModel.wards, id: \.self) { ward in
-                            Text(ward).tag(ward)
-                        }
+            // User can select wards from database array updates in realtime
+            Picker(selection: $selectedWard, label: Text("Home Page")
+                .font(.title)
+                .fontWeight(.bold)
+                .padding(.top, 10)) {
+                    ForEach(authViewModel.wards, id: \.self) { ward in
+                        Text(ward).tag(ward)
+                    }
                 }
+                .onChange(of: selectedWard) { newValue in
+                    // When the ward changes do this action...
+                    print(viewModel_request.requestDetails)
+                }
+            // Filter and display requests for the selected ward
+            let filteredRequests = viewModel_request.requestDetails.filter { $0.ward == selectedWard }
+            if !filteredRequests.isEmpty {
+                ForEach(filteredRequests) { request in
+                    Text("\(request.id) - Active in \(request.ward)")
+                        .foregroundColor(.gray)
+                }
+            } else {
+                Text("No patient references found for \(selectedWard).")
             }
-            
             Carousel(items: 5) { item in
                 RoundedRectangle(cornerRadius: 15)
                     .fill(.gray)
@@ -39,11 +49,23 @@ struct test: View {
             }
             .padding(.top)
         }
-        .onAppear{
-            authViewModel.fetchWards()
+        .onAppear(){
+            Task{
+                authViewModel.fetchWards()
+                // Assume fetchPatientRefs() updates a patientRefs property in authViewModel
+                await authViewModel.fetchPatientRefs()
+                // After brief delay to ensure patientRefs are fetched, fetch request details
+                //print(authViewModel.patientRefs)
+                await viewModel_request.fetchPatientWard(ids: authViewModel.patientRefs)
+                print(viewModel_request.requestDetails)
+            }
+
         }
+        
     }
 }
+
+
 
 #Preview {
     test()
