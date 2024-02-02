@@ -121,16 +121,20 @@ class AuthViewModel: ObservableObject {
         }
     }
     
-    func fetchWards() {
+    func fetchWards() async {
         guard let userId = Auth.auth().currentUser?.uid else { return }
         
         let db = Firestore.firestore()
-        db.collection("user").document(userId).addSnapshotListener { (document, error) in
-            if let document = document, document.exists {
-                self.wards = document.get("wards") as? [String] ?? []
+        do {
+            let documentSnapshot = try await db.collection("user").document(userId).getDocument()
+            // Directly check the existence without conditional binding
+            if documentSnapshot.exists {
+                self.wards = documentSnapshot.get("wards") as? [String] ?? []
             } else {
                 print("Document does not exist")
             }
+        } catch {
+            print("Error fetching wards: \(error.localizedDescription)")
         }
     }
     func fetchPatientRefs() async {

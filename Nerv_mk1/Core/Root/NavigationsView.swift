@@ -254,7 +254,9 @@ struct NavigationsView: View {
                         .padding()
                     }
                     .onAppear{
-                        authViewModel.fetchWards()
+                        Task{
+                            await authViewModel.fetchWards()
+                        }
                     }
                     .onAppear {
                         // Fetch patient data when the patientRef is available

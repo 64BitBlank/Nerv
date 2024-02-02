@@ -49,7 +49,9 @@ struct NotificationView: View {
                     }
                 }
                 .onAppear(){
-                    viewModel_user.fetchWards()
+                    Task{
+                        await viewModel_user.fetchWards()
+                    }
                 }
                 .navigationTitle("Requests")
                 .navigationBarItems(trailing:
