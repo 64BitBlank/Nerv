@@ -227,15 +227,34 @@ class RequestAuthModel: ObservableObject {
         do {
             for id in ids {
                 let documentSnapshot = try await db.collection("requests").document(id).getDocument()
-                if documentSnapshot.exists, let ward = documentSnapshot.data()?["Ward"] as? String {
-                    let request = Request(id: documentSnapshot.documentID, ward: ward)
+                // Directly check if the document exists, without using `if let` for optional binding.
+                if documentSnapshot.exists, let data = documentSnapshot.data() {
+                    let id = documentSnapshot.documentID
+                    let ward = data["Ward"] as? String ?? ""
+                    let additional = data["Additional"] as? String ?? ""
+                    let currentPrescription = data["CurrentPerscription"] as? String ?? ""
+                    let forename = data["Forename"] as? String ?? ""
+                    let lastname = data["Lastname"] as? String ?? ""
+                    let medicalHistory = data["MedicalHistory"] as? String ?? ""
+                    let personalContact = data["PersonalContact"] as? String ?? ""
+                    let sex = data["Sex"] as? String ?? ""
+                    let staffNumber = data["StaffNumber"] as? String ?? ""
+                    let summary = data["Summary"] as? String ?? ""
+                    let altName = data["altName"] as? String ?? ""
+                    let dob = data["dob"] as? Timestamp ?? Timestamp() 
+                    let isActive = data["isActive"] as? Bool ?? false
+                    let notes = data["notes"] as? String ?? ""
+                    let number = data["number"] as? Int ?? 0
+                    let photoRefs = data["PhotoRefs"] as? [String] ?? []
+
+                    // Assuming Request has an initializer that can handle all these fields.
+                    let request = Request(id: id, ward: ward, Additional: additional, CurrentPerscription: currentPrescription, Forename: forename, Lastname: lastname, MedicalHistory: medicalHistory, PersonalContact: personalContact, Sex: sex, StaffNumber: staffNumber, Summary: summary, altName: altName, dob: dob, isActive: isActive, notes: notes, number: number, PhotoRefs: photoRefs)
                     requests.append(request)
                 }
             }
             // Update the @Published property on the main thread
             DispatchQueue.main.async {
                 self.requestDetails = requests
-                print(self.requestDetails)
             }
         } catch {
             print("Error fetching documents: \(error.localizedDescription)")
@@ -249,4 +268,19 @@ class RequestAuthModel: ObservableObject {
 struct Request: Identifiable, Codable {
     let id: String
     let ward: String
+    let Additional: String
+    let CurrentPerscription: String
+    let Forename: String
+    let Lastname: String
+    let MedicalHistory: String
+    let PersonalContact: String
+    let Sex: String
+    let StaffNumber: String
+    let Summary: String
+    let altName: String
+    let dob: Timestamp
+    let isActive: Bool
+    let notes: String
+    let number: Int
+    let PhotoRefs: Array<String>
 }

@@ -9,7 +9,16 @@ import SwiftUI
 
 struct test: View {
     @State private var selectedWard = ""
+    @State private var showMenu: Bool = false
+    @State private var isEditing: Bool = false
+    @State private var showingSaveAlert = false
+    @State private var attemptToSaveEdits = false
+    @State private var showImageOverlay = false
+    @State private var selectedImageUrl: URL?
+    @State private var selectedImageTitle: String = ""
+    @State private var notes: String = ""
     
+    @EnvironmentObject var viewModel: AuthViewModel
     @StateObject var viewModel_request = RequestAuthModel()
     @StateObject var authViewModel = AuthViewModel() // This seems to be the object fetching and storing wards.
     
@@ -49,12 +58,86 @@ struct test: View {
                         .shadow(radius: 10.0)
                         .overlay(
                             VStack {
-                                Text("Request ID: \(request.id)")
-                                    .font(.title)
-                                    .foregroundColor(.white)
-                                Text("Ward: \(request.ward)")
-                                    .foregroundColor(.white)
+                                Group{
+                                    Text("Request ID: \(request.id)")
+                                    Text("Ward: \(request.ward)")
+                                    Text("Additional: \(request.Additional)")
+                                    Text("Current Perscription: \(request.CurrentPerscription)")
+                                    Text("Forename: \(request.Forename)")
+                                    Text("Lastname: \(request.Lastname)")
+                                    Text("MedicalHistory: \(request.MedicalHistory)")
+                                    Text("PersonalContact: \(request.PersonalContact)")
+                                    Text("Sex: \(request.Sex)")
+                                    //Text("StaffNumber: \(request.StaffNumber)")
+                                    Text("Date-Of-Birth: \(request.dob)")
+                                }
+         
+                                Group{
+                                    Divider()
+                                    if isEditing {
+                                        Section(header: Text("Editing Notes:")) {
+                                            HStack {
+                                                Text("Additional notes")
+                                                    .font(.caption)
+                                                    .foregroundColor(.gray)
+                                                // Character count
+                                                Text("[\(notes.count)]")
+                                                    .font(.caption)
+                                                    .foregroundColor(.gray)
+                                                    .padding(.leading, 30)
+                                            }
+                                            TextEditor(text: $notes)
+                                                .frame(height: CGFloat(30 * 4))
+                                                .lineSpacing(5)
+                                        }
+                                    } else {
+                                        HStack {
+                                            Text("Notes: ")
+                                                .fontWeight(.bold)
+                                            Text("\(request.notes)")
+                                        }
+                                    }
+                                    Divider()
+                                }
+                                
+                                Group{
+                                    Button(action: {
+                                        if isEditing {
+                                            // User is trying to finish editing
+                                            attemptToSaveEdits = true
+                                            // Alert user action has occured
+                                            showingSaveAlert = true
+                                        }
+                                        isEditing.toggle()
+                                    }) {
+                                        Text(isEditing ? "Done" : "Edit Notes")
+                                    }
+                                    
+                                    .alert(isPresented: $showingSaveAlert) {
+                                        Alert(
+                                            title: Text("Confirm Changes"),
+                                            message: Text("Are you sure you want to save these changes?"),
+                                            primaryButton: .destructive(Text("Save")) {
+                                                if attemptToSaveEdits {
+                                                    viewModel_request.addNotesToPatient(patientID: request.id, notes: notes)
+                                                    viewModel_request.fetchPatientDetails(patientID: request.id)
+                                                    isEditing = false
+                                                    attemptToSaveEdits = false
+                                                }
+                                            },
+                                            secondaryButton: .cancel {
+                                                isEditing = false
+                                                attemptToSaveEdits = false
+                                            }
+                                        )
+                                    }
+                                }
+                                .onChange(of: notes) { newPatientRef in
+                                    viewModel_request.fetchPatientDetails(patientID: request.id)
+                                }
+                                
                             }
+
                         )
                         .carouselItem()
                 } else {
@@ -89,7 +172,56 @@ struct test: View {
     }
 }
 
+struct ImageView2: View {
+    @StateObject private var loader = ImageLoader()
+    let urlString: String
+    @Binding var selectedImageUrl: URL?
+    @Binding var showImageOverlay: Bool
+    
+    var body: some View {
+        Group {
+            if let image = loader.image {
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 100, height: 100)
+                    .clipped()
+                    .blur(radius: 7)
+                    .onTapGesture {
+                        self.selectedImageUrl = URL(string: urlString)
+                        self.showImageOverlay = true
+                    }
+            } else {
+                ProgressView()
+                    .onAppear {
+                        loader.loadImage(fromURL: urlString)
+                    }
+            }
+        }
+    }
+}
+struct ImageOverlayView2: View {
+    let imageUrl: URL
+    let title: String
 
+    var body: some View {
+        VStack {
+            Text(title)
+                .font(.title)
+                .padding()
+
+            AsyncImage(url: imageUrl) { image in
+                image.resizable()
+                     .aspectRatio(contentMode: .fit)
+                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } placeholder: {
+                ProgressView()
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.black.opacity(0.6))
+    }
+}
 
 #Preview {
     test()
