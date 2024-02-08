@@ -6,6 +6,25 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
+
+extension DateFormatter {
+    // Parser for the input date format
+    static let dobInputFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd" // Adjust this based on the actual format of your date string
+        return formatter
+    }()
+    
+    // Formatter for the output date format
+    static let dobOutputFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long // For example, "December 31, 2024"
+        formatter.timeStyle = .none
+        return formatter
+    }()
+}
+
 
 struct test: View {
     @State private var selectedWard = ""
@@ -17,6 +36,7 @@ struct test: View {
     @State private var selectedImageUrl: URL?
     @State private var selectedImageTitle: String = ""
     @State private var notes: String = ""
+    @State private var currentCarouselIndex = 0
     
     @EnvironmentObject var viewModel: AuthViewModel
     @StateObject var viewModel_request = RequestAuthModel()
@@ -28,7 +48,7 @@ struct test: View {
             Picker(selection: $selectedWard, label: Text("Home Page")
                 .font(.title)
                 .fontWeight(.bold)
-                .padding(.top, 10)) {
+                .padding(.top, 15)) {
                     ForEach(authViewModel.wards, id: \.self) { ward in
                         Text(ward).tag(ward)
                     }
@@ -57,35 +77,66 @@ struct test: View {
                         .padding()
                         .shadow(radius: 10.0)
                         .overlay(
-                            VStack {
-                                Group{
-                                    Text("Request ID: \(request.id)")
-                                    Text("Ward: \(request.ward)")
-                                    Text("Additional: \(request.Additional)")
-                                    Text("Current Perscription: \(request.CurrentPerscription)")
-                                    Text("Forename: \(request.Forename)")
-                                    Text("Lastname: \(request.Lastname)")
-                                    Text("MedicalHistory: \(request.MedicalHistory)")
-                                    Text("PersonalContact: \(request.PersonalContact)")
-                                    Text("Sex: \(request.Sex)")
-                                    //Text("StaffNumber: \(request.StaffNumber)")
-                                    Text("Date-Of-Birth: \(request.dob)")
+                            VStack(alignment: .leading, spacing: 8) { // Align VStack content to the leading edge
+                                HStack{
+                                    Text("Request ID:").fontWeight(.bold)
+                                    Text(" \(request.id)")
                                 }
-         
-                                Group{
+                                HStack{
+                                    Text("Ward:").fontWeight(.bold)
+                                    Text(" \(request.ward)")
+                                }
+                                HStack{
+                                    Text("Additional:").fontWeight(.bold)
+                                    Text(" \(request.Additional)")
+                                }
+                                HStack{
+                                    Text("Current Prescription:").fontWeight(.bold)
+                                    Text(" \(request.CurrentPerscription)")
+                                }
+                                HStack{
+                                    Text("Forename:").fontWeight(.bold)
+                                    Text(" \(request.Forename)")
+                                }
+                                HStack{
+                                    Text("Lastname:").fontWeight(.bold)
+                                    Text(" \(request.Lastname)")
+                                }
+                                HStack{
+                                    Text("Medical History:").fontWeight(.bold)
+                                    Text(" \(request.MedicalHistory)")
+                                }
+                                HStack{
+                                    Text("Personal Contact:").fontWeight(.bold)
+                                    Text(" \(request.PersonalContact)")
+                                }
+                                HStack{
+                                    Text("Sex:").fontWeight(.bold)
+                                    Text(" \(request.Sex)")
+                                }
+                                HStack {
+                                    Text("Date of Birth:")
+                                        .fontWeight(.bold)
+                                    // Use the dateValue() method to convert Timestamp to Date
+                                    let dobDate = request.dob.dateValue()
+                                    let formattedDOB = DateFormatter.dobOutputFormatter.string(from: dobDate)
+                                    Text(" \(formattedDOB)")
+                                }
+                                
+                                Group {
                                     Divider()
                                     if isEditing {
-                                        Section(header: Text("Editing Notes:")) {
+                                        Section(header: Text("Editing Notes:").frame(maxWidth: .infinity, alignment: .leading)) {
                                             HStack {
                                                 Text("Additional notes")
                                                     .font(.caption)
                                                     .foregroundColor(.gray)
-                                                // Character count
                                                 Text("[\(notes.count)]")
                                                     .font(.caption)
                                                     .foregroundColor(.gray)
                                                     .padding(.leading, 30)
                                             }
+                                            .frame(maxWidth: .infinity, alignment: .leading)
                                             TextEditor(text: $notes)
                                                 .frame(height: CGFloat(30 * 4))
                                                 .lineSpacing(5)
@@ -96,23 +147,22 @@ struct test: View {
                                                 .fontWeight(.bold)
                                             Text("\(request.notes)")
                                         }
+                                        .frame(maxWidth: .infinity, alignment: .leading)
                                     }
                                     Divider()
                                 }
                                 
-                                Group{
+                                Group {
                                     Button(action: {
                                         if isEditing {
-                                            // User is trying to finish editing
                                             attemptToSaveEdits = true
-                                            // Alert user action has occured
                                             showingSaveAlert = true
                                         }
                                         isEditing.toggle()
                                     }) {
                                         Text(isEditing ? "Done" : "Edit Notes")
                                     }
-                                    
+                                    .frame(maxWidth: .infinity, alignment: .leading)
                                     .alert(isPresented: $showingSaveAlert) {
                                         Alert(
                                             title: Text("Confirm Changes"),
@@ -120,7 +170,7 @@ struct test: View {
                                             primaryButton: .destructive(Text("Save")) {
                                                 if attemptToSaveEdits {
                                                     viewModel_request.addNotesToPatient(patientID: request.id, notes: notes)
-                                                    viewModel_request.fetchPatientDetails(patientID: request.id)
+                                                    //viewModel_request.fetchPatientDetails(patientID: request.id)
                                                     isEditing = false
                                                     attemptToSaveEdits = false
                                                 }
@@ -132,12 +182,13 @@ struct test: View {
                                         )
                                     }
                                 }
-                                .onChange(of: notes) { newPatientRef in
-                                    viewModel_request.fetchPatientDetails(patientID: request.id)
-                                }
-                                
+                                Spacer()
                             }
-
+                            // Ensure all Text views are aligned to the leading edge
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal) // Add horizontal padding to keep text within the bounds of the card
+                            .padding(.top, 25)
+                            .padding() // Apply padding to the VStack to ensure content is inset from the card edges
                         )
                         .carouselItem()
                 } else {
@@ -170,6 +221,7 @@ struct test: View {
         }
         
     }
+    
 }
 
 struct ImageView2: View {
@@ -222,6 +274,8 @@ struct ImageOverlayView2: View {
         .background(Color.black.opacity(0.6))
     }
 }
+
+
 
 #Preview {
     test()
