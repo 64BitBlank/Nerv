@@ -26,7 +26,7 @@ extension DateFormatter {
 }
 
 struct RequestCardView: View {
-    let request: Request // Assuming `Request` is your model
+    let request: Request
     @State private var selectedWard = ""
     @State private var showMenu: Bool = false
     @State private var isEditing: Bool = false
@@ -208,25 +208,25 @@ struct RequestCardView: View {
                     }
                     Spacer()
                 }
-                // updates the patient data inline with the new patientRef
+                    // updates the patient data inline with the new patientRef
                     .onChange(of: request.id) { newPatientRef in
-                    if !newPatientRef.isEmpty {
-                        viewModel_request.fetchPatientDetails(patientID: newPatientRef)
+                        if !newPatientRef.isEmpty {
+                            viewModel_request.fetchPatientDetails(patientID: newPatientRef)
+                        }
                     }
-                }
                 
-                .sheet(isPresented: $showImageOverlay) {
-                    if let url = selectedImageUrl {
-                        ImageOverlayView(imageUrl: url, title: selectedImageTitle)
-                    }else {
-                        Text("Error: No image selected")
+                    .sheet(isPresented: $showImageOverlay) {
+                        if let url = selectedImageUrl {
+                            ImageOverlayView(imageUrl: url, title: selectedImageTitle)
+                        }else {
+                            Text("Error: No image selected")
+                        }
                     }
-                }
-                .onChange(of: selectedImageUrl) { newUrl in
-                    if let url = newUrl {
-                        print("New Selected Image URL: \(url)")
+                    .onChange(of: selectedImageUrl) { newUrl in
+                        if let url = newUrl {
+                            print("New Selected Image URL: \(url)")
+                        }
                     }
-                }
 
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .blur(radius: showMenu ? 2 : 0) // Apply blur effect when showMenu is true

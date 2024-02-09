@@ -10,35 +10,31 @@ import SwiftUI
 
 
 struct test: View {
-    @State private var selectedWard = ""
+    // @State private var selectedWardLocal = ""
     @State private var showMenu: Bool = false
-    
     @EnvironmentObject var viewModel: AuthViewModel
     @StateObject var viewModel_request = RequestAuthModel()
-    @StateObject var authViewModel = AuthViewModel() // This seems to be the object fetching and storing wards.
     
     var body: some View {
-        VStack{
-            // User can select wards from database array updates in realtime
-            Picker(selection: $selectedWard, label: Text("Home Page")
+        VStack {
+            Picker(selection: $viewModel.selectedWard, label: Text("Home Page")
                 .font(.title)
                 .fontWeight(.bold)
                 .padding(.top, 15)) {
-                    ForEach(authViewModel.wards, id: \.self) { ward in
+                    ForEach(viewModel.wards, id: \.self) { ward in
                         Text(ward).tag(ward)
                     }
-                }
-                .onChange(of: selectedWard) { newValue in
-                    // When the ward changes do this action...
-                    //print(viewModel_request.requestDetails)
-                }
+            }
+            .onChange(of: viewModel.selectedWard) { newValue in
+                // Actions when ward changes, if needed
+            }
             // Filter and display requests for the selected ward
-            let filteredRequests = viewModel_request.requestDetails.filter { $0.ward == selectedWard }
+            let filteredRequests = viewModel_request.requestDetails.filter { $0.ward == viewModel.selectedWard }
             if !filteredRequests.isEmpty {
-                Text("Active Requests - \(selectedWard)")
+                Text("Active Requests - \(viewModel.selectedWard)")
                     .foregroundColor(.gray)
             } else {
-                Text("No patient requests for \(selectedWard).")
+                Text("No patient requests for \(viewModel.selectedWard).")
             }
             
             let itemCount = max(filteredRequests.count, 1)
@@ -62,15 +58,15 @@ struct test: View {
         .onAppear(){
             Task{
                 // default the main selection to first ward in list
-                await authViewModel.fetchWards()
-                if let firstWard = authViewModel.wards.first {
-                    selectedWard = firstWard
+                await viewModel.fetchWards()
+                if viewModel.selectedWard.isEmpty, let firstWard = viewModel.wards.first {
+                    viewModel.selectedWard = firstWard
                 }
                 // Assume fetchPatientRefs() updates a patientRefs property in authViewModel
-                await authViewModel.fetchPatientRefs()
+                await viewModel.fetchPatientRefs()
                 // After brief delay to ensure patientRefs are fetched, fetch request details
                 //print(authViewModel.patientRefs)
-                await viewModel_request.fetchPatientWard(ids: authViewModel.patientRefs)
+                await viewModel_request.fetchPatientWard(ids: viewModel.patientRefs)
                 //print(viewModel_request.requestDetails)
             }
 
