@@ -95,7 +95,18 @@ struct RequestCardView: View {
                         let formattedDOB = DateFormatter.dobOutputFormatter.string(from: dobDate)
                         Text(" \(formattedDOB)")
                     }
-                    
+                    HStack{
+                        Text("NHS Number:").fontWeight(.bold)
+                        Text(" \(request.nhsNumber)")
+                    }
+                    HStack{
+                        Text("N.E.W.S Score:").fontWeight(.bold)
+                        Text(" \(request.newsScore)")
+                    }
+                    HStack{
+                        Text("Score:").fontWeight(.bold)
+                        Text(" \(request.number)")
+                    }
                     Group {
                         Divider()
                         if isEditing {
@@ -124,39 +135,103 @@ struct RequestCardView: View {
                         }
                         Divider()
                     }
-                    
-                    Group {
-                        Button(action: {
-                            if isEditing {
-                                attemptToSaveEdits = true
-                                showingSaveAlert = true
+                    // needs representing in reverse order to show latest first
+                    if !request.PhotoRefs.isEmpty {
+                        let photoRefs = request.PhotoRefs
+                        ScrollView {
+                            LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], spacing: 10) {
+                                ForEach(photoRefs, id: \.self) { urlString in
+                                    ImageView(urlString: urlString, selectedImageUrl: $selectedImageUrl, showImageOverlay: $showImageOverlay)
+                                        .padding(10)
+                                }
                             }
-                            isEditing.toggle()
-                        }) {
-                            Text(isEditing ? "Done" : "Edit Notes")
+                            .padding(.horizontal)
+                            .padding(.vertical, 10)
+                            .frame(maxHeight: .infinity)
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .alert(isPresented: $showingSaveAlert) {
-                            Alert(
-                                title: Text("Confirm Changes"),
-                                message: Text("Are you sure you want to save these changes?"),
-                                primaryButton: .destructive(Text("Save")) {
-                                    if attemptToSaveEdits {
-                                        viewModel_request.addNotesToPatient(patientID: request.id, notes: notes)
-                                        //viewModel_request.fetchPatientDetails(patientID: request.id)
+                    } else {
+                        Text("No photos available")
+                            .fontWeight(.bold)
+                    }
+                    Spacer()
+                    
+                    
+                    // Bottom of page
+                    Divider()
+                        .padding(.horizontal, 50)
+                    
+                    HStack {
+                        Spacer()
+                        if (request.id.isEmpty){
+                            Text(" ")
+                                .font(.title3)
+                                .fontWeight(.medium)
+                        }else{
+                            NavigationLink(destination: CameraView(patientRef: request.id)) {
+                                Image(systemName: "camera")
+                                    .foregroundColor(.blue)
+                            }
+                            
+                            Button(action: {
+                                if isEditing {
+                                    // User is trying to finish editing
+                                    attemptToSaveEdits = true
+                                    // Alert user action has occured
+                                    showingSaveAlert = true
+                                }
+                                isEditing.toggle()
+                            }) {
+                                Text(isEditing ? "Done" : "Edit Notes")
+                            }
+                            
+                            .alert(isPresented: $showingSaveAlert) {
+                                Alert(
+                                    title: Text("Confirm Changes"),
+                                    message: Text("Are you sure you want to save these changes?"),
+                                    primaryButton: .destructive(Text("Save")) {
+                                        if attemptToSaveEdits {
+                                            viewModel_request.addNotesToPatient(patientID: request.id, notes: notes)
+                                            viewModel_request.fetchPatientDetails(patientID: request.id)
+                                            isEditing = false
+                                            attemptToSaveEdits = false
+                                        }
+                                    },
+                                    secondaryButton: .cancel {
                                         isEditing = false
                                         attemptToSaveEdits = false
                                     }
-                                },
-                                secondaryButton: .cancel {
-                                    isEditing = false
-                                    attemptToSaveEdits = false
-                                }
-                            )
+                                )
+                            }
+                            
                         }
+                        Spacer()
                     }
                     Spacer()
                 }
+                // updates the patient data inline with the new patientRef
+                    .onChange(of: request.id) { newPatientRef in
+                    if !newPatientRef.isEmpty {
+                        viewModel_request.fetchPatientDetails(patientID: newPatientRef)
+                    }
+                }
+                
+                .sheet(isPresented: $showImageOverlay) {
+                    if let url = selectedImageUrl {
+                        ImageOverlayView(imageUrl: url, title: selectedImageTitle)
+                    }else {
+                        Text("Error: No image selected")
+                    }
+                }
+                .onChange(of: selectedImageUrl) { newUrl in
+                    if let url = newUrl {
+                        print("New Selected Image URL: \(url)")
+                    }
+                }
+
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .blur(radius: showMenu ? 2 : 0) // Apply blur effect when showMenu is true
+                .frame(maxWidth: .infinity)
+               
                 // Ensure all Text views are aligned to the leading edge
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal) // Add horizontal padding to keep text within the bounds of the card
@@ -236,6 +311,9 @@ struct ImageOverlayView2: View {
         isActive: true,
         notes: " ",
         number: 0,
-        PhotoRefs: [" ", " "])
+        PhotoRefs: [" ", " "],
+        newsScore: 0,
+        nhsNumber: " "
+    )
     )
 }

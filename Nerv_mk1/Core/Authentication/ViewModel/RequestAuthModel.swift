@@ -100,23 +100,29 @@ class RequestAuthModel: ObservableObject {
         
         // Start a batch
         let batch = db.batch()
-        // Reference to the user's document where you want to add the patient reference
+        
+        // Reference to the user's document
         let userRef = db.collection("user").document(userID)
-        // Reference to the patient's document that you want to mark as active
-        let patientRef = db.collection("requests").document(documentID)
-        // Update the user's document with the new patient reference
-        batch.updateData(["patientRef": documentID], forDocument: userRef)
-        // Mark the patient as active
-        batch.updateData(["isActive": true], forDocument: patientRef)
+        // Reference to the request's document
+        let requestRef = db.collection("requests").document(documentID)
+        
+        // Prepare to add the request ID to the photoRefs array in the user's document
+        batch.updateData([
+            "patientRefs": FieldValue.arrayUnion([documentID])
+        ], forDocument: userRef)
+        
+        // Prepare to mark the request as active
+        batch.updateData([
+            "isActive": true
+        ], forDocument: requestRef)
         
         // Commit the batch
         batch.commit { error in
             if let error = error {
-                // Handle any errors
-                print("Error writing batch: \(error)")
+                print("Error performing batch update: \(error)")
             } else {
-                // Batch commit was successful
-                print("Batch write succeeded, user and patient updated")
+                print("Batch update succeeded, request added to photoRefs and marked as active")
+                self.logUserAction(action: "\(documentID) pinned to user")
             }
         }
     }
@@ -245,10 +251,12 @@ class RequestAuthModel: ObservableObject {
                     let isActive = data["isActive"] as? Bool ?? false
                     let notes = data["notes"] as? String ?? ""
                     let number = data["number"] as? Int ?? 0
-                    let photoRefs = data["PhotoRefs"] as? [String] ?? []
+                    let photoRefs = data["photoRefs"] as? [String] ?? []
+                    let newsScore = data["newsScore"] as? Int ?? 0
+                    let nhsNumber = data["nhsNumber"] as? String ?? ""
 
                     // Assuming Request has an initializer that can handle all these fields.
-                    let request = Request(id: id, ward: ward, Additional: additional, CurrentPerscription: currentPrescription, Forename: forename, Lastname: lastname, MedicalHistory: medicalHistory, PersonalContact: personalContact, Sex: sex, StaffNumber: staffNumber, Summary: summary, altName: altName, dob: dob, isActive: isActive, notes: notes, number: number, PhotoRefs: photoRefs)
+                    let request = Request(id: id, ward: ward, Additional: additional, CurrentPerscription: currentPrescription, Forename: forename, Lastname: lastname, MedicalHistory: medicalHistory, PersonalContact: personalContact, Sex: sex, StaffNumber: staffNumber, Summary: summary, altName: altName, dob: dob, isActive: isActive, notes: notes, number: number, PhotoRefs: photoRefs, newsScore: newsScore, nhsNumber: nhsNumber)
                     requests.append(request)
                 }
             }
@@ -283,4 +291,6 @@ struct Request: Identifiable, Codable {
     let notes: String
     let number: Int
     let PhotoRefs: Array<String>
+    let newsScore: Int
+    let nhsNumber: String
 }
