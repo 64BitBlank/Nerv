@@ -26,7 +26,6 @@ extension DateFormatter {
 }
 
 struct RequestCardView: View {
-    let request: Request
     @State private var selectedWard = ""
     @State private var showMenu: Bool = false
     @State private var isEditing: Bool = false
@@ -36,14 +35,12 @@ struct RequestCardView: View {
     @State private var selectedImageUrl: URL?
     @State private var selectedImageTitle: String = ""
     @State private var notes: String = ""
-    @State private var currentCarouselIndex = 0
-    
+   // @State private var currentCarouselIndex = 0
+    @ObservedObject var request: Request
     @EnvironmentObject var viewModel: AuthViewModel
-    @StateObject var viewModel_request = RequestAuthModel()
-    @StateObject var authViewModel = AuthViewModel() // This seems to be the object fetching and storing wards.
+    @EnvironmentObject var requestModel: RequestAuthModel
     
     var body: some View {
-        
         RoundedRectangle(cornerRadius: 15)
             .fill(Color.gray)
             .opacity(0.5)
@@ -190,8 +187,10 @@ struct RequestCardView: View {
                                     message: Text("Are you sure you want to save these changes?"),
                                     primaryButton: .destructive(Text("Save")) {
                                         if attemptToSaveEdits {
-                                            viewModel_request.addNotesToPatient(patientID: request.id, notes: notes)
-                                            viewModel_request.fetchPatientDetails(patientID: request.id)
+                                            requestModel.addNotesToPatient(patientID: request.id, notes: notes)
+                                            Task{
+                                                await requestModel.fetchUpdatedPatientDetails(by: request.id)
+                                            }
                                             isEditing = false
                                             attemptToSaveEdits = false
                                         }
@@ -208,10 +207,11 @@ struct RequestCardView: View {
                     }
                     Spacer()
                 }
-                    // updates the patient data inline with the new patientRef
-                    .onChange(of: request.id) { newPatientRef in
-                        if !newPatientRef.isEmpty {
-                            viewModel_request.fetchPatientDetails(patientID: newPatientRef)
+                    .onReceive(requestModel.$newPatientData) { newData in
+                        guard let newData = newData else { return }
+                        // update the requestDetails array
+                        if let index = requestModel.requestDetails.firstIndex(where: { $0.id == newData.id }) {
+                            requestModel.requestDetails[index] = newData
                         }
                     }
                 
@@ -224,19 +224,17 @@ struct RequestCardView: View {
                     }
                     .onChange(of: selectedImageUrl) { newUrl in
                         if let url = newUrl {
-                            print("New Selected Image URL: \(url)")
+                            print("Selected Image URL: \(url)")
                         }
                     }
-
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .blur(radius: showMenu ? 2 : 0) // Apply blur effect when showMenu is true
-                .frame(maxWidth: .infinity)
-               
-                // Ensure all Text views are aligned to the leading edge
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal) // Add horizontal padding to keep text within the bounds of the card
-                .padding(.top, 25)
-                .padding()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .blur(radius: showMenu ? 2 : 0) // Apply blur effect when showMenu is true
+                    .frame(maxWidth: .infinity)
+                    // Ensure all Text views are aligned to the leading edge
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal) // Add horizontal padding to keep text within the bounds of the card
+                    .padding(.top, 25)
+                    .padding()
             )
     }
 }
@@ -294,7 +292,7 @@ struct ImageOverlayView2: View {
 
 
 #Preview{
-    RequestCardView(request: Request.init(
+    RequestCardView(request: (Request.init(
         id: " ",
         ward: " ",
         Additional: " ",
@@ -315,5 +313,5 @@ struct ImageOverlayView2: View {
         newsScore: 0,
         nhsNumber: " "
     )
-    )
+    ))
 }

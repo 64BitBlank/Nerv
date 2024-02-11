@@ -12,8 +12,10 @@ import SwiftUI
 struct test: View {
     // @State private var selectedWardLocal = ""
     @State private var showMenu: Bool = false
+    @State private var activeCardIndex = 0
+    
     @EnvironmentObject var viewModel: AuthViewModel
-    @StateObject var viewModel_request = RequestAuthModel()
+    @EnvironmentObject var requestModel: RequestAuthModel
     
     var body: some View {
         VStack {
@@ -29,7 +31,7 @@ struct test: View {
                 // Actions when ward changes, if needed
             }
             // Filter and display requests for the selected ward
-            let filteredRequests = viewModel_request.requestDetails.filter { $0.ward == viewModel.selectedWard }
+            let filteredRequests = requestModel.requestDetails.filter { $0.ward == viewModel.selectedWard }
             if !filteredRequests.isEmpty {
                 Text("Active Requests - \(viewModel.selectedWard)")
                     .foregroundColor(.gray)
@@ -42,8 +44,8 @@ struct test: View {
                 if index < filteredRequests.count {
                     let request = filteredRequests[index]
                     // Use RequestCardView to display each request
-                    RequestCardView(request: request)
-                        .carouselItem(.default) // Apply any necessary modifiers for carousel items
+                    RequestCardView(request: (request))
+                        .carouselItem()
                 } else {
                     // Display a blank card when there are no active requests
                     RoundedRectangle(cornerRadius: 15)
@@ -57,7 +59,7 @@ struct test: View {
         }
         .onAppear(){
             Task{
-                // default the main selection to first ward in list
+                // default the main selection to first ward in list if no global selection
                 await viewModel.fetchWards()
                 if viewModel.selectedWard.isEmpty, let firstWard = viewModel.wards.first {
                     viewModel.selectedWard = firstWard
@@ -66,7 +68,7 @@ struct test: View {
                 await viewModel.fetchPatientRefs()
                 // After brief delay to ensure patientRefs are fetched, fetch request details
                 //print(authViewModel.patientRefs)
-                await viewModel_request.fetchPatientWard(ids: viewModel.patientRefs)
+                await requestModel.fetchPatientWard(ids: viewModel.patientRefs)
                 //print(viewModel_request.requestDetails)
             }
 

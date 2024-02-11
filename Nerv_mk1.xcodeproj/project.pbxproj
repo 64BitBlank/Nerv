@@ -13,6 +13,7 @@
 		027AB0442B6155AC00616F8D /* WardSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027AB0432B6155AC00616F8D /* WardSelectionView.swift */; };
 		027AB0482B640DE600616F8D /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027AB0472B640DE600616F8D /* test.swift */; };
 		02AB6F3D2B7537D7007C544F /* RequestCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AB6F3C2B7537D7007C544F /* RequestCardView.swift */; };
+		02AB6F3F2B7970FA007C544F /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AB6F3E2B7970FA007C544F /* Request.swift */; };
 		02CD09582AF16E9300866B06 /* Nerv_mk1App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CD09572AF16E9300866B06 /* Nerv_mk1App.swift */; };
 		02CD095A2AF16E9300866B06 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CD09592AF16E9300866B06 /* ContentView.swift */; };
 		02CD095C2AF16E9500866B06 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02CD095B2AF16E9500866B06 /* Assets.xcassets */; };
@@ -70,6 +71,7 @@
 		027AB0432B6155AC00616F8D /* WardSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WardSelectionView.swift; sourceTree = "<group>"; };
 		027AB0472B640DE600616F8D /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 		02AB6F3C2B7537D7007C544F /* RequestCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestCardView.swift; sourceTree = "<group>"; };
+		02AB6F3E2B7970FA007C544F /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		02CD09542AF16E9300866B06 /* Nerv_mk1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nerv_mk1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02CD09572AF16E9300866B06 /* Nerv_mk1App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nerv_mk1App.swift; sourceTree = "<group>"; };
 		02CD09592AF16E9300866B06 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 				02ED58372AF2DB8800F215CA /* User.swift */,
 				02ED588B2AFFEA4E00F215CA /* Requests.swift */,
 				02ED58932B0D0E7700F215CA /* NotificationsModel.swift */,
+				02AB6F3E2B7970FA007C544F /* Request.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -377,6 +380,7 @@
 				02ED588C2AFFEA4E00F215CA /* Requests.swift in Sources */,
 				02CD095A2AF16E9300866B06 /* ContentView.swift in Sources */,
 				02ED587C2AFAD3B500F215CA /* SideMenuView.swift in Sources */,
+				02AB6F3F2B7970FA007C544F /* Request.swift in Sources */,
 				02CD09582AF16E9300866B06 /* Nerv_mk1App.swift in Sources */,
 				02ED58902B038D1B00F215CA /* RequestAuthModel.swift in Sources */,
 				02ED58382AF2DB8800F215CA /* User.swift in Sources */,

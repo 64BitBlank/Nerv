@@ -23,6 +23,7 @@ class AuthViewModel: ObservableObject {
     @Published var patientRefs: [String] = []
     @Published var wards: [String] = []
     @Published var selectedWard: String = ""
+    @Published var currentCarouselIndex = 0
     
     // When initilises, check if has a cached user and auto-login
     init() {

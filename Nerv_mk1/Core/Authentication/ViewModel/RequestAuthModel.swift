@@ -16,6 +16,7 @@ class RequestAuthModel: ObservableObject {
     @Published var notifications = [NotificationsModel]()
     @Published var patientData: [String: Any]?
     @Published var requestDetails: [Request] = []
+    @Published var newPatientData: Request?
     
     let currentUser = AuthViewModel.shared.currentUser
     
@@ -144,20 +145,19 @@ class RequestAuthModel: ObservableObject {
     }
     // submit notes to firebase to be stored
     func addNotesToPatient(patientID: String, notes: String) {
-            let db = Firestore.firestore()
-            let patientRef = db.collection("requests").document(patientID)
-
-            patientRef.updateData(["notes": notes]) { error in
-                if let error = error {
-                    // Handle any errors here
-                    print("Error updating document: \(error)")
-                } else {
-                    // The document has been successfully updated
-                    self.logUserAction(action: "Added/Updated notes to patient")
-                    print("Document successfully updated")
-                }
+        let db = Firestore.firestore()
+        let patientRef = db.collection("requests").document(patientID)
+        patientRef.updateData(["notes": notes]) { error in
+            if let error = error {
+                // Handle any errors here
+                print("Error updating document: \(error)")
+            } else {
+                // The document has been successfully updated
+                self.logUserAction(action: "Added/Updated notes to patient")
+                print("Document successfully updated")
             }
         }
+    }
     
     // Storge image to firebase
     func uploadImageToFirebase(_ imageData: Data, withName title: String, patientRef: String, completion: @escaping (Result<URL, Error>) -> Void) {
@@ -268,29 +268,50 @@ class RequestAuthModel: ObservableObject {
             print("Error fetching documents: \(error.localizedDescription)")
         }
     }
+    // update newPatientData when notes are altered
+    func fetchUpdatedPatientDetails(by id: String) async {
+        do {
+            let documentSnapshot = try await db.collection("requests").document(id).getDocument()
+            // Directly check if the document exists, without using `if let` for optional binding.
+            if documentSnapshot.exists, let data = documentSnapshot.data() {
+                let id = documentSnapshot.documentID
+                let ward = data["Ward"] as? String ?? ""
+                let additional = data["Additional"] as? String ?? ""
+                let currentPrescription = data["CurrentPerscription"] as? String ?? ""
+                let forename = data["Forename"] as? String ?? ""
+                let lastname = data["Lastname"] as? String ?? ""
+                let medicalHistory = data["MedicalHistory"] as? String ?? ""
+                let personalContact = data["PersonalContact"] as? String ?? ""
+                let sex = data["Sex"] as? String ?? ""
+                let staffNumber = data["StaffNumber"] as? String ?? ""
+                let summary = data["Summary"] as? String ?? ""
+                let altName = data["altName"] as? String ?? ""
+                let dob = data["dob"] as? Timestamp ?? Timestamp()
+                let isActive = data["isActive"] as? Bool ?? false
+                let notes = data["notes"] as? String ?? ""
+                let number = data["number"] as? Int ?? 0
+                let photoRefs = data["photoRefs"] as? [String] ?? []
+                let newsScore = data["newsScore"] as? Int ?? 0
+                let nhsNumber = data["nhsNumber"] as? String ?? ""
 
+                let request = Request(id: id, ward: ward, Additional: additional, CurrentPerscription: currentPrescription, Forename: forename, Lastname: lastname, MedicalHistory: medicalHistory, PersonalContact: personalContact, Sex: sex, StaffNumber: staffNumber, Summary: summary, altName: altName, dob: dob, isActive: isActive, notes: notes, number: number, PhotoRefs: photoRefs, newsScore: newsScore, nhsNumber: nhsNumber)
 
-}
-// expand structure  later to hold all patient information rather then just id and ward
-// for now this works to test data retieval & filtering
-struct Request: Identifiable, Codable {
-    let id: String
-    let ward: String
-    let Additional: String
-    let CurrentPerscription: String
-    let Forename: String
-    let Lastname: String
-    let MedicalHistory: String
-    let PersonalContact: String
-    let Sex: String
-    let StaffNumber: String
-    let Summary: String
-    let altName: String
-    let dob: Timestamp
-    let isActive: Bool
-    let notes: String
-    let number: Int
-    let PhotoRefs: Array<String>
-    let newsScore: Int
-    let nhsNumber: String
+                DispatchQueue.main.async {
+                    self.newPatientData = request
+                    //print(self.newPatientData)
+                }
+            } else {
+                print("Document does not exist")
+                DispatchQueue.main.async {
+                    self.newPatientData = nil
+                }
+            }
+        } catch {
+            print("Error fetching document: \(error.localizedDescription)")
+            DispatchQueue.main.async {
+                self.newPatientData = nil
+            }
+        }
+    }
+
 }
