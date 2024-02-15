@@ -86,6 +86,20 @@ struct SideMenuView: View {
                 Text("")
                     .padding(.bottom, 20)
             }
+            
+            // Navigation link 4
+            HStack {
+                Image(systemName: "bell")
+                NavigationLink{
+                               DismissalNotificationView()
+                }label: {
+                    Text("Dismissals")
+                        .font(.title2)
+                        .foregroundColor(.black)
+                }
+                Text("")
+                    .padding(.bottom, 20)
+            }
 
             Spacer()
             // image
