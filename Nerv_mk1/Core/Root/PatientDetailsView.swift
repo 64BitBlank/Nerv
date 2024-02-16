@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
+
 
 struct PatientDetailsView: View {
-    var patientData: [String: Any]
+    //var patientData: [String: Any]
+    @ObservedObject var patientData: Request
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
@@ -20,17 +23,17 @@ struct PatientDetailsView: View {
                     HStack {
                         Text("Name:")
                             .bold()
-                        Text("\(patientData["Forename"] as? String ?? "N/A") \(patientData["Lastname"] as? String ?? "N/A")")
+                        Text(patientData.Forename + " " + patientData.Lastname)
                     }
                     HStack {
                         Text("Alternate Name:")
                             .bold()
-                        Text("\(patientData["altName"] as? String ?? "N/A")")
+                        Text(patientData.altName)
                     }
                     HStack {
                         Text("Staff Number:")
                             .bold()
-                        Text("\(patientData["StaffNumber"] as? String ?? "N/A")")
+                        Text(patientData.StaffNumber)
                             .lineLimit(1)
                             .minimumScaleFactor(0.5)
                     }
@@ -45,22 +48,22 @@ struct PatientDetailsView: View {
                     HStack {
                         Text("Summary:")
                             .bold()
-                        Text("\(patientData["Summary"] as? String ?? "N/A")")
+                        Text(patientData.Summary)
                     }
                     HStack {
                         Text("Additional Notes:")
                             .bold()
-                        Text("\(patientData["Additional"] as? String ?? "N/A")")
+                        Text(patientData.Additional)
                     }
                     HStack {
                         Text("Medical Rating:")
                             .bold()
-                        Text("\(patientData["number"] as? Int ?? 0)")
+                        Text("\(patientData.number)")
                     }
                     HStack {
                         Text("Ward:")
                             .bold()
-                        Text("\(patientData["Ward"] as? String ?? "N/A")")
+                        Text(patientData.ward)
                     }
                 }
             }
@@ -70,17 +73,27 @@ struct PatientDetailsView: View {
     }
 }
 
-struct PatientDetailsView_Previews: PreviewProvider {
-    static var previews: some View {
-        PatientDetailsView(patientData: [
-            "Forename": "John",
-            "Lastname": "Smith",
-            "StaffNumber": "DuzDbTkYRhZeEAryKupHHZqD6xB3",
-            "Summary": "Severe abdominal pain",
-            "Additional": "Immediate surgery required",
-            "altName": "Jo",
-            "number": 8,
-            "Ward": "Emergency"
-        ])
-    }
+#Preview{
+    PatientDetailsView(patientData: (Request.init(
+        id: " ",
+        ward: " ",
+        Additional: " ",
+        CurrentPerscription: " ",
+        Forename: " ",
+        Lastname: " ",
+        MedicalHistory: " ",
+        PersonalContact: " ",
+        Sex: " ",
+        StaffNumber: " ",
+        Summary: " ",
+        altName: " ",
+        dob: Timestamp(date: Date()), // Use Timestamp with the current date
+        isActive: true,
+        notes: " ",
+        number: 0,
+        PhotoRefs: [" ", " "],
+        newsScore: 0,
+        nhsNumber: " "
+    )
+    ))
 }

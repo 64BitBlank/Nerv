@@ -35,6 +35,10 @@ struct RequestCardView: View {
     @State private var selectedImageUrl: URL?
     @State private var selectedImageTitle: String = ""
     @State private var notes: String = ""
+    
+    @State private var showingOptions = false
+    @State private var selection = "None"
+
    // @State private var currentCarouselIndex = 0
     @ObservedObject var request: Request
     @EnvironmentObject var viewModel: AuthViewModel
@@ -159,6 +163,23 @@ struct RequestCardView: View {
                     
                     HStack {
                         Spacer()
+                        // adding extra VStack for multi button option view
+                        VStack{
+                            Button("Options") {
+                                showingOptions = true
+                            }
+                            .confirmationDialog("Select Option", isPresented: $showingOptions, titleVisibility: .visible) {
+                                Button("Prounced Dead") {
+                                    selection = "Prounced Dead"
+                                }
+                                Button("Ward-Reassignment") {
+                                    selection = "Ward-Reassignment"
+                                }
+                                Button("Dismiss") {
+                                    selection = "Dismiss"
+                                }
+                            }
+                        }
                         if (request.id.isEmpty){
                             Text(" ")
                                 .font(.title3)
@@ -168,7 +189,6 @@ struct RequestCardView: View {
                                 Image(systemName: "camera")
                                     .foregroundColor(.blue)
                             }
-                            
                             Button(action: {
                                 if isEditing {
                                     // User is trying to finish editing

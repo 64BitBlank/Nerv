@@ -12,11 +12,14 @@ import FirebaseStorage
 
 @MainActor
 class RequestAuthModel: ObservableObject {
+    // previous unstructured versions
     @Published var requests: [DocumentSnapshot] = []
     @Published var notifications = [NotificationsModel]()
     @Published var patientData: [String: Any]?
+    // new request objects
     @Published var requestDetails: [Request] = []
     @Published var newPatientData: Request?
+    @Published var requestNotification: [Request] = []
     
     let currentUser = AuthViewModel.shared.currentUser
     
@@ -79,16 +82,48 @@ class RequestAuthModel: ObservableObject {
     // Adapt to only seclect requests not assigned
     func fetchRequests(wards: [String]) async {
         do {
-            // Fetch requests where 'isActive' is not true (or is absent)
             let querySnapshot = try await db.collection("requests")
                 .whereField("isActive", isNotEqualTo: true)
                 .getDocuments()
+            
+            // Temporary array to hold the fetched requests
+            var fetchedRequests: [Request] = []
+            
+            for document in querySnapshot.documents {
+                guard let ward = document.data()["Ward"] as? String else { continue }
+                
+                if wards.contains(ward) {
+                    let id = document.documentID
+                    let ward = document.get("Ward") as? String ?? ""
+                    let Additional = document.get("Additional") as? String ?? ""
+                    let CurrentPrescription = document.get("CurrentPrescription") as? String ?? ""
+                    let Forename = document.get("Forename") as? String ?? ""
+                    let Lastname = document.get("Lastname") as? String ?? ""
+                    let MedicalHistory = document.get("MedicalHistory") as? String ?? ""
+                    let PersonalContact = document.get("PersonalContact") as? String ?? ""
+                    let Sex = document.get("Sex") as? String ?? ""
+                    let StaffNumber = document.get("StaffNumber") as? String ?? ""
+                    let Summary = document.get("Summary") as? String ?? ""
+                    let altName = document.get("altName") as? String ?? ""
+                    let dob = document.get("dob") as? Timestamp ?? Timestamp()
+                    let isActive = document.get("isActive") as? Bool ?? false
+                    let notes = document.get("notes") as? String ?? ""
+                    let number = document.get("number") as? Int ?? 0
+                    let PhotoRefs = document.get("PhotoRefs") as? [String] ?? []
+                    let newsScore = document.get("newsScore") as? Int ?? 0
+                    let nhsNumber = document.get("nhsNumber") as? String ?? ""
 
-            // Filter the documents based on the wards array
-            self.requests = querySnapshot.documents.filter { document in
-                guard let requestWard = document.data()["Ward"] as? String else { return false }
-                return wards.contains(requestWard)
+                    // Create a Request object and add it to the fetchedRequests array
+                    let request = Request(id: id, ward: ward, Additional: Additional, CurrentPerscription: CurrentPrescription, Forename: Forename, Lastname: Lastname, MedicalHistory: MedicalHistory, PersonalContact: PersonalContact, Sex: Sex, StaffNumber: StaffNumber, Summary: Summary, altName: altName, dob: dob, isActive: isActive, notes: notes, number: number, PhotoRefs: PhotoRefs, newsScore: newsScore, nhsNumber: nhsNumber)
+                    fetchedRequests.append(request)
+                }
             }
+            
+            // Assign the fetched requests to the published property
+            DispatchQueue.main.async {
+                self.requestNotification = fetchedRequests
+            }
+            
         } catch {
             print("Error fetching documents: \(error.localizedDescription)")
         }
