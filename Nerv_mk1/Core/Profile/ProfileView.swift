@@ -43,7 +43,7 @@ struct ProfileView: View {
                                         tintColor: Color(.systemGray))
                         Spacer()
                         
-                        Text("Alpha 0.0.1")
+                        Text("Alpha 1.0.0")
                             .font(.headline)
                             .foregroundColor(.gray)
                     }
@@ -66,7 +66,29 @@ struct ProfileView: View {
                         }
                     }
                 }
+                Section("Logs"){
+                    ScrollView(showsIndicators: false) {
+                        VStack(alignment: .leading) {
+                            ForEach(viewModel.userActivityLogs.reversed(), id: \.self) { log in
+                                Text(log)
+                                    .padding()
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .background(Color.gray.opacity(0.15))
+                                    .cornerRadius(15)
+                                    .padding(.vertical, 2)
+                            }
+                        }
+                    }
+                        .frame(maxHeight: 250)
+                }
             }
+            .onAppear(){
+                Task{
+                    await viewModel.fetchUserActivityLogs()
+                }
+            }
+        } else{
+            Text("Some how you got into this app without an account registered... Wizard!")
         }
     }
 }

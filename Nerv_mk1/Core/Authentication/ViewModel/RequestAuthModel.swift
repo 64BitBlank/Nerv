@@ -13,8 +13,8 @@ import FirebaseStorage
 @MainActor
 class RequestAuthModel: ObservableObject {
     // previous unstructured versions
-    @Published var requests: [DocumentSnapshot] = []
-    @Published var notifications = [NotificationsModel]()
+    //@Published var requests: [DocumentSnapshot] = []
+    //@Published var notifications = [NotificationsModel]()
     @Published var patientData: [String: Any]?
     // new request objects
     @Published var requestDetails: [Request] = []
@@ -357,7 +357,7 @@ class RequestAuthModel: ObservableObject {
     // Add cause of death to the patients record
     func updatePatientDeathCause(patientId: String, deathCause: String) async {
         let db = Firestore.firestore()
-        let patientRef = db.collection("requests").document(patientId) // Adjust the collection name as necessary
+        let patientRef = db.collection("requests").document(patientId)
 
         do {
             // Update the patient document with the deathCause field
@@ -373,7 +373,7 @@ class RequestAuthModel: ObservableObject {
     // Changes patient ward & marks patient as non-active
     func updatePatientWard(patientId: String, wardSelection: String) async {
         let db = Firestore.firestore()
-        let patientRef = db.collection("requests").document(patientId) // Adjust the collection name as necessary
+        let patientRef = db.collection("requests").document(patientId)
 
         do {
             // Update the patient document with the new ward

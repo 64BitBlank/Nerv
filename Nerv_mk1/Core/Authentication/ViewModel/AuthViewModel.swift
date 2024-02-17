@@ -24,6 +24,7 @@ class AuthViewModel: ObservableObject {
     @Published var wards: [String] = []
     @Published var selectedWard: String = ""
     @Published var currentCarouselIndex: Int = 0
+    @Published var userActivityLogs: [String] = []
     
     // When initilises, check if has a cached user and auto-login
     init() {
@@ -217,6 +218,29 @@ class AuthViewModel: ObservableObject {
             print("Death tally updated successfully to \(updatedTally).")
         } catch {
             print("Error updating death tally: \(error.localizedDescription)")
+        }
+    }
+    
+    // Function to fetch logs from Firestore and update userActivityLogs
+    func fetchUserActivityLogs() async {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("User is not logged in")
+            return
+        }
+        
+        let db = Firestore.firestore()
+        let userRef = db.collection("user").document(userId)
+        
+        do {
+            let documentSnapshot = try await userRef.getDocument()
+            if let logs = documentSnapshot.get("logs") as? [String] {
+                self.userActivityLogs = logs
+            } else {
+                print("Logs attribute not found or is not a list of strings")
+                self.userActivityLogs = []
+            }
+        } catch {
+            print("Error fetching user activity logs: \(error.localizedDescription)")
         }
     }
 
