@@ -20,6 +20,7 @@ class RequestAuthModel: ObservableObject {
     @Published var requestDetails: [Request] = []
     @Published var newPatientData: Request?
     @Published var requestNotification: [Request] = []
+    @Published var dismissalNotifications: [Request] = []
     
     let currentUser = AuthViewModel.shared.currentUser
     
@@ -234,34 +235,6 @@ class RequestAuthModel: ObservableObject {
         }
     }
     
-    // Testing functions - WIP (Doesn't work)
-    func fetchNotifications() {
-        db.collection("requests").addSnapshotListener { (querySnapshot, error) in
-          guard let documents = querySnapshot?.documents else {
-            print("No documents")
-            return
-          }
-
-          self.notifications = documents.map { queryDocumentSnapshot -> NotificationsModel in
-            let data = queryDocumentSnapshot.data()
-            let Additional = data["Additional"] as? String ?? ""
-            let Forename = data["Forename"] as? String ?? ""
-            let Lastname = data["Lastname"] as? String ?? ""
-            let StaffNumber = data["StaffNumber"] as? String ?? ""
-            let Summary = data["Summary"] as? String ?? ""
-            let altName = data["altName"] as? String ?? ""
-            let number = data["number"] as? Int ?? 0
-
-            return NotificationsModel(id: .init(), Additional: Additional, Forename: Forename, Lastname: Lastname, StaffNumber: StaffNumber, Summary: Summary, altName: altName, number: number)
-          }
-        }
-      }
-    // Testing functions - WIP (Doesn't work)
-    func printNotifications() {
-        for notification in notifications {
-            print("ID: \(notification.id), Forename: \(notification.Forename), Lastname: \(notification.Lastname), Additional: \(notification.Additional), StaffNumber: \(notification.StaffNumber), Summary: \(notification.Summary), Alt Name: \(notification.altName), Number: \(notification.number)")
-        }
-    }
     func fetchPatientWard(ids: [String]) async {
         var requests: [Request] = []
         
@@ -373,7 +346,7 @@ class RequestAuthModel: ObservableObject {
         do {
             // Set the deceased field to true
             try await patientRef.updateData([
-                "toBedismissed": true
+                "toBeDismissed": true
             ])
             print("Patient marked as dismissed successfully.")
         } catch {
@@ -414,4 +387,49 @@ class RequestAuthModel: ObservableObject {
         }
     }
     
+    // fetches every item where staff have set attribute to dismissed
+    func fetchDismissalNotifications() async {
+        do {
+            let querySnapshot = try await db.collection("requests")
+                .whereField("toBeDismissed", isEqualTo: true)
+                .getDocuments()
+            
+            // Temporary array to hold the fetched requests
+            var fetchedRequests: [Request] = []
+            
+            for document in querySnapshot.documents {
+                let id = document.documentID
+                let ward = document.get("Ward") as? String ?? ""
+                let Additional = document.get("Additional") as? String ?? ""
+                let CurrentPrescription = document.get("CurrentPrescription") as? String ?? ""
+                let Forename = document.get("Forename") as? String ?? ""
+                let Lastname = document.get("Lastname") as? String ?? ""
+                let MedicalHistory = document.get("MedicalHistory") as? String ?? ""
+                let PersonalContact = document.get("PersonalContact") as? String ?? ""
+                let Sex = document.get("Sex") as? String ?? ""
+                let StaffNumber = document.get("StaffNumber") as? String ?? ""
+                let Summary = document.get("Summary") as? String ?? ""
+                let altName = document.get("altName") as? String ?? ""
+                let dob = document.get("dob") as? Timestamp ?? Timestamp(date: Date())
+                let isActive = document.get("isActive") as? Bool ?? false
+                let notes = document.get("notes") as? String ?? ""
+                let number = document.get("number") as? Int ?? 0
+                let PhotoRefs = document.get("PhotoRefs") as? [String] ?? []
+                let newsScore = document.get("newsScore") as? Int ?? 0
+                let nhsNumber = document.get("nhsNumber") as? String ?? ""
+                
+                let request = Request(id: id, ward: ward, Additional: Additional, CurrentPerscription: CurrentPrescription, Forename: Forename, Lastname: Lastname, MedicalHistory: MedicalHistory, PersonalContact: PersonalContact, Sex: Sex, StaffNumber: StaffNumber, Summary: Summary, altName: altName, dob: dob, isActive: isActive, notes: notes, number: number, PhotoRefs: PhotoRefs, newsScore: newsScore, nhsNumber: nhsNumber)
+                fetchedRequests.append(request)
+            }
+            
+            DispatchQueue.main.async {
+                self.dismissalNotifications = fetchedRequests
+            }
+            
+        } catch {
+            print("Error fetching documents for dismissal: \(error.localizedDescription)")
+        }
+    }
+
+
 }

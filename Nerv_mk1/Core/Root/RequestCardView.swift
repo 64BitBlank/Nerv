@@ -194,7 +194,7 @@ struct RequestCardView: View {
                                         // remove from user list
                                         await requestModel.updatePatientDeathCause(patientId: request.id, deathCause: deathCause)
                                         await viewModel.removePatientRef(patientId: request.id)
-                                        // add tally to user account
+                                        await viewModel.incrementDeathTally()
                                     }
                                 })
                                 Button("Cancel", role: .cancel, action: {

@@ -197,5 +197,27 @@ class AuthViewModel: ObservableObject {
             print("A Firestore transaction error occurred: \(transactionError.localizedDescription)")
         }
     }
+    
+    func incrementDeathTally() async {
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        
+        let db = Firestore.firestore()
+        let userRef = db.collection("user").document(userId)
+        
+        do {
+            // Fetch the current user document to get the current deathTally
+            let documentSnapshot = try await userRef.getDocument()
+            let currentTally = documentSnapshot.get("deathTally") as? Int ?? 0 // If deathTally doesn't exist, default to 0
+            
+            // Increment the deathTally by 1
+            let updatedTally = currentTally + 1
+            
+            // Update the user document with the new deathTally
+            try await userRef.updateData(["deathTally": updatedTally])
+            print("Death tally updated successfully to \(updatedTally).")
+        } catch {
+            print("Error updating death tally: \(error.localizedDescription)")
+        }
+    }
 
 }
