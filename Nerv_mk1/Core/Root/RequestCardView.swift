@@ -8,22 +8,6 @@
 import SwiftUI
 import FirebaseFirestore
 
-extension DateFormatter {
-    // Parser for the input date format
-    static let dobInputFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd" // Adjust this based on the actual format of your date string
-        return formatter
-    }()
-    
-    // Formatter for the output date format
-    static let dobOutputFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long // For example, "December 31, 2024"
-        formatter.timeStyle = .none
-        return formatter
-    }()
-}
 
 struct RequestCardView: View {
     @State private var selectedWard = ""
@@ -38,7 +22,15 @@ struct RequestCardView: View {
     
     @State private var showingOptions = false
     @State private var selection = "None"
+    
+    @State private var showingDeathAlert = false
+    @State private var deathCause = ""
+    
+    private let wards = ["Cardiology", "Oncology", "Pediatrics", "Neurology", "Emergency", "Orthopedics", "Maternity"]
+    @State private var showingWardAlert = false
+    @State private var updatedWard = ""
 
+    
    // @State private var currentCarouselIndex = 0
     @ObservedObject var request: Request
     @EnvironmentObject var viewModel: AuthViewModel
@@ -169,17 +161,73 @@ struct RequestCardView: View {
                                 showingOptions = true
                             }
                             .confirmationDialog("Select Option", isPresented: $showingOptions, titleVisibility: .visible) {
+                                
+                                
                                 Button("Prounced Dead") {
                                     selection = "Prounced Dead"
+                                    showingDeathAlert.toggle()
                                 }
+                                
+                                
                                 Button("Ward-Reassignment") {
                                     selection = "Ward-Reassignment"
+                                    showingWardAlert.toggle()
                                 }
-                                Button("Dismiss") {
-                                    selection = "Dismiss"
+                                
+                                
+                                Button("Move to Dismissal") {
+                                    selection = "Dismissal"
+                                    Task{
+                                        // mark item as Dimissed = true
+                                        // removal from user list
+                                        await requestModel.markPatientAsDismissed(patientId: request.id)
+                                        await viewModel.removePatientRef(patientId: request.id)
+                                    }
+                                }
+                            }
+                            .alert("Enter Cause", isPresented: $showingDeathAlert) {
+                                        TextField("Text", text: $deathCause)
+                                Button("Confrim", action: {
+                                    showingDeathAlert.toggle()
+                                    Task{
+                                        // add cause to patient record
+                                        // remove from user list
+                                        await requestModel.updatePatientDeathCause(patientId: request.id, deathCause: deathCause)
+                                        await viewModel.removePatientRef(patientId: request.id)
+                                        // add tally to user account
+                                    }
+                                })
+                                Button("Cancel", role: .cancel, action: {
+                                    showingDeathAlert.toggle()
+                                })
+                            } message: {
+                                Text("Cause of death to be submitted")
+                            }
+                            .sheet(isPresented: $showingWardAlert) {
+                                NavigationView {
+                                    Form {
+                                        Picker("Select a ward", selection: $updatedWard) {
+                                            ForEach(wards, id: \.self) { ward in
+                                                Text(ward).tag(ward)
+                                            }
+                                        }
+                                        .pickerStyle(.wheel)
+                                        .navigationTitle("Select New Ward")
+                                        .navigationBarItems(trailing: Button("Done") {
+                                            showingWardAlert.toggle()
+                                            print(updatedWard)
+                                            Task{
+                                                // update user ward
+                                                await requestModel.updatePatientWard(patientId: request.id, wardSelection: updatedWard)
+                                                // remove from user list
+                                                await viewModel.removePatientRef(patientId: request.id)
+                                            }
+                                        })
+                                    }
                                 }
                             }
                         }
+
                         if (request.id.isEmpty){
                             Text(" ")
                                 .font(.title3)

@@ -157,4 +157,45 @@ class AuthViewModel: ObservableObject {
         }
     }
     
+    func removePatientRef(patientId: String) async {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            print("User is not logged in")
+            return
+        }
+        let db = Firestore.firestore()
+        let userRef = db.collection("user").document(uid) // Use uid directly
+        
+        // Proceed with Firestore transaction
+        do {
+            try await db.runTransaction { transaction, errorPointer -> Any? in
+                let userDocument: DocumentSnapshot
+                do {
+                    // Attempt to get the current user document using uid
+                    userDocument = try transaction.getDocument(userRef)
+                } catch let fetchError as NSError {
+                    errorPointer?.pointee = fetchError
+                    return nil
+                }
+                // Document contains the patientRefs field as an array
+                guard var patientRefs = userDocument.get("patientRefs") as? [String] else {
+                    return nil
+                }
+                
+                // Remove the patientId if it exists in the array
+                if let index = patientRefs.firstIndex(of: patientId) {
+                    patientRefs.remove(at: index)
+                } else {
+                    // PatientId not found in the array, nothing to remove
+                    return nil
+                }
+                // Update the patientRefs field with the modified array
+                transaction.updateData(["patientRefs": patientRefs], forDocument: userRef)
+                return nil
+            }
+            print("Patient reference removed successfully.")
+        } catch let transactionError {
+            print("A Firestore transaction error occurred: \(transactionError.localizedDescription)")
+        }
+    }
+
 }

@@ -348,5 +348,70 @@ class RequestAuthModel: ObservableObject {
             }
         }
     }
+    
+    // Mark patient as dead
+    func markPatientAsDeceased(patientId: String) async {
+        let db = Firestore.firestore()
+        let patientRef = db.collection("requests").document(patientId)
 
+        do {
+            // Set the deceased field to true
+            try await patientRef.updateData([
+                "deceased": true
+            ])
+            print("Patient marked as deceased successfully.")
+        } catch {
+            print("Error marking patient as deceased: \(error.localizedDescription)")
+        }
+    }
+    
+    // Mark patient as dismissed (to be moved to dismissal
+    func markPatientAsDismissed(patientId: String) async {
+        let db = Firestore.firestore()
+        let patientRef = db.collection("requests").document(patientId)
+
+        do {
+            // Set the deceased field to true
+            try await patientRef.updateData([
+                "toBedismissed": true
+            ])
+            print("Patient marked as dismissed successfully.")
+        } catch {
+            print("Error marking patient as dismissed: \(error.localizedDescription)")
+        }
+    }
+    
+    // Add cause of death to the patients record
+    func updatePatientDeathCause(patientId: String, deathCause: String) async {
+        let db = Firestore.firestore()
+        let patientRef = db.collection("requests").document(patientId) // Adjust the collection name as necessary
+
+        do {
+            // Update the patient document with the deathCause field
+            try await patientRef.updateData([
+                "deathCause": deathCause
+            ])
+            print("Patient's cause of death updated successfully.")
+        } catch {
+            print("Error updating patient's cause of death: \(error.localizedDescription)")
+        }
+    }
+    
+    // Changes patient ward & marks patient as non-active
+    func updatePatientWard(patientId: String, wardSelection: String) async {
+        let db = Firestore.firestore()
+        let patientRef = db.collection("requests").document(patientId) // Adjust the collection name as necessary
+
+        do {
+            // Update the patient document with the new ward
+            try await patientRef.updateData([
+                "Ward": wardSelection,
+                "isActive": false
+            ])
+            print("Patient's ward updated successfully to \(wardSelection).")
+        } catch {
+            print("Error updating patient's ward: \(error.localizedDescription)")
+        }
+    }
+    
 }
