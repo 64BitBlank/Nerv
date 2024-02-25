@@ -61,6 +61,7 @@ struct RequestView: View {
                     Section(header: Text("Staff ID")){
                         // Replace with automation of user pulled information
                         TextField("Staff Number*", text: $staffNumber)
+                            .disabled(true)
                     }
                     .onAppear {
                         // Assign the value to staffNumber when the view appears

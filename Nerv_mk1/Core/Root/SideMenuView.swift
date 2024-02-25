@@ -59,27 +59,13 @@ struct SideMenuView: View {
                     .padding(.bottom, 20)
             }
             
-            
-            // Navigation link 4
+            // Navigation link 3
             HStack {
-                Image(systemName: "gear")
+                Image(systemName: "bell")
                 NavigationLink{
-                               SettingsView()
+                            test()
                 }label: {
-                    Text("Settings")
-                        .font(.title2)
-                        .foregroundColor(.black)
-                }
-                Text("")
-                    .padding(.bottom, 20)
-            }
-            // Navigation link 4
-            HStack {
-                Image(systemName: "note")
-                NavigationLink{
-                               test()
-                }label: {
-                    Text("Development")
+                    Text("Active Cases")
                         .font(.title2)
                         .foregroundColor(.black)
                 }
@@ -94,6 +80,20 @@ struct SideMenuView: View {
                                DismissalNotificationView()
                 }label: {
                     Text("Dismissals")
+                        .font(.title2)
+                        .foregroundColor(.black)
+                }
+                Text("")
+                    .padding(.bottom, 20)
+            }
+            
+            // Navigation link 5
+            HStack {
+                Image(systemName: "gear")
+                NavigationLink{
+                               SettingsView()
+                }label: {
+                    Text("Settings")
                         .font(.title2)
                         .foregroundColor(.black)
                 }
