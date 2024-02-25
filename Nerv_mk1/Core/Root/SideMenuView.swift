@@ -61,7 +61,7 @@ struct SideMenuView: View {
             
             // Navigation link 3
             HStack {
-                Image(systemName: "bell")
+                Image(systemName: "tray.fill")
                 NavigationLink{
                             test()
                 }label: {
@@ -75,7 +75,7 @@ struct SideMenuView: View {
             
             // Navigation link 4
             HStack {
-                Image(systemName: "bell")
+                Image(systemName: "list.bullet.rectangle")
                 NavigationLink{
                                DismissalNotificationView()
                 }label: {

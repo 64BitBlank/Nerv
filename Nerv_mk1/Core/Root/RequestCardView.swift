@@ -269,7 +269,11 @@ struct RequestCardView: View {
                                     }
                                 )
                             }
-                            
+                        }
+                        NavigationLink{
+                            SensorView()
+                        } label:{
+                            Image(systemName: "info.circle")
                         }
                         Spacer()
                     }

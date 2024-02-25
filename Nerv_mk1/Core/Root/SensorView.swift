@@ -8,8 +8,17 @@
 import SwiftUI
 
 struct SensorView: View {
+    @ObservedObject var dataViewModel = DataViewModel()
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List(dataViewModel.sensors) { sensor in
+            VStack(alignment: .leading) {
+                Text("LDR Data: \(sensor.ldrData)")
+                Text("Voltage: \(String(format: "%.2f", sensor.voltage)) V")
+            }
+        }
+        .onAppear {
+            dataViewModel.fetchData()
+        }
     }
 }
 

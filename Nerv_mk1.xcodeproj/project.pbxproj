@@ -18,6 +18,7 @@
 		02AB6F432B7FACBE007C544F /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AB6F422B7FACBE007C544F /* DateFormatter.swift */; };
 		02AB6F452B80DB6C007C544F /* Logs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AB6F442B80DB6C007C544F /* Logs.swift */; };
 		02AB6F472B8B6164007C544F /* SensorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AB6F462B8B6164007C544F /* SensorView.swift */; };
+		02AB6F4B2B8B9540007C544F /* DataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AB6F4A2B8B9540007C544F /* DataViewModel.swift */; };
 		02CD09582AF16E9300866B06 /* Nerv_mk1App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CD09572AF16E9300866B06 /* Nerv_mk1App.swift */; };
 		02CD095A2AF16E9300866B06 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CD09592AF16E9300866B06 /* ContentView.swift */; };
 		02CD095C2AF16E9500866B06 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02CD095B2AF16E9500866B06 /* Assets.xcassets */; };
@@ -80,6 +81,7 @@
 		02AB6F422B7FACBE007C544F /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
 		02AB6F442B80DB6C007C544F /* Logs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logs.swift; sourceTree = "<group>"; };
 		02AB6F462B8B6164007C544F /* SensorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorView.swift; sourceTree = "<group>"; };
+		02AB6F4A2B8B9540007C544F /* DataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataViewModel.swift; sourceTree = "<group>"; };
 		02CD09542AF16E9300866B06 /* Nerv_mk1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nerv_mk1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02CD09572AF16E9300866B06 /* Nerv_mk1App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nerv_mk1App.swift; sourceTree = "<group>"; };
 		02CD09592AF16E9300866B06 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -273,6 +275,7 @@
 				02ED58742AF2E87300F215CA /* AuthViewModel.swift */,
 				02ED588F2B038D1B00F215CA /* RequestAuthModel.swift */,
 				0218957B2B5012B500A186C2 /* ImageLoader.swift */,
+				02AB6F4A2B8B9540007C544F /* DataViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -394,6 +397,7 @@
 				02ED588C2AFFEA4E00F215CA /* Requests.swift in Sources */,
 				02CD095A2AF16E9300866B06 /* ContentView.swift in Sources */,
 				02ED587C2AFAD3B500F215CA /* SideMenuView.swift in Sources */,
+				02AB6F4B2B8B9540007C544F /* DataViewModel.swift in Sources */,
 				02AB6F3F2B7970FA007C544F /* Request.swift in Sources */,
 				02CD09582AF16E9300866B06 /* Nerv_mk1App.swift in Sources */,
 				02AB6F472B8B6164007C544F /* SensorView.swift in Sources */,

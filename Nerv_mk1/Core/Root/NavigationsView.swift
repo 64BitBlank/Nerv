@@ -18,8 +18,18 @@ import Firebase
 
 struct NavigationsView: View {
     @State private var showMenu: Bool = false
-
+    @State private var selectedQuote: String = ""
     @EnvironmentObject var viewModel: AuthViewModel
+    
+    private let quotes = [
+        "You have power over your mind - not outside events. Realize this, and you will find strength.",
+        "The happiness of your life depends upon the quality of your thoughts.",
+        "Waste no more time arguing about what a good man should be. Be one.",
+        "If you are distressed by anything external, the pain is not due to the thing itself, but to your estimate of it; and this you have the power to revoke at any moment.",
+        "The best revenge is to be unlike him who performed the injury.",
+        "Very little is needed to make a happy life; it is all within yourself, in your way of thinking.",
+        "Accept the things to which fate binds you, and love the people with whom fate brings you together, but do so with all your heart."
+    ]
     
     var body: some View {
         NavigationView {
@@ -28,12 +38,12 @@ struct NavigationsView: View {
                 VStack {
                     // Top of page
                     HStack {
-                        Text("Home Page")
+                        Text("Nerv")
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .foregroundColor(.primary)
                     }
-                    .padding(.top, 20)
+                    .padding()
                     
                     Divider()
                         .padding(.top, 30)
@@ -50,9 +60,22 @@ struct NavigationsView: View {
                     
                     Divider()
                     
-                    // Middle of page
+                    // Middle of page displaying inspirational quotes
                     Group{
-                        
+                        Text(selectedQuote)
+                            .padding()
+                            .font(.title3)
+                            .multilineTextAlignment(.center)
+                            .frame(minWidth: 0, maxWidth: .infinity)
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 16)
+                            .background(Color.secondary.opacity(0.1))
+                            .cornerRadius(12)
+                            .shadow(radius: 5)
+                            .padding(.horizontal)
+                            .onAppear {
+                                selectedQuote = quotes.randomElement() ?? ""
+                            }
                     }
                     
                     
