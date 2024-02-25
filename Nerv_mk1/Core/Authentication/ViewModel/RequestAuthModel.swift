@@ -110,12 +110,12 @@ class RequestAuthModel: ObservableObject {
                     let isActive = document.get("isActive") as? Bool ?? false
                     let notes = document.get("notes") as? String ?? ""
                     let number = document.get("number") as? Int ?? 0
-                    let PhotoRefs = document.get("PhotoRefs") as? [String] ?? []
+                    let photoRefs = document.get("photoRefs") as? [String] ?? []
                     let newsScore = document.get("newsScore") as? Int ?? 0
                     let nhsNumber = document.get("nhsNumber") as? String ?? ""
 
                     // Create a Request object and add it to the fetchedRequests array
-                    let request = Request(id: id, ward: ward, Additional: Additional, CurrentPerscription: CurrentPrescription, Forename: Forename, Lastname: Lastname, MedicalHistory: MedicalHistory, PersonalContact: PersonalContact, Sex: Sex, StaffNumber: StaffNumber, Summary: Summary, altName: altName, dob: dob, isActive: isActive, notes: notes, number: number, PhotoRefs: PhotoRefs, newsScore: newsScore, nhsNumber: nhsNumber)
+                    let request = Request(id: id, ward: ward, Additional: Additional, CurrentPerscription: CurrentPrescription, Forename: Forename, Lastname: Lastname, MedicalHistory: MedicalHistory, PersonalContact: PersonalContact, Sex: Sex, StaffNumber: StaffNumber, Summary: Summary, altName: altName, dob: dob, isActive: isActive, notes: notes, number: number, PhotoRefs: photoRefs, newsScore: newsScore, nhsNumber: nhsNumber)
                     fetchedRequests.append(request)
                 }
             }
