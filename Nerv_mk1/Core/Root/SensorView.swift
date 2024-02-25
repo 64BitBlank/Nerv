@@ -11,10 +11,13 @@ struct SensorView: View {
     @ObservedObject var dataViewModel = DataViewModel()
     var body: some View {
         List(dataViewModel.sensors) { sensor in
-            VStack(alignment: .leading) {
-                Text("LDR Data: \(sensor.ldrData)")
-                Text("Voltage: \(String(format: "%.2f", sensor.voltage)) V")
+            Section("Heart Rate Sensor"){
+                VStack(alignment: .leading) {
+                    Text("LDR Data: \(sensor.ldrData)")
+                    Text("Voltage: \(sensor.voltage) V")
+                }
             }
+
         }
         .onAppear {
             dataViewModel.fetchData()

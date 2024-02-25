@@ -15,16 +15,18 @@
 	<key>STORAGE_BUCKET</key>
 	<string>nerv-8ed11.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:64576722181:ios:1bfd92241633e85c9b536c</string>
+	<key>DATABASE_URL</key>
+	<string>https://nerv-8ed11-default-rtdb.europe-west1.firebasedatabase.app</string>
 </dict>
 </plist>
