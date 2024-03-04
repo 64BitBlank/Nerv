@@ -8,19 +8,24 @@
 import SwiftUI
 
 struct SensorView: View {
+    @EnvironmentObject var viewModel: AuthViewModel
     @ObservedObject var dataViewModel = DataViewModel()
+
     var body: some View {
         List(dataViewModel.sensors) { sensor in
-            Section("Heart Rate Sensor"){
+            Section("Sensor Device 1"){
                 VStack(alignment: .leading) {
-                    Text("LDR Data: \(sensor.ldrData)")
-                    Text("Voltage: \(sensor.voltage) V")
+                    Text("Counter: \(sensor.Counter)")
+                    Text("LDR: \(sensor.LDR)")
+                    Text("Voltage: \(sensor.Voltage) V")
                 }
             }
 
         }
         .onAppear {
-            dataViewModel.fetchData()
+            Task{
+                dataViewModel.fetchData(uid: viewModel.currentUser!.id)
+            }
         }
     }
 }

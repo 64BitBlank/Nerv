@@ -14,28 +14,29 @@ class DataViewModel: ObservableObject {
 
     private var dbRef: DatabaseReference = Database.database().reference()
 
-    func fetchData() {
-        dbRef.child("Sensors").observe(.value) { snapshot in
-            guard let value = snapshot.value as? [String: AnyObject] else {
-                print("Error: Snapshot is not a dictionary")
-                return
+    func fetchData(uid: String) {
+        dbRef.child("UserSensors").child(uid).observe(.value, with: { snapshot in
+            if let value = snapshot.value as? [String: Any] {
+                let counter = value["Counter"] as? Int ?? 0
+                let ldr = value["LDR"] as? Int ?? 0
+                let voltage = value["Voltage"] as? Double ?? 0.0
+                
+                let sensor = Sensor(id: snapshot.key, Counter: counter, LDR: ldr, Voltage: voltage)
+                DispatchQueue.main.async {
+                    self.sensors = [sensor]
+                    print("Data updated: \(self.sensors)")
+                }
             }
-            
-            let id = value["id"] as? String ?? ""
-            let ldrData = value["ldr_data"] as? Int ?? 0
-            let voltage = value["voltage"] as? String ?? ""
-            
-            let sensor = Sensor(id: id, ldrData: ldrData, voltage: voltage)
-            DispatchQueue.main.async {
-                self.sensors = [sensor]
-                print("Data updated: \(self.sensors)")
-            }
+        }) { (error) in
+            print(error.localizedDescription)
         }
     }
-
 }
+    
+
 struct Sensor: Identifiable {
     let id: String
-    let ldrData: Int
-    let voltage: String
+    let Counter: Int
+    let LDR: Int
+    let Voltage: Double
 }
