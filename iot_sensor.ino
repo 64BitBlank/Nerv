@@ -18,7 +18,7 @@
 #define WIFI_SSID "VM0255918"
 #define WIFI_PASSWORD "zY9ovsmh8ekyonBy"
 
-#define API_KEY "AIzaSyD_MaDkdN3BEWA-9jjHYsCMgpY48KX5dOY"
+#define API_KEY "asdf"
 
 #define USER_EMAIL "test1@gmail.com"
 #define USER_PASSWORD "uuuuuu"
